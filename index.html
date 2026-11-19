@@ -397,8 +397,8 @@
               <input id="calcCustomPrice" type="number" min="0" step="500" placeholder="Kosongkan = pakai rekomendasi" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#FCD2E3] bg-white text-sm font-bold text-[#4A2036] focus:outline-none focus:border-[#D83162]" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-[#6D3B53] mb-1">Max Diskon Gacha (%)</label>
-              <input id="calcGachaPct" type="number" min="0" max="50" step="0.5" value="5" class="w-full px-3.5 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
+              <label class="block text-xs font-bold text-[#6D3B53] mb-1">Max Diskon Gacha (% • Min 1%)</label>
+              <input id="calcGachaPct" type="number" min="1" max="50" step="0.5" value="5" class="w-full px-3.5 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
             </div>
             <div>
               <label class="block text-xs font-bold text-[#6D3B53] mb-1">Potongan MDR QRIS (% • ShopeePay = 0%)</label>
@@ -429,14 +429,24 @@
               <div class="text-[11px] text-[#6D3B53] mt-1">Per transaksi normal (anti tekor klaim)</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200">
-              <div class="text-[11px] font-bold text-emerald-800">💰 Profit Bersih Normal (0% Gacha)</div>
-              <div id="calcProfitNormal" class="text-lg font-extrabold text-emerald-700 mt-0.5">Rp 7.367</div>
-              <div id="calcMarginNormal" class="text-[11px] font-bold text-emerald-700 mt-0.5">Margin 38.8% (potong QRIS)</div>
+              <div class="text-[11px] font-bold text-emerald-800">💰 Profit Bersih Normal (Min 1% Gacha)</div>
+              <div id="calcProfitNormal" class="text-lg font-extrabold text-emerald-700 mt-0.5">Rp 6.815</div>
+              <div id="calcMarginNormal" class="text-[11px] font-bold text-emerald-700 mt-0.5">Margin 37.2% (Min Gacha 1%, 0% MDR)</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200">
               <div class="text-[11px] font-bold text-amber-800">⚡ Profit Worst-Case (Gacha Max)</div>
               <div id="calcProfitWorst" class="text-lg font-extrabold text-amber-700 mt-0.5">Rp 6.424</div>
               <div id="calcMarginWorst" class="text-[11px] font-bold text-amber-700 mt-0.5">Margin 35.6% (potong QRIS)</div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-fuchsia-50/80 border-2 border-[#F5B8CE]">
+              <div class="text-[11px] font-extrabold text-[#9B2358]">💎 Profit Setelah Cadangan Garansi (Min 1%)</div>
+              <div id="calcNetAfterGaransiNormal" class="text-lg font-black text-[#D83162] mt-0.5">Rp 5.793</div>
+              <div id="calcPriceAfterGaransiNormal" class="text-[10.5px] font-bold text-[#6D3B53] mt-0.5">Harga bersih setelah garansi: Rp 17.293</div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-sky-50/80 border-2 border-sky-200">
+              <div class="text-[11px] font-extrabold text-sky-900">🛡️ Profit Setelah Cadangan Garansi (Max 5%)</div>
+              <div id="calcNetAfterGaransiWorst" class="text-lg font-black text-sky-700 mt-0.5">Rp 5.164</div>
+              <div id="calcPriceAfterGaransiWorst" class="text-[10.5px] font-bold text-sky-800/80 mt-0.5">Harga bersih setelah garansi: Rp 16.664</div>
             </div>
           </div>
 
@@ -445,6 +455,18 @@
             <button id="calcApplyToDraftBtn" type="button" class="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition cursor-pointer">🚀 Terapkan ke Plan di Draft</button>
           </div>
         </div>
+      </div>
+
+      <!-- SIMULASI LENGKAP DISKON GACHA 1% SAMPAI 5% (FORMAT SERAGAM + SELISIH FLOOR + PROFIT SETELAH CADANGAN GARANSI) -->
+      <div class="pt-4 border-t-2 border-dashed border-[#FCD2E3] space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-[#FFE0EC] text-[#D83162] text-[10px] font-black uppercase tracking-wider">🎰 RINCIAN GACHA 1% – 5%</span>
+            <h3 class="text-sm sm:text-base font-extrabold text-[#4A2036] mt-1">Simulasi Harga, Selisih Floor &amp; Profit Bersih Tiap Persentase Diskon (1%–5%)</h3>
+            <p class="text-[11px] text-[#6D3B53]">Customer selalu mendapat minimal diskon <strong>1%</strong> sampai maksimal <strong>5%</strong>. Semua angka di bawah otomatis ikut berubah saat harga/modal diubah.</p>
+          </div>
+        </div>
+        <div id="calcGachaTierGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"></div>
       </div>
     
       <!-- BULK IMPORT FILE KESEPAKATAN HARGA (AUTO-UPDATE SEMUA FLOOR & HARGA JUAL!) -->
@@ -1981,10 +2003,12 @@
     const modalFh = Math.max(0, Number(($('calcModalFh') && $('calcModalFh').value) || 0));
     const floor = Math.max(0, Number(($('calcFloor') && $('calcFloor').value) || 0));
     const targetProfit = Math.max(0, Number(($('calcTargetProfit') && $('calcTargetProfit').value) || 0));
-    const gachaPct = Math.min(50, Math.max(0, Number(($('calcGachaPct') && $('calcGachaPct').value) || 0)));
+    const MIN_GACHA_PCT = 1;
+    const gachaPct = Math.min(50, Math.max(MIN_GACHA_PCT, Number(($('calcGachaPct') && $('calcGachaPct').value) || 5)));
     const qrisPct = Math.min(10, Math.max(0, Number(($('calcQrisPct') && $('calcQrisPct').value) || 0)));
     const customPrice = Math.max(0, Number(($('calcCustomPrice') && $('calcCustomPrice').value) || 0));
 
+    const minGFactor = 1 - MIN_GACHA_PCT / 100;
     const gFactor = 1 - gachaPct / 100;
     const qFactor = 1 - qrisPct / 100;
     const roundUp500 = (n) => Math.ceil(n / 500) * 500;
@@ -1995,10 +2019,11 @@
     window.__lastCalcRecommended = recommended;
 
     const activePrice = customPrice > 0 ? customPrice : recommended;
+    const afterMinGacha = Math.round(activePrice * minGFactor);
     const afterGacha = Math.round(activePrice * gFactor);
-    const netNormal = Math.round(activePrice * qFactor - modalFh);
+    const netNormal = Math.round(afterMinGacha * qFactor - modalFh);
     const netWorst = Math.round(afterGacha * qFactor - modalFh);
-    const marginNormal = activePrice > 0 ? ((netNormal / activePrice) * 100).toFixed(1) : '0.0';
+    const marginNormal = afterMinGacha > 0 ? ((netNormal / afterMinGacha) * 100).toFixed(1) : '0.0';
     const marginWorst = afterGacha > 0 ? ((netWorst / afterGacha) * 100).toFixed(1) : '0.0';
     const garansiReserve = Math.max(0, Math.round(netNormal * 0.15));
 
@@ -2024,11 +2049,59 @@
         $('calcFloorCheck').className = 'text-[11px] font-extrabold text-rose-600 mt-1';
       }
     }
+    const garansiReserveWorst = Math.max(0, Math.round(netWorst * 0.15));
+    const netNormalAfterGaransi = netNormal - garansiReserve;
+    const netWorstAfterGaransi = netWorst - garansiReserveWorst;
+    const priceAfterGaransiNormal = Math.max(0, afterMinGacha - garansiReserve);
+    const priceAfterGaransiWorst = Math.max(0, afterGacha - garansiReserveWorst);
+
     if ($('calcGaransiReserve')) $('calcGaransiReserve').textContent = formatRp(garansiReserve);
     if ($('calcProfitNormal')) $('calcProfitNormal').textContent = formatRp(netNormal);
-    if ($('calcMarginNormal')) $('calcMarginNormal').textContent = 'Margin ' + marginNormal + (qrisPct > 0 ? '% (QRIS ' + qrisPct + '%)' : '% (ShopeePay 0% MDR)');
+    if ($('calcMarginNormal')) $('calcMarginNormal').textContent = 'Margin ' + marginNormal + '% (Min Gacha 1%' + (qrisPct > 0 ? ' + QRIS ' + qrisPct + '%)' : ', 0% MDR)');
     if ($('calcProfitWorst')) $('calcProfitWorst').textContent = formatRp(netWorst);
     if ($('calcMarginWorst')) $('calcMarginWorst').textContent = 'Margin ' + marginWorst + '% (Gacha ' + gachaPct + '%' + (qrisPct > 0 ? ' + QRIS)' : ', 0% MDR)');
+    if ($('calcNetAfterGaransiNormal')) $('calcNetAfterGaransiNormal').textContent = formatRp(netNormalAfterGaransi);
+    if ($('calcPriceAfterGaransiNormal')) $('calcPriceAfterGaransiNormal').textContent = 'Harga bersih stlh garansi: ' + formatRp(priceAfterGaransiNormal) + ' (-' + formatRp(garansiReserve) + ')';
+    if ($('calcNetAfterGaransiWorst')) $('calcNetAfterGaransiWorst').textContent = formatRp(netWorstAfterGaransi);
+    if ($('calcPriceAfterGaransiWorst')) $('calcPriceAfterGaransiWorst').textContent = 'Harga bersih stlh garansi: ' + formatRp(priceAfterGaransiWorst) + ' (-' + formatRp(garansiReserveWorst) + ')';
+
+    const tierGrid = $('calcGachaTierGrid');
+    if (tierGrid) {
+      tierGrid.innerHTML = [1, 2, 3, 4, 5].map((pct) => {
+        const tAfter = Math.round(activePrice * (1 - pct / 100));
+        const tNet = Math.round(tAfter * qFactor - modalFh);
+        const tGaransi = Math.max(0, Math.round(tNet * 0.15));
+        const tNetAfterGaransi = tNet - tGaransi;
+        const tPriceAfterGaransi = Math.max(0, tAfter - tGaransi);
+        const tMargin = tAfter > 0 ? ((tNet / tAfter) * 100).toFixed(1) : '0.0';
+        const tSafe = floor <= 0 || tAfter >= floor;
+        const floorHtml = floor <= 0
+          ? '<div class="text-[10.5px] font-bold text-[#6D3B53]">ℹ️ Floor bebas</div>'
+          : (tSafe
+              ? '<div class="text-[10.5px] font-bold text-emerald-700">✅ +' + formatRp(tAfter - floor) + ' di atas Floor</div>'
+              : '<div class="text-[10.5px] font-extrabold text-rose-600">🚨 Kurang ' + formatRp(floor - tAfter) + ' dari Floor!</div>');
+        const badgeTag = pct === 1 ? 'Min' : (pct === 5 ? 'Max' : 'Gacha');
+        const cardBorder = !tSafe ? 'border-rose-300 bg-rose-50/50' : (pct === 1 ? 'border-emerald-300 bg-emerald-50/40' : (pct === 5 ? 'border-amber-300 bg-amber-50/40' : 'border-[#FCD2E3] bg-[#FFF8FA]'));
+        return `
+          <div class="p-3.5 rounded-2xl border-2 ${cardBorder} space-y-2 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[11px] font-black text-[#4A2036]">🎰 Gacha ${pct}%</span>
+                <span class="px-2 py-0.5 rounded-full bg-white border border-[#FCD2E3] text-[9.5px] font-black text-[#D83162]">${badgeTag}</span>
+              </div>
+              <div class="text-lg font-black text-[#4A2036] mt-1">${formatRp(tAfter)}</div>
+              <div class="mt-0.5">${floorHtml}</div>
+            </div>
+            <div class="pt-2 border-t border-dashed border-[#F5B8CE] space-y-1 text-[10.5px]">
+              <div class="flex justify-between gap-1"><span class="text-[#6D3B53] font-semibold">Profit Awal:</span><span class="font-extrabold ${tNet >= 0 ? 'text-emerald-700' : 'text-rose-600'}">${formatRp(tNet)} (${tMargin}%)</span></div>
+              <div class="flex justify-between gap-1"><span class="text-[#6D3B53] font-semibold">Cad. Garansi 15%:</span><span class="font-bold text-amber-700">-${formatRp(tGaransi)}</span></div>
+              <div class="flex justify-between gap-1 pt-1 border-t border-[#FFE0EC]"><span class="font-black text-[#9B2358]">💎 Profit Bersih:</span><span class="font-black text-[#D83162]">${formatRp(tNetAfterGaransi)}</span></div>
+              <div class="flex justify-between gap-1"><span class="text-[#6D3B53] font-semibold">Harga Stlh Garansi:</span><span class="font-bold text-[#4A2036]">${formatRp(tPriceAfterGaransi)}</span></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
     const pill = $('calcStatusPill');
     if (pill) {
@@ -2180,7 +2253,7 @@
             <li><strong>Floor Kesepakatan 2026:</strong> Batas harga jual terendah agar tidak kena siram/banting harga.</li>
             <li><strong>Target Profit:</strong> Untung bersih minimal yang ingin kamu kantongi per transaksi.</li>
             <li><strong>Worst-Case Gacha (5%) &amp; ShopeePay QRIS (0% MDR):</strong> Kalkulator otomatis menghitung harga jual aman supaya <em>meskipun customer dapat diskon Gacha maksimal 5%</em>, harga akhirnya tetap di atas Floor 2026 dan target untungmu tetap aman!</li>
-            <li><strong>Profit Normal vs Worst-Case:</strong> Profit Normal = untung tanpa diskon; Worst-Case = untung paling minim saat customer kena diskon 5%.</li>
+            <li><strong>Simulasi Gacha 1%–5% &amp; Profit Setelah Cadangan Garansi:</strong> Customer selalu dapat minimal diskon <strong>1%</strong> (bukan 0%) sampai maksimal <strong>5%</strong>. Setiap persentase (1%, 2%, 3%, 4%, 5%) menampilkan harga akhir, selisih terhadap Floor 2026, potongan <strong>Cadangan Garansi (15%)</strong>, serta <strong>Profit Bersih &amp; Harga Bersih Setelah Dipotong Cadangan Garansi</strong>.</li>
             <li><strong>🚀 Terapkan ke Draft Katalog:</strong> Klik 1x untuk langsung memindahkan harga rekomendasi ke katalog Web Customer, lalu klik <strong>Publish</strong>!</li>
           </ul>
         </div>
