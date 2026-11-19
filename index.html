@@ -366,7 +366,7 @@
           <h2 class="text-lg font-extrabold text-[#4A2036]">🧮 Kalkulator Harga Otomatis &amp; Anti-Siram 2026</h2>
           <p class="text-xs text-[#6D3B53]">Hitung harga jual aman yang tetap cuan bersih (ShopeePay QRIS <strong>0% MDR / bebas biaya admin</strong> + worst-case Gacha 5%) dan tidak melanggar Floor Kesepakatan 2026.</p>
         </div>
-        <span id="calcStatusPill" class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold">✅ AMAN ANTI-SIRAM</span>
+        <div class="flex flex-wrap items-center gap-2"><button id="openFinanceGuidebookBtn" type="button" class="px-3 py-1.5 rounded-full bg-[#4A2036] hover:bg-[#6A2C4D] text-[#FFE066] text-[11px] font-extrabold transition cursor-pointer shadow-sm">📘 Guidebook Keuangan &amp; Harga</button><span id="calcStatusPill" class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold">✅ AMAN ANTI-SIRAM</span></div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -444,6 +444,39 @@
             <button id="calcCopyBtn" type="button" class="flex-1 py-3 px-4 rounded-2xl bg-[#FFE0EC] hover:bg-[#FCD2E3] text-[#D83162] text-xs font-extrabold transition cursor-pointer">📋 Salin Harga Rekomendasi</button>
             <button id="calcApplyToDraftBtn" type="button" class="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition cursor-pointer">🚀 Terapkan ke Plan di Draft</button>
           </div>
+        </div>
+      </div>
+    
+      <!-- BULK IMPORT FILE KESEPAKATAN HARGA (AUTO-UPDATE SEMUA FLOOR & HARGA JUAL!) -->
+      <div class="pt-5 border-t-2 border-dashed border-[#FCD2E3] space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-[#FFE0EC] text-[#D83162] text-[10px] font-black uppercase tracking-wider">⚡ AUTO-UPDATE MASSAL</span>
+            <h3 class="text-base font-extrabold text-[#4A2036] mt-1">📂 Upload / Paste File Kesepakatan Harga</h3>
+            <p class="text-xs text-[#6D3B53]">Upload file <code>.txt</code> / <code>.csv</code> atau paste langsung isi Google Docs Kesepakatan Harga — semua Floor 2026 &amp; harga jual langsung ter-update otomatis tanpa edit satu-satu!</p>
+          </div>
+          <label class="px-4 py-2.5 rounded-2xl bg-[#4A2036] hover:bg-[#6A2C4D] text-[#FFE066] text-xs font-extrabold cursor-pointer shadow-sm transition inline-flex items-center gap-1.5">
+            <span>📁 Pilih File (.txt / .csv)</span>
+            <input id="bulkFloorFileInput" type="file" accept=".txt,.csv,.tsv,.md,text/plain,text/csv" class="hidden" />
+          </label>
+        </div>
+
+        <textarea id="bulkFloorPasteInput" rows="5" placeholder="Atau copy-paste daftar Kesepakatan Harga di sini (1 baris = 1 harga), contoh:&#10;Netflix 1p1u 1 bulan : 16.000&#10;Spotify 1 bulan - 14k&#10;Canva Pro 1bln = 5000&#10;CapCut, 1 Bulan, 18000" class="w-full px-4 py-3 rounded-2xl border-2 border-[#FCD2E3] bg-[#FFF8FA] text-xs font-mono text-[#4A2036] focus:outline-none focus:border-[#D83162]"></textarea>
+
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <label class="inline-flex items-center gap-2 text-xs font-bold text-[#4A2036] cursor-pointer">
+            <input id="bulkAutoBumpSellPriceChk" type="checkbox" checked class="w-4 h-4 accent-[#D83162] rounded" />
+            <span>✨ Sekaligus naikkan <strong>Harga Jual</strong> otomatis jika masih di bawah Floor Anti-Siram (Gacha 5%)</span>
+          </label>
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="bulkParsePreviewBtn" type="button" class="px-4 py-2 rounded-xl bg-[#FFE0EC] hover:bg-[#FCD2E3] text-[#D83162] text-xs font-extrabold transition cursor-pointer">🔍 Cek &amp; Preview Perubahan</button>
+            <button id="bulkApplyAllFloorsBtn" type="button" disabled class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white text-xs font-extrabold shadow-sm disabled:opacity-40 cursor-pointer transition">🚀 Terapkan Semua ke Draft</button>
+          </div>
+        </div>
+
+        <div id="bulkFloorPreviewBox" class="hidden rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] p-3.5 space-y-2">
+          <div id="bulkFloorPreviewSummary" class="text-xs font-extrabold text-[#4A2036]"></div>
+          <div id="bulkFloorPreviewList" class="max-h-56 overflow-y-auto space-y-1.5 text-[11px]"></div>
         </div>
       </div>
     </section>
@@ -2102,5 +2135,229 @@
       });
     })();
   </script>
+
+  <div id="financeGuidebookModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 bg-[#3A1228]/65 backdrop-blur-sm">
+    <div class="w-full max-w-2xl max-h-[88vh] overflow-y-auto bg-white border-2 border-[#F5B8CE] rounded-[28px] p-5 sm:p-6 shadow-2xl space-y-4">
+      <div class="flex items-start justify-between gap-2 border-b border-dashed border-[#F5B8CE] pb-3">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full bg-[#FFE0EC] text-[#D83162] text-[10px] font-black uppercase tracking-wider">📘 GUIDEBOOK KEUANGAN &amp; HARGA ARCHIE'PELAGO</span>
+          <h3 class="text-base sm:text-lg font-black text-[#4A2036] mt-1">Panduan Lengkap: Kenapa, Apa, &amp; Bagaimana Hitungan Keuangan Bekerja</h3>
+        </div>
+        <button id="closeFinanceGuidebookBtn" type="button" class="w-8 h-8 rounded-full bg-[#FFE4EE] hover:bg-[#FFD0E2] text-[#4A2036] font-black text-xs cursor-pointer shrink-0">✕</button>
+      </div>
+
+      <div class="space-y-3 text-left text-xs text-[#4A2036] leading-relaxed">
+        <div class="p-3.5 rounded-2xl bg-[#FFF6FA] border border-[#F5C6D8] space-y-1">
+          <div class="font-black text-[#D83162]">1. KENAPA uang penjualan tidak boleh langsung dipakai semua?</div>
+          <p class="font-semibold text-[#5E2A44]">Total uang masuk (<strong>Omzet</strong>) <strong>BUKAN</strong> gaji bersih kamu. Di dalamnya masih ada uang milik supplier (Modal FH) dan cadangan kalau sewaktu-waktu ada akun customer bermasalah. Kalau semua langsung dipakai jajan, nanti pas harus beli stok atau ganti garansi kamu malah harus nombok dari uang pribadi.</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-[#FFF6FA] border border-[#F5C6D8] space-y-1.5">
+          <div class="font-black text-[#D83162]">2. APA arti 4 Pos Pembagian Uang &amp; KENAPA persentasenya begitu?</div>
+          <ul class="list-disc pl-4 space-y-1 font-semibold text-[#5E2A44]">
+            <li><strong>📦 Pos 1 — Modal Putar FH:</strong> Dihitung otomatis dari modal beli akun ke First Hand. Uang ini <em>wajib diputar lagi</em> untuk beli stok berikutnya.</li>
+            <li><strong>🛡️ Pos 2 — Cadangan Garansi (15% dari Laba):</strong> Di bisnis app premium selalu ada risiko akun ke-hold/tumbang. Menyisihkan 15% laba bikin kamu punya dana darurat khusus refill garansi tanpa panik.</li>
+            <li><strong>⚡ Pos 3 — Operasional Toko (10% dari Laba):</strong> Untuk nutup kuota, listrik, atau kebutuhan operasional jualan supaya tidak memotong gaji pribadi kamu.</li>
+            <li><strong>💖 Pos 4 — Gaji / Profit Bersih Mimin (75% dari Laba):</strong> Nah, angka di pos inilah <strong>uang 100% milik kamu</strong> yang aman banget dipakai jajan, nabung, atau belanja!</li>
+          </ul>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
+          <div class="font-black text-amber-900">3. BAGAIMANA cara kerja ShopeePay QRIS 0% MDR &amp; Cair Besok (H+1)?</div>
+          <p class="font-semibold text-amber-950/85">Karena kamu pakai <strong>ShopeePay QRIS (0% MDR)</strong>, tidak ada potongan biaya admin sama sekali — 100% nominal yang dibayar customer masuk utuh. Uang yang masuk <strong>Hari Ini</strong> dipisah dulu ke kotak kuning (<em>Cair Besok</em>) supaya kamu tidak salah menghitung uang yang belum benar-benar cair di rekening. Besok otomatis dianggap cair, atau kamu bisa klik <strong>💸 Cairkan &amp; Gabung</strong> kapan saja kalau sudah masuk rekening.</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
+          <div class="font-black text-emerald-900">4. APA bedanya Mode Otomatis vs Mode Manual &amp; Simulasi Mass Wipe?</div>
+          <p class="font-semibold text-emerald-950/85">Di <strong>🤖 Mode Otomatis</strong> (default), kamu tidak perlu mikir rumus apa pun — sistem otomatis membuatkan target progress bar yang naik bertahap setiap kali penjualanmu bertambah. Kalau suatu saat kamu punya target pribadi (misal mau nabung Rp 2.000.000), tinggal klik <strong>Ubah Manual</strong>. Sedangkan <strong>🧪 Simulasi Mass Wipe</strong> dipakai untuk mengecek: kalau misal 20% akun tumbang barengan, apakah Tabungan Garansi (15%) kamu masih kuat nutup biaya refill-nya.</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1.5">
+          <div class="font-black text-sky-900">5. BAGAIMANA cara pakai Kalkulator Harga Anti-Siram 2026 di Web Editor?</div>
+          <ul class="list-disc pl-4 space-y-1 font-semibold text-sky-950/85">
+            <li><strong>Pilih Preset Aplikasi:</strong> Pilih aplikasi &amp; paket dari dropdown, maka Modal FH, Floor 2026, dan Harga Jual otomatis terisi.</li>
+            <li><strong>Modal FH:</strong> Harga beli akun dari supplier First Hand kamu.</li>
+            <li><strong>Floor Kesepakatan 2026:</strong> Batas harga jual terendah agar tidak kena siram/banting harga.</li>
+            <li><strong>Target Profit:</strong> Untung bersih minimal yang ingin kamu kantongi per transaksi.</li>
+            <li><strong>Worst-Case Gacha (5%) &amp; ShopeePay QRIS (0% MDR):</strong> Kalkulator otomatis menghitung harga jual aman supaya <em>meskipun customer dapat diskon Gacha maksimal 5%</em>, harga akhirnya tetap di atas Floor 2026 dan target untungmu tetap aman!</li>
+            <li><strong>Profit Normal vs Worst-Case:</strong> Profit Normal = untung tanpa diskon; Worst-Case = untung paling minim saat customer kena diskon 5%.</li>
+            <li><strong>🚀 Terapkan ke Draft Katalog:</strong> Klik 1x untuk langsung memindahkan harga rekomendasi ke katalog Web Customer, lalu klik <strong>Publish</strong>!</li>
+          </ul>
+        </div>
+      </div>
+
+      <button id="okFinanceGuidebookBtn" type="button" class="w-full py-2.5 rounded-full bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white text-xs font-extrabold shadow-md cursor-pointer">✅ Paham Banget, Tutup Guidebook 🌸</button>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('click', function(e) {
+      var m = document.getElementById('financeGuidebookModal');
+      if (!m || !e.target) return;
+      if (e.target.closest && e.target.closest('#openFinanceGuidebookBtn')) {
+        m.classList.remove('hidden'); m.classList.add('flex');
+      } else if (e.target === m || (e.target.closest && (e.target.closest('#closeFinanceGuidebookBtn') || e.target.closest('#okFinanceGuidebookBtn')))) {
+        m.classList.add('hidden'); m.classList.remove('flex');
+      }
+    });
+  </script>
+
+
+  <script>
+    (function initBulkFloorImporter() {
+      if (window.__BULK_FLOOR_INIT__) return;
+      window.__BULK_FLOOR_INIT__ = true;
+      var pendingMatches = [];
+
+      function parseRpNumber(str) {
+        if (!str) return 0;
+        var s = String(str).toLowerCase().replace(/rp/gi, '').trim();
+        // Match formats like 16k, 16.5k, 16rb, 16.000, 16,000, 16000
+        var mK = s.match(/(\d+(?:[.,]\d+)?)\s*(?:k|rb|ribu)\b/i);
+        if (mK) {
+          var n = parseFloat(mK[1].replace(',', '.'));
+          return isNaN(n) ? 0 : Math.round(n * 1000);
+        }
+        var nums = s.match(/\d[\d.,]*/g);
+        if (!nums || !nums.length) return 0;
+        var last = nums[nums.length - 1].replace(/[.,]/g, '');
+        var val = parseInt(last, 10) || 0;
+        return val >= 500 ? val : 0;
+      }
+
+      function normalizeStr(s) {
+        return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      }
+
+      function parseBulkFloorText(rawText) {
+        var cfg = (typeof draftConfig !== 'undefined' && draftConfig) ? draftConfig : null;
+        var catalog = (cfg && Array.isArray(cfg.catalog)) ? cfg.catalog : [];
+        var lines = String(rawText || '').split(/\r?\n/).map(function(l){ return l.trim(); }).filter(Boolean);
+        var autoBump = Boolean((document.getElementById('bulkAutoBumpSellPriceChk') || {}).checked);
+        var results = [];
+        var seenKey = {};
+
+        lines.forEach(function(line) {
+          var floorVal = parseRpNumber(line);
+          if (floorVal < 1000) return;
+          var normLine = normalizeStr(line);
+          // Match best app in catalog
+          var bestApp = null;
+          var bestScore = 0;
+          catalog.forEach(function(app) {
+            var appWords = normalizeStr(app.name).split(' ').filter(function(w){ return w.length >= 3; });
+            if (!appWords.length) return;
+            var firstWord = appWords[0];
+            if (!normLine.includes(firstWord)) return;
+            var score = 1;
+            appWords.forEach(function(w) { if (normLine.includes(w)) score++; });
+            if (score > bestScore) { bestScore = score; bestApp = app; }
+          });
+          if (!bestApp || !Array.isArray(bestApp.plans)) return;
+
+          // Match specific plan if duration/variant keyword matches, otherwise apply to matching 1-month or all plans
+          var matchedPlans = bestApp.plans.filter(function(pl) {
+            var pNorm = normalizeStr(pl.label);
+            var tokens = pNorm.split(' ').filter(function(w){ return w.length >= 2; });
+            var hits = 0;
+            tokens.forEach(function(tk) { if (normLine.includes(tk)) hits++; });
+            return hits >= 2;
+          });
+          if (matchedPlans.length === 0) {
+            // Try matching 1 bulan / 1b / 1m default plan or all plans of that app
+            var has1B = /\b(1\s*b|1\s*bln|1\s*bulan|1m|30\s*h)\b/i.test(line);
+            if (has1B) {
+              matchedPlans = bestApp.plans.filter(function(pl) { return /1\s*bulan|30\s*hari/i.test(pl.label || ''); });
+            }
+            if (matchedPlans.length === 0) matchedPlans = bestApp.plans;
+          }
+
+          matchedPlans.forEach(function(pl) {
+            var k = bestApp.id + '::' + pl.label;
+            if (seenKey[k]) return;
+            seenKey[k] = true;
+            var oldFloor = Number(pl.minAgreed || bestApp.minAgreed || 0);
+            var oldPrice = Number(pl.price || 0);
+            var minSafeSell = Math.ceil((floorVal / 0.95) / 500) * 500;
+            var newPrice = (autoBump && oldPrice < minSafeSell) ? minSafeSell : oldPrice;
+            results.push({
+              app: bestApp,
+              plan: pl,
+              oldFloor: oldFloor,
+              newFloor: floorVal,
+              oldPrice: oldPrice,
+              newPrice: newPrice,
+              sourceLine: line
+            });
+          });
+        });
+        return results;
+      }
+
+      function runPreview() {
+        var txt = (document.getElementById('bulkFloorPasteInput') || {}).value || '';
+        pendingMatches = parseBulkFloorText(txt);
+        var box = document.getElementById('bulkFloorPreviewBox');
+        var sum = document.getElementById('bulkFloorPreviewSummary');
+        var list = document.getElementById('bulkFloorPreviewList');
+        var applyBtn = document.getElementById('bulkApplyAllFloorsBtn');
+        if (!box || !sum || !list) return;
+        box.classList.remove('hidden');
+        if (!pendingMatches.length) {
+          sum.textContent = '⚠️ Belum ada baris harga yang cocok dengan katalog. Pastikan setiap baris memuat nama aplikasi + nominal harga (contoh: Netflix 1 Bulan : 16.000).';
+          list.innerHTML = '';
+          if (applyBtn) applyBtn.disabled = true;
+          return;
+        }
+        sum.textContent = '✅ Ditemukan ' + pendingMatches.length + ' paket yang siap di-update otomatis:';
+        list.innerHTML = pendingMatches.map(function(m) {
+          var priceDiff = m.newPrice !== m.oldPrice
+            ? ' • Harga Jual: <span class="text-emerald-700 font-black">Rp ' + m.oldPrice.toLocaleString('id-ID') + ' → Rp ' + m.newPrice.toLocaleString('id-ID') + '</span>'
+            : '';
+          return '<div class="px-3 py-2 rounded-xl bg-white border border-[#F5C6D8] flex flex-wrap items-center justify-between gap-1">' +
+            '<span class="font-extrabold text-[#4A2036]">' + (m.app.badge || '✨') + ' ' + m.app.name + ' — ' + m.plan.label + '</span>' +
+            '<span class="font-bold text-[#D83162]">Floor: Rp ' + m.oldFloor.toLocaleString('id-ID') + ' → Rp ' + m.newFloor.toLocaleString('id-ID') + priceDiff + '</span>' +
+          '</div>';
+        }).join('');
+        if (applyBtn) applyBtn.disabled = false;
+      }
+
+      document.addEventListener('change', function(e) {
+        if (e.target && e.target.id === 'bulkFloorFileInput') {
+          var f = e.target.files && e.target.files[0];
+          if (!f) return;
+          var reader = new FileReader();
+          reader.onload = function() {
+            var ta = document.getElementById('bulkFloorPasteInput');
+            if (ta) ta.value = String(reader.result || '');
+            runPreview();
+          };
+          reader.readAsText(f);
+        }
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!e.target || !e.target.closest) return;
+        if (e.target.closest('#bulkParsePreviewBtn')) {
+          runPreview();
+        } else if (e.target.closest('#bulkApplyAllFloorsBtn')) {
+          if (!pendingMatches.length) return;
+          pendingMatches.forEach(function(m) {
+            m.plan.minAgreed = m.newFloor;
+            m.app.minAgreed = m.newFloor;
+            if (m.newPrice !== m.oldPrice) m.plan.price = m.newPrice;
+          });
+          if (typeof updateDirtyIndicator === 'function') updateDirtyIndicator();
+          if (typeof populateCalcPresets === 'function') populateCalcPresets();
+          if (typeof renderCatalogMasterList === 'function') renderCatalogMasterList();
+          if (typeof showToast === 'function') {
+            showToast('🚀 ' + pendingMatches.length + ' paket berhasil di-update otomatis! Klik Publish ke Semua Web untuk menyimpan live.');
+          } else {
+            alert('✅ ' + pendingMatches.length + ' paket berhasil di-update otomatis ke Draft! Klik tombol Publish ke Semua Web di atas untuk menyimpan live.');
+          }
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
