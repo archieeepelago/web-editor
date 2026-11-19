@@ -62,6 +62,7 @@
       </div>
       <div class="flex flex-wrap items-center gap-2">
         <a href="/admin" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#4A2036] hover:bg-[#FFE0EC] transition">← Kembali ke Admin</a>
+        <button id="openEditorCheatSheetBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-[#4A2036] text-[#FFE066] hover:bg-[#6A2C4D] transition cursor-pointer shadow-sm">📖 Apa Saja yang Bisa Diedit?</button>
         <a href="/customer" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#6D3B53] hover:bg-[#FFE0EC] transition">Lihat Store ↗</a>
         <a href="/garansi" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#6D3B53] hover:bg-[#FFE0EC] transition">Lihat Garansi ↗</a>
         <button id="editorLogoutBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFE0EC] text-[#D83162] hover:bg-[#FCD2E3] transition">Keluar</button>
@@ -2019,5 +2020,87 @@
 })();
 
 </script>
+  <!-- MODAL PANDUAN: DAFTAR SEMUA YANG BISA DIEDIT DI WEB EDITOR -->
+  <div id="editorCheatSheetModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 bg-[#3A1228]/60 backdrop-blur-sm">
+    <div class="w-full max-w-2xl max-h-[88vh] overflow-y-auto bg-white border-2 border-[#F5B8CE] rounded-[28px] p-5 sm:p-6 shadow-2xl space-y-4">
+      <div class="flex items-start justify-between gap-2 border-b border-dashed border-[#F5B8CE] pb-3">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full bg-[#FFE0EC] text-[#D83162] text-[10px] font-black uppercase tracking-wider">📖 PANDUAN LENGKAP WEB EDITOR</span>
+          <h3 class="text-base sm:text-lg font-black text-[#4A2036] mt-1">Semua yang Bisa Kamu Edit dari Seluruh Web</h3>
+          <p class="text-xs text-[#6D3B53]">Klik tombol <strong>Buka →</strong> di tiap kartu untuk langsung lompat ke tab tersebut.</p>
+        </div>
+        <button id="closeEditorCheatSheetBtn" type="button" class="w-8 h-8 rounded-full bg-[#FFE4EE] hover:bg-[#FFD0E2] text-[#4A2036] font-black text-xs cursor-pointer shrink-0">✕</button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+        <div class="p-3.5 rounded-2xl bg-[#FFF6FA] border border-[#F5C6D8] space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-[#D83162]">🛍️ 1. Web Customer</span>
+            <button type="button" data-jump-tab="customer" class="px-2.5 py-0.5 rounded-lg bg-[#D83162] text-white text-[10px] font-black cursor-pointer">Buka →</button>
+          </div>
+          <ul class="text-[11px] font-semibold text-[#4A2036] space-y-0.5 list-disc pl-4">
+            <li>Tambah, hapus, &amp; edit penuh <strong>68+ Aplikasi</strong> (nama, emoji, kategori, status stok, semua plan, durasi, harga jual, modal FH, &amp; harga floor).</li>
+            <li>Edit <strong>T.O.S Umum Toko</strong> &amp; <strong>T.O.S Khusus Tiap Aplikasi</strong> terpisah.</li>
+            <li>Edit <strong>Semua Teks UI &amp; Maskot</strong>, <strong>Nomor WA Admin</strong>, &amp; <strong>Template WA Checkout</strong>.</li>
+          </ul>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-[#FFF6FA] border border-[#F5C6D8] space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-[#D83162]">🎫 2. Web Garansi</span>
+            <button type="button" data-jump-tab="garansi" class="px-2.5 py-0.5 rounded-lg bg-[#D83162] text-white text-[10px] font-black cursor-pointer">Buka →</button>
+          </div>
+          <ul class="text-[11px] font-semibold text-[#4A2036] space-y-0.5 list-disc pl-4">
+            <li>Edit judul &amp; subjudul halaman portal garansi.</li>
+            <li>Edit deskripsi 4 status stempel garansi (<strong>Belum Diklaim, Aktif, Terpakai, Hangus</strong>).</li>
+            <li>Edit label tombol Simpan PNG, tombol T.O.S, header struk, label pertama dicetak, serta kotak testimoni bawah.</li>
+          </ul>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-[#FFF6FA] border border-[#F5C6D8] space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-[#D83162]">⚙️ 3. Web Admin</span>
+            <button type="button" data-jump-tab="admin" class="px-2.5 py-0.5 rounded-lg bg-[#D83162] text-white text-[10px] font-black cursor-pointer">Buka →</button>
+          </div>
+          <ul class="text-[11px] font-semibold text-[#4A2036] space-y-0.5 list-disc pl-4">
+            <li>Edit <strong>Template Teks Kiriman / Serah Terima Akun (WA Admin)</strong> — langsung dipakai tombol <strong>💬 Copy WA</strong> di Admin!</li>
+            <li>Edit <strong>Direktori Supplier First Hand (FH)</strong> &amp; <strong>Default Modal FH</strong> per aplikasi.</li>
+            <li>Edit <strong>Judul UI Web Admin</strong> (Header, Pantau, Ekonomi, Wall of Love).</li>
+          </ul>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-[#FFF6FA] border border-[#F5C6D8] space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-[#D83162]">🪄 4–6. Alat Bantu Mimin</span>
+            <button type="button" data-jump-tab="calculator" class="px-2.5 py-0.5 rounded-lg bg-[#4A2036] text-[#FFE066] text-[10px] font-black cursor-pointer">Kalkulator →</button>
+          </div>
+          <ul class="text-[11px] font-semibold text-[#4A2036] space-y-0.5 list-disc pl-4">
+            <li><strong>Tab 4 — Riwayat Versi &amp; Rollback</strong>: Balik ke versi lama 1-klik.</li>
+            <li><strong>Tab 5 — Converter Teks Archie</strong>: Ubah teks biasa jadi format aesthetic ala Archie.</li>
+            <li><strong>Tab 6 — Kalkulator Harga 0% MDR</strong>: Hitung harga jual aman Anti-Siram 2026 &amp; langsung apply ke katalog.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-[11px] font-bold text-emerald-900">
+        💡 Setelah selesai mengedit, klik <strong>🚀 Publish ke Semua Web</strong> di pojok kanan atas supaya perubahan langsung live!
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var openBtn = document.getElementById('openEditorCheatSheetBtn');
+      var modal = document.getElementById('editorCheatSheetModal');
+      var closeBtn = document.getElementById('closeEditorCheatSheetBtn');
+      if (!openBtn || !modal) return;
+      var closeM = function() { modal.classList.add('hidden'); modal.classList.remove('flex'); };
+      openBtn.addEventListener('click', function() { modal.classList.remove('hidden'); modal.classList.add('flex'); });
+      if (closeBtn) closeBtn.addEventListener('click', closeM);
+      modal.addEventListener('click', function(e) { if (e.target === modal) closeM(); });
+      modal.querySelectorAll('[data-jump-tab]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          var t = b.getAttribute('data-jump-tab');
+          var tabBtn = document.querySelector('[data-main-tab="' + t + '"]');
+          if (tabBtn) tabBtn.click();
+          closeM();
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
