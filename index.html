@@ -33,7 +33,10 @@
       </div>
       <div>
         <label class="block text-xs font-bold uppercase tracking-wider text-[#6D3B53] mb-1.5">Kata Sandi</label>
-        <input id="editorLoginKey" type="password" required autocomplete="current-password" placeholder="••••••••" class="w-full px-4 py-3 rounded-2xl border-2 border-[#FCD2E3] bg-[#FFF5F8] text-[#4A2036] font-medium focus:outline-none focus:border-[#D83162]" />
+        <div class="relative">
+          <input id="editorLoginKey" type="password" required autocomplete="current-password" placeholder="••••••••" class="w-full px-4 py-3 pr-11 rounded-2xl border-2 border-[#FCD2E3] bg-[#FFF5F8] text-[#4A2036] font-medium focus:outline-none focus:border-[#D83162]" />
+          <button type="button" id="toggleEditorPwdBtn" title="Lihat/Sembunyikan Sandi" class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#D83162] cursor-pointer">👁️</button>
+        </div>
       </div>
       <div id="editorLoginErr" class="hidden text-xs font-semibold text-[#D83162] bg-[#FFE0EC] px-4 py-2.5 rounded-xl"></div>
       <button type="submit" id="editorLoginBtn" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white font-extrabold text-sm shadow-md hover:opacity-95 transition">
@@ -65,12 +68,14 @@
       </div>
     </div>
 
-    <!-- 4 Main Tabs -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
+    <!-- 6 Main Tabs (Wrapped so ALL tabs including Kalkulator Harga are always visible!) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex flex-wrap gap-2">
       <button data-main-tab="customer" class="cms-main-tab active px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🛍️ 1. Web Customer</button>
       <button data-main-tab="garansi" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🎫 2. Web Garansi</button>
       <button data-main-tab="admin" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">⚙️ 3. Web Admin</button>
       <button data-main-tab="history" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🕰️ 4. Riwayat Versi & Rollback</button>
+      <button data-main-tab="converter" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🪄 5. Converter Teks Archie</button>
+      <button data-main-tab="calculator" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🧮 6. Kalkulator Harga</button>
     </div>
   </header>
 
@@ -133,10 +138,10 @@
               <div>
                 <label class="block text-xs font-bold text-[#6D3B53] mb-1">Status Stok di Store</label>
                 <select id="editAppStock" class="w-full px-3.5 py-2.5 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-sm font-bold text-[#4A2036]">
-                  <option value="ready">✅ Ready (Tersedia)</option>
-                  <option value="low">⚠️ Menipis (Stok Terbatas)</option>
-                  <option value="out">❌ Habis (Sold Out)</option>
-                  <option value="hidden">🙈 Sembunyikan dari Katalog</option>
+                  <option value="READY">✅ Ready (Tersedia)</option>
+                  <option value="LOW">⚠️ Menipis (Stok Terbatas)</option>
+                  <option value="SOLDOUT">❌ Habis (Sold Out)</option>
+                  <option value="HIDDEN">🙈 Sembunyikan dari Katalog</option>
                 </select>
               </div>
               <div>
@@ -187,7 +192,7 @@
           <div class="flex items-center justify-between gap-2">
             <div>
               <h3 class="text-base font-extrabold text-[#4A2036]">📱 T.O.S Khusus Per Aplikasi</h3>
-              <p class="text-xs text-[#6D3B53]">Muncul berdampingan dengan T.O.S Store di pop-up aplikasi terkait.</p>
+              <p class="text-xs text-[#6D3B53]">Muncul terpisah khusus saat customer membuka T.O.S di aplikasi terkait (tidak dicampur dengan T.O.S Awal Toko).</p>
             </div>
             <button id="cmsAddAppTosBtn" class="px-3 py-1.5 rounded-xl bg-[#FFE0EC] text-[#D83162] text-xs font-extrabold">+ Tambah Poin</button>
           </div>
@@ -281,6 +286,15 @@
         </div>
       </div>
 
+      <!-- Editor Teks UI Web Admin -->
+      <div class="bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-4">
+        <div>
+          <h3 class="text-base font-extrabold text-[#4A2036]">✨ Editor Teks UI Web Admin</h3>
+          <p class="text-xs text-[#6D3B53]">Edit judul header, tab Pantau, tab Ekonomi, dan Wall of Love di Web Admin.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="cmsAdminUiFields"></div>
+      </div>
+
       <!-- Default FH Cost per App -->
       <div class="bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
@@ -303,6 +317,134 @@
         </div>
       </div>
       <div id="cmsHistoryList" class="space-y-3"></div>
+    </section>
+
+    <!-- TAB 5: CONVERTER TEKS ARCHIE -->
+    <section id="tabPanel_converter" class="cms-tab-panel hidden bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 sm:p-6 shadow-sm space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#FFE0EC]">
+        <div>
+          <h2 class="text-lg font-extrabold text-[#4A2036]">🪄 Converter Teks Khas Archie</h2>
+          <p class="text-xs text-[#6D3B53]">Ubah teks mentah (detail akun, respon kendala, follow-up) menjadi gaya bahasa hangat &amp; ramah khas Mimin Archie.</p>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-[#FFE0EC] text-[#D83162] text-[11px] font-extrabold">Siap Copas ke WA / X</span>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1.5">Pilih Gaya Pesan</label>
+            <select id="edConvToneSelect" class="w-full px-3.5 py-2.5 rounded-2xl border-2 border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036] focus:outline-none focus:border-[#D83162]">
+              <option value="handover">🌸 Serah Terima Akun (Handover)</option>
+              <option value="claim">🥺 Respon Klaim Garansi</option>
+              <option value="soft">🐰 Balasan Santai / Follow-up</option>
+              <option value="default">✨ Standar Khas Archie</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1.5">Teks Mentah</label>
+            <textarea id="edConvRawInput" rows="7" placeholder="Ketik atau tempel teks mentah di sini (misal: email akun, detail profil, info perbaikan, dsb)..." class="w-full px-4 py-3 rounded-2xl border-2 border-[#FCD2E3] bg-[#FFF5F8] text-xs font-medium text-[#4A2036] focus:outline-none focus:border-[#D83162]"></textarea>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button id="edConvRunBtn" type="button" class="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition cursor-pointer">✨ Konversi ke Gaya Archie</button>
+            <button id="edConvClearBtn" type="button" class="py-3 px-4 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] text-[#6D3B53] text-xs font-bold hover:bg-[#FFE0EC] transition cursor-pointer">Reset</button>
+          </div>
+        </div>
+        <div class="space-y-3 flex flex-col">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-[#6D3B53]">Hasil Siap Kirim</label>
+            <button id="edConvCopyBtn" type="button" class="px-3.5 py-1.5 rounded-xl bg-[#FFE0EC] hover:bg-[#FCD2E3] text-[#D83162] text-xs font-extrabold transition cursor-pointer">📋 Salin Hasil</button>
+          </div>
+          <textarea id="edConvOutput" rows="9" readonly placeholder="Hasil konversi akan muncul otomatis di sini..." class="flex-1 w-full px-4 py-3 rounded-2xl border-2 border-[#FCD2E3] bg-[#FFF8FA] text-xs font-semibold text-[#4A2036] leading-relaxed focus:outline-none"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: KALKULATOR HARGA OTOMATIS & ANTI-SIRAM 2026 -->
+    <section id="tabPanel_calculator" class="cms-tab-panel hidden bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 sm:p-6 shadow-sm space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#FFE0EC]">
+        <div>
+          <h2 class="text-lg font-extrabold text-[#4A2036]">🧮 Kalkulator Harga Otomatis &amp; Anti-Siram 2026</h2>
+          <p class="text-xs text-[#6D3B53]">Hitung harga jual aman yang tetap cuan bersih (ShopeePay QRIS <strong>0% MDR / bebas biaya admin</strong> + worst-case Gacha 5%) dan tidak melanggar Floor Kesepakatan 2026.</p>
+        </div>
+        <span id="calcStatusPill" class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold">✅ AMAN ANTI-SIRAM</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-6 space-y-4">
+          <div class="p-3.5 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] space-y-2">
+            <label class="block text-xs font-extrabold text-[#4A2036]">📦 Auto-Fill dari Katalog Aplikasi (Opsional)</label>
+            <select id="calcAppPreset" class="w-full px-3.5 py-2.5 rounded-xl border border-[#FCD2E3] bg-white text-xs font-bold text-[#4A2036] focus:outline-none focus:border-[#D83162]">
+              <option value="">— Input Manual Bebas —</option>
+            </select>
+            <p class="text-[11px] text-[#6D3B53]">Pilih aplikasi &amp; plan untuk langsung memuat Modal FH &amp; Floor 2026, lalu kamu bisa terapkan hasilnya ke draft dengan 1 klik.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-[#6D3B53] mb-1">Modal First Hand / FH (Rp)</label>
+              <input id="calcModalFh" type="number" min="0" step="500" value="11500" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#FCD2E3] bg-[#FFF5F8] text-sm font-extrabold text-[#4A2036] focus:outline-none focus:border-[#D83162]" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#6D3B53] mb-1">Floor Kesepakatan 2026 (Rp)</label>
+              <input id="calcFloor" type="number" min="0" step="500" value="16000" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#FCD2E3] bg-[#FFF5F8] text-sm font-extrabold text-[#4A2036] focus:outline-none focus:border-[#D83162]" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#6D3B53] mb-1">Target Profit Bersih / Order (Rp)</label>
+              <input id="calcTargetProfit" type="number" min="0" step="500" value="6000" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#FCD2E3] bg-[#FFF5F8] text-sm font-extrabold text-[#D83162] focus:outline-none focus:border-[#D83162]" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#6D3B53] mb-1">Uji Harga Jual Sendiri (Opsional, Rp)</label>
+              <input id="calcCustomPrice" type="number" min="0" step="500" placeholder="Kosongkan = pakai rekomendasi" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#FCD2E3] bg-white text-sm font-bold text-[#4A2036] focus:outline-none focus:border-[#D83162]" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#6D3B53] mb-1">Max Diskon Gacha (%)</label>
+              <input id="calcGachaPct" type="number" min="0" max="50" step="0.5" value="5" class="w-full px-3.5 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#6D3B53] mb-1">Potongan MDR QRIS (% • ShopeePay = 0%)</label>
+              <input id="calcQrisPct" type="number" min="0" max="10" step="0.1" value="0" class="w-full px-3.5 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 space-y-3.5">
+          <div class="p-5 rounded-3xl bg-gradient-to-br from-[#FFF5F8] to-[#FFE0EC]/70 border-2 border-[#FCD2E3] space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-[#6D3B53]">✨ Rekomendasi Harga Jual Aman</span>
+              <span class="text-[11px] font-bold text-[#D83162]">Dibulatkan ke Rp 500</span>
+            </div>
+            <div id="calcRecPrice" class="text-3xl sm:text-4xl font-black text-[#D83162] tracking-tight">Rp 19.000</div>
+            <div id="calcRecNote" class="text-xs font-semibold text-[#6D3B53]">Aman di atas Floor 2026 &amp; target profit terpenuhi walau kena Gacha max.</div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3.5 rounded-2xl bg-[#FFF8FA] border border-[#FCD2E3]">
+              <div class="text-[11px] font-bold text-[#6D3B53]">🎰 Harga Setelah Kena Gacha Max</div>
+              <div id="calcAfterGacha" class="text-lg font-extrabold text-[#4A2036] mt-0.5">Rp 18.050</div>
+              <div id="calcFloorCheck" class="text-[11px] font-bold text-emerald-700 mt-1">✅ +Rp 2.050 di atas Floor</div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-[#FFF8FA] border border-[#FCD2E3]">
+              <div class="text-[11px] font-bold text-[#6D3B53]">🛡️ Sisihan Cadangan Garansi (15%)</div>
+              <div id="calcGaransiReserve" class="text-lg font-extrabold text-[#4A2036] mt-0.5">Rp 1.020</div>
+              <div class="text-[11px] text-[#6D3B53] mt-1">Per transaksi normal (anti tekor klaim)</div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200">
+              <div class="text-[11px] font-bold text-emerald-800">💰 Profit Bersih Normal (0% Gacha)</div>
+              <div id="calcProfitNormal" class="text-lg font-extrabold text-emerald-700 mt-0.5">Rp 7.367</div>
+              <div id="calcMarginNormal" class="text-[11px] font-bold text-emerald-700 mt-0.5">Margin 38.8% (potong QRIS)</div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200">
+              <div class="text-[11px] font-bold text-amber-800">⚡ Profit Worst-Case (Gacha Max)</div>
+              <div id="calcProfitWorst" class="text-lg font-extrabold text-amber-700 mt-0.5">Rp 6.424</div>
+              <div id="calcMarginWorst" class="text-[11px] font-bold text-amber-700 mt-0.5">Margin 35.6% (potong QRIS)</div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button id="calcCopyBtn" type="button" class="flex-1 py-3 px-4 rounded-2xl bg-[#FFE0EC] hover:bg-[#FCD2E3] text-[#D83162] text-xs font-extrabold transition cursor-pointer">📋 Salin Harga Rekomendasi</button>
+            <button id="calcApplyToDraftBtn" type="button" class="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition cursor-pointer">🚀 Terapkan ke Plan di Draft</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -590,6 +732,13 @@
       isOnlineNow: true,
       gachaBannerText: "CIEE~ PUTER ATUH BIAR DISKON",
       tosBtnLabel: "📜 T.O.S & Garansi",
+      homeTosBtnLabel: "📜 Baca Terms of Service (T.O.S) & Aturan Garansi",
+      donationConfirmLabel: "💖 Donasi & Klaim Title \"Donatur\"!",
+      donationSkipLabel: "Skip dulu deh, langsung ke Spin 🎡 →",
+      requestQrisBtnLabel: "Minta QRIS Sekarang 🐰💳",
+      thanksTitle: "Thank you for purchasing at Archie’s!",
+      critiqueSubtitle: "kalau ada saran atau kritik, bisa disampaikan lewat kolom di bawah ini 💗",
+      feedbackSubmitLabel: "Kirim",
       waAdminNumber: "",
       waCheckoutBtnLabel: "📲 Konfirmasi Pembayaran ke WA Mimin Archie",
       waCheckoutTemplate: "Halo Mimin Archie! 🌸\nAku sudah checkout pesanan di Archie'pelago:\n• Kode Pesanan: {order_code}\n• Inisial: {customer_name}\n• Layanan: {product_name} ({plan_label})\n• Total Bayar: {total_price}\nIni bukti pembayaran / QRIS-nya yaa Mimin! 🐰✨"
@@ -750,8 +899,8 @@
   }
 
   function normalizeConfig(raw) {
-    const def = (window.ARCHIE_CMS_DEFAULTS && typeof window.ARCHIE_CMS_DEFAULTS === 'object')
-      ? deepClone(window.ARCHIE_CMS_DEFAULTS)
+    const def = (window.ARCHIE_DEFAULT_CMS && typeof window.ARCHIE_DEFAULT_CMS === 'object')
+      ? deepClone(window.ARCHIE_DEFAULT_CMS)
       : { catalog: [], storeTos: { title: "Syarat & Ketentuan Archie'pelago", points: [] }, customerUi: {}, garansiUi: {}, adminUi: {} };
     if (!raw || typeof raw !== 'object') return def;
     const merged = Object.assign({}, def, deepClone(raw));
@@ -827,13 +976,13 @@
     try {
       const { data, error } = await sb
         .from('store_cms_config')
-        .select('config, history, updated_at')
+        .select('config_json, version_history, updated_at')
         .eq('id', 'live')
         .maybeSingle();
-      if (!error && data && data.config) {
-        remote = data.config;
+      if (!error && data && data.config_json && Object.keys(data.config_json).length > 0) {
+        remote = data.config_json;
         updatedAt = data.updated_at;
-        historySnapshots = Array.isArray(data.history) ? data.history : [];
+        historySnapshots = Array.isArray(data.version_history) ? data.version_history : [];
       }
     } catch (e) {
       console.warn('CMS fetch fallback:', e);
@@ -841,7 +990,7 @@
 
     if (!remote) {
       try {
-        const localStr = localStorage.getItem('archie_live_cms_v1');
+        const localStr = localStorage.getItem('archie_live_cms_config');
         if (localStr) remote = JSON.parse(localStr);
       } catch (_) {}
     }
@@ -954,13 +1103,14 @@
     renderGaransiUiFields();
     renderAdminEditor();
     renderHistory();
+    if (typeof populateCalcPresets === 'function') populateCalcPresets();
   }
 
   function stockBadgeHtml(status) {
-    const s = status || 'ready';
-    if (s === 'low') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Menipis</span>';
-    if (s === 'out') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">Habis</span>';
-    if (s === 'hidden') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600">Tersembunyi</span>';
+    const s = String(status || 'READY').toUpperCase();
+    if (s === 'LOW') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Menipis</span>';
+    if (s === 'SOLDOUT' || s === 'OUT') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">Habis</span>';
+    if (s === 'HIDDEN') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600">Tersembunyi</span>';
     return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Ready</span>';
   }
 
@@ -972,21 +1122,24 @@
 
     const filtered = apps.filter((a) => {
       if (!q) return true;
-      return (a.name || '').toLowerCase().includes(q) || (a.category || '').toLowerCase().includes(q);
+      return (a.name || '').toLowerCase().includes(q) || (a.cat || a.category || '').toLowerCase().includes(q);
     });
 
     list.innerHTML = filtered.map((a) => {
       const active = a.id === selectedAppId;
+      const emoji = a.badge || a.emoji || '✨';
+      const cat = a.cat || a.category || 'lainnya';
+      const st = a.stockStatus || a.stock_status || 'READY';
       return `
         <button type="button" data-select-app="${escapeHtml(a.id)}" class="w-full text-left p-3 rounded-2xl border transition flex items-center justify-between gap-2 ${active ? 'bg-[#FFE0EC] border-[#D83162] shadow-sm' : 'bg-[#FFF5F8] border-[#FCD2E3] hover:bg-[#FFE0EC]/60'}">
           <div class="flex items-center gap-2.5 min-w-0">
-            <span class="text-xl shrink-0">${escapeHtml(a.emoji || '✨')}</span>
+            <span class="text-xl shrink-0">${escapeHtml(emoji)}</span>
             <div class="min-w-0">
               <div class="text-xs font-extrabold text-[#4A2036] truncate">${escapeHtml(a.name)}</div>
-              <div class="text-[11px] text-[#6D3B53] truncate">${escapeHtml(a.category || 'Lainnya')} · ${(a.plans || []).length} plan</div>
+              <div class="text-[11px] text-[#6D3B53] truncate">${escapeHtml(cat)} · ${(a.plans || []).length} paket</div>
             </div>
           </div>
-          <div class="shrink-0">${stockBadgeHtml(a.stock_status)}</div>
+          <div class="shrink-0">${stockBadgeHtml(st)}</div>
         </button>
       `;
     }).join('');
@@ -1010,16 +1163,17 @@
     $('cmsAppDetailEmpty').classList.add('hidden');
     $('cmsAppDetailEditor').classList.remove('hidden');
 
-    $('detailAppEmojiPreview').textContent = app.emoji || '✨';
+    const emoji = app.badge || app.emoji || '✨';
+    $('detailAppEmojiPreview').textContent = emoji;
     $('detailAppTitlePreview').textContent = app.name || 'Tanpa Nama';
     $('detailAppIdPreview').textContent = 'ID: ' + app.id;
 
     $('editAppName').value = app.name || '';
-    $('editAppEmoji').value = app.emoji || '';
-    $('editAppCategory').value = app.category || '';
-    $('editAppStock').value = app.stock_status || 'ready';
-    $('editAppBadge').value = app.badge || '';
-    $('editAppDesc').value = app.description || '';
+    $('editAppEmoji').value = emoji;
+    $('editAppCategory').value = app.cat || app.category || '';
+    $('editAppStock').value = String(app.stockStatus || app.stock_status || 'READY').toUpperCase();
+    $('editAppBadge').value = app.labelBadge || '';
+    $('editAppDesc').value = app.subtitle || app.description || '';
 
     renderPlansEditor(app);
   }
@@ -1030,94 +1184,64 @@
     const floor = getFloorForApp(app.name);
 
     if (plans.length === 0) {
-      cont.innerHTML = '<div class="p-4 rounded-2xl bg-[#FFF5F8] border border-dashed border-[#FCD2E3] text-xs text-[#6D3B53] text-center">Belum ada plan. Klik "+ Tambah Plan" untuk menambahkan paket harga.</div>';
+      cont.innerHTML = '<div class="p-4 rounded-2xl bg-[#FFF5F8] border border-dashed border-[#FCD2E3] text-xs text-[#6D3B53] text-center">Belum ada paket harga. Klik "+ Tambah Plan" untuk menambahkan paket & durasi.</div>';
       return;
     }
 
     cont.innerHTML = plans.map((pl, pIdx) => {
-      const durs = Array.isArray(pl.durations) ? pl.durations : (pl.durations = []);
+      const priceNum = Number(pl.price || 0);
+      const minNum = Number(pl.minAgreed || 0);
+      const fhNum = Number(pl.fhCost || 0);
+      const belowFloor = (minNum > 0 && priceNum > 0 && priceNum < minNum) || (floor > 0 && priceNum > 0 && priceNum < floor && String(pl.label || '').toLowerCase().includes('1 bulan'));
       return `
-        <div class="p-4 rounded-2xl bg-[#FFF5F8] border-2 border-[#FCD2E3] space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <input data-plan-name="${pIdx}" type="text" value="${escapeHtml(pl.name || '')}" placeholder="Nama Plan (misal: Private / Sharing)" class="px-3 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs font-extrabold text-[#4A2036]" />
-              <input data-plan-note="${pIdx}" type="text" value="${escapeHtml(pl.note || '')}" placeholder="Catatan singkat plan (opsional)" class="px-3 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs text-[#6D3B53]" />
+        <div class="p-3.5 rounded-2xl bg-[#FFF5F8] border-2 ${belowFloor ? 'border-amber-400 bg-amber-50/40' : 'border-[#FCD2E3]'} space-y-2.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <input data-plan-label="${pIdx}" type="text" value="${escapeHtml(pl.label || pl.name || '')}" placeholder="Nama Plan & Durasi (misal: Sharing 1P1U • 1 Bulan)" class="flex-1 min-w-[180px] px-3 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs font-extrabold text-[#4A2036]" />
+            <div class="flex items-center gap-1">
+              <span class="text-[11px] font-bold text-[#6D3B53]">Jual Rp</span>
+              <input data-plan-price="${pIdx}" type="number" min="0" step="500" value="${priceNum}" class="w-24 px-2.5 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs font-extrabold text-[#D83162]" />
             </div>
-            <div class="flex items-center gap-1.5">
-              <button type="button" data-add-dur="${pIdx}" class="px-2.5 py-1.5 rounded-xl bg-white border border-[#FCD2E3] text-[#D83162] text-[11px] font-extrabold hover:bg-[#FFE0EC]">+ Durasi</button>
-              <button type="button" data-del-plan="${pIdx}" class="px-2.5 py-1.5 rounded-xl bg-[#FFE0EC] text-[#D83162] text-[11px] font-extrabold">Hapus</button>
+            <div class="flex items-center gap-1">
+              <span class="text-[11px] font-bold text-[#6D3B53]">Modal Rp</span>
+              <input data-plan-fh="${pIdx}" type="number" min="0" step="500" value="${fhNum}" class="w-24 px-2.5 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs font-bold text-[#4A2036]" />
             </div>
+            <button type="button" data-del-plan="${pIdx}" class="px-2.5 py-2 rounded-xl bg-[#FFE0EC] text-[#D83162] text-xs font-extrabold cursor-pointer">✕</button>
           </div>
-
-          <div class="space-y-2">
-            ${durs.map((d, dIdx) => {
-              const priceNum = Number(d.price || 0);
-              const belowFloor = floor > 0 && priceNum > 0 && priceNum < floor && String(d.label || '').toLowerCase().includes('1 bulan');
-              return `
-                <div class="flex flex-wrap items-center gap-2 bg-white p-2.5 rounded-xl border ${belowFloor ? 'border-amber-400 bg-amber-50/40' : 'border-[#FCD2E3]'}">
-                  <input data-dur-label="${pIdx}:${dIdx}" type="text" value="${escapeHtml(d.label || '')}" placeholder="Durasi (misal: 1 Bulan)" class="flex-1 min-w-[120px] px-2.5 py-1.5 rounded-lg border border-[#FCD2E3] text-xs font-bold text-[#4A2036]" />
-                  <div class="flex items-center gap-1">
-                    <span class="text-xs font-bold text-[#6D3B53]">Rp</span>
-                    <input data-dur-price="${pIdx}:${dIdx}" type="number" min="0" step="500" value="${priceNum}" class="w-28 px-2.5 py-1.5 rounded-lg border border-[#FCD2E3] text-xs font-extrabold text-[#D83162]" />
-                  </div>
-                  <button type="button" data-del-dur="${pIdx}:${dIdx}" class="px-2 py-1 rounded-lg text-xs font-bold text-[#D83162] hover:bg-[#FFE0EC]">✕</button>
-                  ${belowFloor ? `<div class="w-full text-[11px] font-bold text-amber-700">⚠️ Di bawah floor kesepakatan 2026 (${formatRp(floor)}). Pastikan memang disengaja.</div>` : ''}
-                </div>
-              `;
-            }).join('')}
-          </div>
+          <input data-plan-tip="${pIdx}" type="text" value="${escapeHtml(pl.tip || pl.note || '')}" placeholder="Keterangan singkat paket (muncul di Web Customer)" class="w-full px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-[11px] text-[#6D3B53]" />
+          ${belowFloor ? `<div class="text-[11px] font-bold text-amber-700">⚠️ Harga jual di bawah floor kesepakatan (${formatRp(minNum || floor)}). Pastikan memang disengaja.</div>` : ''}
         </div>
       `;
     }).join('');
 
-    cont.querySelectorAll('[data-plan-name]').forEach((el) => {
+    cont.querySelectorAll('[data-plan-label]').forEach((el) => {
       el.addEventListener('input', () => {
-        app.plans[Number(el.getAttribute('data-plan-name'))].name = el.value;
+        app.plans[Number(el.getAttribute('data-plan-label'))].label = el.value;
         updateDirtyIndicator();
       });
     });
-    cont.querySelectorAll('[data-plan-note]').forEach((el) => {
+    cont.querySelectorAll('[data-plan-price]').forEach((el) => {
       el.addEventListener('input', () => {
-        app.plans[Number(el.getAttribute('data-plan-note'))].note = el.value;
+        app.plans[Number(el.getAttribute('data-plan-price'))].price = Number(el.value || 0);
         updateDirtyIndicator();
       });
     });
-    cont.querySelectorAll('[data-add-dur]').forEach((el) => {
-      el.addEventListener('click', () => {
-        const idx = Number(el.getAttribute('data-add-dur'));
-        app.plans[idx].durations.push({ label: '1 Bulan', price: 25000 });
-        renderPlansEditor(app);
+    cont.querySelectorAll('[data-plan-fh]').forEach((el) => {
+      el.addEventListener('input', () => {
+        app.plans[Number(el.getAttribute('data-plan-fh'))].fhCost = Number(el.value || 0);
+        updateDirtyIndicator();
+      });
+    });
+    cont.querySelectorAll('[data-plan-tip]').forEach((el) => {
+      el.addEventListener('input', () => {
+        app.plans[Number(el.getAttribute('data-plan-tip'))].tip = el.value;
         updateDirtyIndicator();
       });
     });
     cont.querySelectorAll('[data-del-plan]').forEach((el) => {
       el.addEventListener('click', () => {
-        const idx = Number(el.getAttribute('data-del-plan'));
-        app.plans.splice(idx, 1);
+        app.plans.splice(Number(el.getAttribute('data-del-plan')), 1);
         renderPlansEditor(app);
         renderCatalogList();
-        updateDirtyIndicator();
-      });
-    });
-    cont.querySelectorAll('[data-dur-label]').forEach((el) => {
-      el.addEventListener('input', () => {
-        const parts = el.getAttribute('data-dur-label').split(':').map(Number);
-        app.plans[parts[0]].durations[parts[1]].label = el.value;
-        updateDirtyIndicator();
-      });
-    });
-    cont.querySelectorAll('[data-dur-price]').forEach((el) => {
-      el.addEventListener('input', () => {
-        const parts = el.getAttribute('data-dur-price').split(':').map(Number);
-        app.plans[parts[0]].durations[parts[1]].price = Number(el.value || 0);
-        updateDirtyIndicator();
-      });
-    });
-    cont.querySelectorAll('[data-del-dur]').forEach((el) => {
-      el.addEventListener('click', () => {
-        const parts = el.getAttribute('data-del-dur').split(':').map(Number);
-        app.plans[parts[0]].durations.splice(parts[1], 1);
-        renderPlansEditor(app);
         updateDirtyIndicator();
       });
     });
@@ -1127,17 +1251,36 @@
     $('editStoreTosTitle').value = draftConfig.storeTos.title || '';
     const storeList = $('cmsStoreTosList');
     const pts = Array.isArray(draftConfig.storeTos.points) ? draftConfig.storeTos.points : (draftConfig.storeTos.points = []);
-    storeList.innerHTML = pts.map((pt, idx) => `
-      <div class="flex items-start gap-2">
-        <span class="mt-2 text-xs font-extrabold text-[#D83162]">${idx + 1}.</span>
-        <textarea data-store-tos-pt="${idx}" rows="2" class="flex-1 px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs text-[#4A2036]">${escapeHtml(pt)}</textarea>
-        <button type="button" data-del-store-tos="${idx}" class="mt-1 px-2.5 py-1.5 rounded-xl bg-[#FFE0EC] text-[#D83162] text-xs font-bold">✕</button>
-      </div>
-    `).join('');
+    storeList.innerHTML = pts.map((pt, idx) => {
+      const obj = (typeof pt === 'object' && pt !== null) ? pt : { icon: '🌸', title: 'Aturan ' + (idx + 1), desc: String(pt || '') };
+      pts[idx] = obj;
+      return `
+        <div class="p-3 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] space-y-2">
+          <div class="flex items-center gap-2">
+            <input data-store-tos-icon="${idx}" type="text" value="${escapeHtml(obj.icon || '🌸')}" class="w-11 px-2 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-center text-xs" />
+            <input data-store-tos-title="${idx}" type="text" value="${escapeHtml(obj.title || '')}" placeholder="Judul Poin T.O.S" class="flex-1 px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-xs font-extrabold text-[#4A2036]" />
+            <button type="button" data-del-store-tos="${idx}" class="px-2.5 py-1.5 rounded-xl bg-[#FFE0EC] text-[#D83162] text-xs font-bold cursor-pointer">✕</button>
+          </div>
+          <textarea data-store-tos-desc="${idx}" rows="2" placeholder="Isi penjelasan aturan..." class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs text-[#4A2036]">${escapeHtml(obj.desc || '')}</textarea>
+        </div>
+      `;
+    }).join('');
 
-    storeList.querySelectorAll('[data-store-tos-pt]').forEach((el) => {
+    storeList.querySelectorAll('[data-store-tos-icon]').forEach((el) => {
       el.addEventListener('input', () => {
-        draftConfig.storeTos.points[Number(el.getAttribute('data-store-tos-pt'))] = el.value;
+        draftConfig.storeTos.points[Number(el.getAttribute('data-store-tos-icon'))].icon = el.value;
+        updateDirtyIndicator();
+      });
+    });
+    storeList.querySelectorAll('[data-store-tos-title]').forEach((el) => {
+      el.addEventListener('input', () => {
+        draftConfig.storeTos.points[Number(el.getAttribute('data-store-tos-title'))].title = el.value;
+        updateDirtyIndicator();
+      });
+    });
+    storeList.querySelectorAll('[data-store-tos-desc]').forEach((el) => {
+      el.addEventListener('input', () => {
+        draftConfig.storeTos.points[Number(el.getAttribute('data-store-tos-desc'))].desc = el.value;
         updateDirtyIndicator();
       });
     });
@@ -1151,7 +1294,7 @@
 
     const sel = $('cmsTosAppSelector');
     const prevVal = sel.value || (draftConfig.catalog[0] ? draftConfig.catalog[0].id : '');
-    sel.innerHTML = (draftConfig.catalog || []).map((a) => `<option value="${escapeHtml(a.id)}">${escapeHtml((a.emoji || '') + ' ' + a.name)}</option>`).join('');
+    sel.innerHTML = (draftConfig.catalog || []).map((a) => `<option value="${escapeHtml(a.id)}">${escapeHtml((a.badge || a.emoji || '') + ' ' + a.name)}</option>`).join('');
     if (prevVal) sel.value = prevVal;
     renderPerAppTosList();
   }
@@ -1164,28 +1307,28 @@
       cont.innerHTML = '<p class="text-xs text-[#6D3B53]">Pilih aplikasi terlebih dahulu.</p>';
       return;
     }
-    if (!Array.isArray(app.tos)) app.tos = [];
-    if (app.tos.length === 0) {
+    if (!Array.isArray(app.tncPoints)) app.tncPoints = Array.isArray(app.tos) ? app.tos : [];
+    if (app.tncPoints.length === 0) {
       cont.innerHTML = '<div class="p-4 rounded-2xl bg-[#FFF5F8] border border-dashed border-[#FCD2E3] text-xs text-[#6D3B53] text-center">Belum ada poin T.O.S khusus untuk aplikasi ini. Klik "+ Tambah Poin".</div>';
       return;
     }
-    cont.innerHTML = app.tos.map((pt, idx) => `
+    cont.innerHTML = app.tncPoints.map((pt, idx) => `
       <div class="flex items-start gap-2">
         <span class="mt-2 text-xs font-extrabold text-[#D83162]">${idx + 1}.</span>
         <textarea data-app-tos-pt="${idx}" rows="2" class="flex-1 px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs text-[#4A2036]">${escapeHtml(pt)}</textarea>
-        <button type="button" data-del-app-tos="${idx}" class="mt-1 px-2.5 py-1.5 rounded-xl bg-[#FFE0EC] text-[#D83162] text-xs font-bold">✕</button>
+        <button type="button" data-del-app-tos="${idx}" class="mt-1 px-2.5 py-1.5 rounded-xl bg-[#FFE0EC] text-[#D83162] text-xs font-bold cursor-pointer">✕</button>
       </div>
     `).join('');
 
     cont.querySelectorAll('[data-app-tos-pt]').forEach((el) => {
       el.addEventListener('input', () => {
-        app.tos[Number(el.getAttribute('data-app-tos-pt'))] = el.value;
+        app.tncPoints[Number(el.getAttribute('data-app-tos-pt'))] = el.value;
         updateDirtyIndicator();
       });
     });
     cont.querySelectorAll('[data-del-app-tos]').forEach((el) => {
       el.addEventListener('click', () => {
-        app.tos.splice(Number(el.getAttribute('data-del-app-tos')), 1);
+        app.tncPoints.splice(Number(el.getAttribute('data-del-app-tos')), 1);
         renderPerAppTosList();
         updateDirtyIndicator();
       });
@@ -1193,19 +1336,30 @@
   }
 
   const CUSTOMER_UI_META = [
-    { key: 'storeName', label: 'Nama Store' },
-    { key: 'tagline', label: 'Tagline Hero' },
-    { key: 'heroSubtitle', label: 'Subjudul Hero', area: true },
-    { key: 'announcement', label: 'Teks Pengumuman / Running Banner' },
-    { key: 'storeOpenStatus', label: 'Status Toko (open / closed)' },
-    { key: 'closedNotice', label: 'Pesan Saat Toko Tutup', area: true },
-    { key: 'searchPlaceholder', label: 'Placeholder Kolom Pencarian' },
-    { key: 'gachaTitle', label: 'Judul Banner Gacha Diskon' },
-    { key: 'gachaSubtitle', label: 'Deskripsi Gacha Diskon (Tanpa Minimum Belanja)' },
-    { key: 'sparxieBubble', label: 'Bubble Chat Maskot Sparxie', area: true },
-    { key: 'secretMenuTitle', label: 'Judul Secret Menu Sparxie' },
-    { key: 'secretMenuSubtitle', label: 'Deskripsi Secret Menu Sparxie', area: true },
-    { key: 'footerNote', label: 'Catatan Footer Store', area: true }
+    { key: 'homeTitle', label: 'Judul Halaman Awal (Home Title)' },
+    { key: 'startBtnText', label: 'Teks Tombol Mulai Belanja' },
+    { key: 'homeDesc', label: 'Deskripsi Halaman Awal', area: true },
+    { key: 'homeQuote', label: 'Quote Maskot di Halaman Awal' },
+    { key: 'homeTosBtnLabel', label: 'Label Tombol T.O.S di Halaman Awal' },
+    { key: 'tosBtnLabel', label: 'Label Tombol T.O.S di Header Atas' },
+    { key: 'sparxieCatalogQuote', label: 'Bubble Chat Maskot Sparxie di Katalog', area: true },
+    { key: 'secretBannerText', label: 'Teks Banner Secret Menu' },
+    { key: 'gachaBannerText', label: 'Teks Banner Gacha Diskon' },
+    { key: 'workStatusOnline', label: 'Status Jam Kerja (Saat Online)' },
+    { key: 'workStatusOffline', label: 'Status Jam Kerja (Saat Istirahat)' },
+    { key: 'donationConfirmLabel', label: 'Label Tombol Konfirmasi Donasi' },
+    { key: 'donationSkipLabel', label: 'Label Tombol Skip Donasi' },
+    { key: 'requestQrisBtnLabel', label: 'Label Tombol Minta QRIS' },
+    { key: 'thanksTitle', label: 'Judul Halaman Terima Kasih & Testimoni' },
+    { key: 'critiqueSubtitle', label: 'Subjudul Kotak Kritik & Saran Customer', area: true },
+    { key: 'feedbackSubmitLabel', label: 'Label Tombol Kirim Testimoni Customer' },
+    { key: 'waCheckoutBtnLabel', label: 'Label Tombol Konfirmasi WA di Akhir Checkout' },
+    { key: 'homeTosBtnLabel', label: 'Label Tombol T.O.S Halaman Awal' },
+    { key: 'catalogSearchPlaceholder', label: 'Placeholder Kotak Cari Aplikasi' },
+    { key: 'waGateBannerText', label: 'Teks Instruksi Konfirmasi WA Sebelum Testimoni', area: true },
+    { key: 'testimonyLockedTitle', label: 'Judul Kotak Testimoni Saat Terkunci' },
+    { key: 'testimonyLockedDesc', label: 'Deskripsi Kotak Testimoni Saat Terkunci', area: true },
+    { key: 'feedbackPlaceholder', label: 'Placeholder Input Kolom Testimoni Customer' }
   ];
 
   function renderCustomerUiFields() {
@@ -1232,39 +1386,41 @@
   }
 
   function renderWaEditor() {
-    $('editWaNumber').value = draftConfig.customerUi.waNumber || '';
+    $('editWaNumber').value = draftConfig.customerUi.waAdminNumber || draftConfig.customerUi.waNumber || '';
     $('editAdminDisplayName').value = draftConfig.customerUi.adminDisplayName || 'Mimin Archie';
-    $('editWaTemplate').value = draftConfig.customerUi.checkoutWaTemplate || '';
+    $('editWaTemplate').value = draftConfig.customerUi.waCheckoutTemplate || draftConfig.customerUi.checkoutWaTemplate || '';
     updateWaPreview();
   }
 
   function updateWaPreview() {
     const tpl = $('editWaTemplate').value || '';
     const sample = tpl
-      .replace(/\{order_code\}/g, 'ARC-84921')
-      .replace(/\{product_name\}/g, 'Netflix Premium')
-      .replace(/\{plan_label\}/g, '1P1U Private')
+      .replace(/\{order_code\}/g, 'ARC-0001')
+      .replace(/\{customer_name\}/g, 'Alya')
+      .replace(/\{product_name\}/g, 'NETFLIX PREMIUM UHD 4K')
+      .replace(/\{plan_label\}/g, 'Sharing 1P1U • 1 Bulan')
       .replace(/\{duration_label\}/g, '1 Bulan')
-      .replace(/\{total_price\}/g, 'Rp 34.000')
-      .replace(/\{discount_info\}/g, 'Diskon Gacha 3% (-Rp 1.050)');
+      .replace(/\{total_price\}/g, 'Rp 28.000')
+      .replace(/\{discount_info\}/g, 'Diskon Gacha 3% (-Rp 840)');
     $('waTemplatePreview').textContent = sample || '(Template masih kosong)';
   }
 
   const GARANSI_UI_META = [
     { key: 'portalTitle', label: 'Judul Portal Garansi (Halaman 1)' },
-    { key: 'portalSubtitle', label: 'Subjudul Halaman 1', area: true },
-    { key: 'codePlaceholder', label: 'Placeholder Input Kode Order (ARC-XXXXX)' },
-    { key: 'pinPlaceholder', label: 'Placeholder Input PIN' },
-    { key: 'submitButton', label: 'Label Tombol Cek Garansi' },
-    { key: 'notFoundError', label: 'Pesan Error Kode / PIN Tidak Cocok' },
-    { key: 'stampActiveDesc', label: 'Deskripsi Stempel: Garansi Aktif', area: true },
-    { key: 'stampClaimDesc', label: 'Deskripsi Stempel: Klaim Diproses', area: true },
-    { key: 'stampExpiredDesc', label: 'Deskripsi Stempel: Masa Garansi Berakhir', area: true },
-    { key: 'savePngButton', label: 'Label Tombol Simpan Kartu PNG' },
-    { key: 'claimButton', label: 'Label Tombol Klaim Garansi via WA' },
-    { key: 'bottomBoxTitle', label: 'Judul Kotak Tiket Bawah (Surprise & Feedback)' },
-    { key: 'feedbackPrompt', label: 'Ajakan Isi Feedback Customer', area: true },
-    { key: 'feedbackSuccess', label: 'Pesan Sukses Setelah Kirim Feedback' }
+    { key: 'checkBtnText', label: 'Label Tombol Buka Tiket Garansi' },
+    { key: 'portalSub', label: 'Subjudul Halaman 1 Portal Garansi', area: true },
+    { key: 'stampUnclaimedDesc', label: 'Deskripsi Stempel: Belum Diklaim (⚪)', area: true },
+    { key: 'stampClaimedDesc', label: 'Deskripsi Stempel: Garansi Aktif (🟢)', area: true },
+    { key: 'stampUsedDesc', label: 'Deskripsi Stempel: Sudah Digunakan (🔴)', area: true },
+    { key: 'stampVoidDesc', label: 'Deskripsi Stempel: Hangus (🚫)', area: true },
+    { key: 'saveBtnText', label: 'Label Tombol Simpan Gambar Struk PNG' },
+    { key: 'bottomBoxTitle', label: 'Judul Kotak Pesan Mimin (Bawah)' },
+    { key: 'bottomFeedbackTitle', label: 'Judul Kotak Saran, Kritik & Testimoni' },
+    { key: 'bottomFeedbackPlaceholder', label: 'Placeholder Input Saran & Kritik', area: true },
+    { key: 'bottomFeedbackBtnText', label: 'Label Tombol Kirim Saran & Kritik' },
+    { key: 'tosBtnLabel', label: 'Label Tombol T.O.S Toko & Aplikasi' },
+    { key: 'receiptHeaderTitle', label: 'Judul Header Struk Garansi' },
+    { key: 'firstPrintedLabel', label: 'Label Tanggal Pertama Dicetak' }
   ];
 
   function renderGaransiUiFields() {
@@ -1290,7 +1446,38 @@
     });
   }
 
+  const ADMIN_UI_META = [
+    { key: 'adminHeaderTitle', label: 'Judul Utama Header Web Admin' },
+    { key: 'adminHeaderSubtitle', label: 'Subjudul Header Web Admin' },
+    { key: 'pantauTitle', label: 'Judul Panel Pantau Arc & Garansi' },
+    { key: 'ekonomiTitle', label: 'Judul Panel Ekonomi & Celengan' },
+    { key: 'wallOfLoveTitle', label: 'Judul Panel Wall of Love' },
+    { key: 'wallOfLoveSubtitle', label: 'Subjudul Panel Wall of Love' }
+  ];
+
+  function renderAdminUiFields() {
+    const cont = $('cmsAdminUiFields');
+    if (!cont) return;
+    cont.innerHTML = ADMIN_UI_META.map((m) => {
+      const val = (draftConfig.adminUi && draftConfig.adminUi[m.key] != null) ? draftConfig.adminUi[m.key] : '';
+      return `
+        <div>
+          <label class="block text-xs font-bold text-[#6D3B53] mb-1">${escapeHtml(m.label)}</label>
+          <input data-adm-ui="${m.key}" type="text" value="${escapeHtml(val)}" placeholder="Kosongkan = pakai teks default" class="w-full px-3.5 py-2.5 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-sm font-medium text-[#4A2036]" />
+        </div>
+      `;
+    }).join('');
+    cont.querySelectorAll('[data-adm-ui]').forEach((el) => {
+      el.addEventListener('input', () => {
+        if (!draftConfig.adminUi) draftConfig.adminUi = {};
+        draftConfig.adminUi[el.getAttribute('data-adm-ui')] = el.value;
+        updateDirtyIndicator();
+      });
+    });
+  }
+
   function renderAdminEditor() {
+    renderAdminUiFields();
     const fhCont = $('cmsFhList');
     const fhs = draftConfig.adminUi.fhDirectory || [];
     if (fhs.length === 0) {
@@ -1300,7 +1487,7 @@
         <div class="p-3.5 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] space-y-2">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <input data-fh-field="${idx}:name" type="text" value="${escapeHtml(fh.name || '')}" placeholder="Nama Supplier FH" class="px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-xs font-bold text-[#4A2036]" />
-            <input data-fh-field="${idx}:contact" type="text" value="${escapeHtml(fh.contact || '')}" placeholder="Kontak WA / Telegram" class="px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-xs text-[#4A2036]" />
+            <input data-fh-field="${idx}:contact" type="text" value="${escapeHtml(fh.contact || '')}" placeholder="Kontak WA (628xxx)" class="px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-xs text-[#4A2036]" />
             <input data-fh-field="${idx}:specialty" type="text" value="${escapeHtml(fh.specialty || '')}" placeholder="Spesialisasi App (misal: Netflix, Spotify)" class="px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-xs text-[#6D3B53]" />
             <div class="flex items-center gap-2">
               <input data-fh-field="${idx}:note" type="text" value="${escapeHtml(fh.note || '')}" placeholder="Catatan SLA / Jam Aktif" class="flex-1 px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-xs text-[#6D3B53]" />
@@ -1326,7 +1513,7 @@
       });
     }
 
-    $('editAdminHandoverTpl').value = draftConfig.adminUi.handoverWaTemplate || '';
+    $('editAdminHandoverTpl').value = draftConfig.adminUi.waHandoverTemplate || draftConfig.adminUi.handoverWaTemplate || '';
     renderCostGrid();
   }
 
@@ -1335,11 +1522,13 @@
     const grid = $('cmsCostGrid');
     const apps = (draftConfig.catalog || []).filter((a) => !q || (a.name || '').toLowerCase().includes(q));
     grid.innerHTML = apps.map((a) => {
-      const cost = draftConfig.adminUi.defaultCosts[a.id] == null ? 0 : draftConfig.adminUi.defaultCosts[a.id];
+      const cost = (draftConfig.adminUi.defaultCosts && draftConfig.adminUi.defaultCosts[a.id] != null)
+        ? draftConfig.adminUi.defaultCosts[a.id]
+        : (a.fhCost || 0);
       return `
         <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3]">
           <div class="min-w-0">
-            <div class="text-xs font-extrabold text-[#4A2036] truncate">${escapeHtml((a.emoji || '') + ' ' + a.name)}</div>
+            <div class="text-xs font-extrabold text-[#4A2036] truncate">${escapeHtml((a.badge || a.emoji || '') + ' ' + a.name)}</div>
           </div>
           <div class="flex items-center gap-1 shrink-0">
             <span class="text-[11px] font-bold text-[#6D3B53]">Rp</span>
@@ -1351,7 +1540,11 @@
 
     grid.querySelectorAll('[data-app-cost]').forEach((el) => {
       el.addEventListener('input', () => {
-        draftConfig.adminUi.defaultCosts[el.getAttribute('data-app-cost')] = Number(el.value || 0);
+        const id = el.getAttribute('data-app-cost');
+        const val = Number(el.value || 0);
+        draftConfig.adminUi.defaultCosts[id] = val;
+        const app = (draftConfig.catalog || []).find(a => a.id === id);
+        if (app) app.fhCost = val;
         updateDirtyIndicator();
       });
     });
@@ -1426,14 +1619,19 @@
       const id = 'app_' + Date.now().toString(36);
       const newApp = {
         id: id,
-        name: 'Aplikasi Baru',
-        emoji: '✨',
-        category: 'Streaming',
-        stock_status: 'ready',
-        badge: '',
-        description: 'Deskripsi singkat aplikasi.',
-        tos: ['Garansi full sesuai durasi pembelian.'],
-        plans: [{ name: 'Sharing', note: '', durations: [{ label: '1 Bulan', price: 25000 }] }]
+        name: 'APLIKASI BARU',
+        badge: '✨',
+        labelBadge: 'Baru',
+        cat: 'streaming',
+        subCat: 'streaming',
+        stockStatus: 'READY',
+        subtitle: 'Deskripsi singkat aplikasi.',
+        minAgreed: 15000,
+        idealBase: 20000,
+        fhCost: 10000,
+        fhName: 'FH Utama',
+        tncPoints: ['Wajib gunakan di 1 perangkat sesuai profil & dilarang mengubah pengaturan akun.'],
+        plans: [{ label: 'Sharing • 1 Bulan', price: 20000, minAgreed: 15000, fhCost: 10000, tip: 'Paket siap pakai dengan garansi penuh.' }]
       };
       draftConfig.catalog.unshift(newApp);
       selectedAppId = id;
@@ -1458,23 +1656,23 @@
         if (!app) return;
         app[prop] = $(elId).value;
         if (prop === 'name') $('detailAppTitlePreview').textContent = app.name || 'Tanpa Nama';
-        if (prop === 'emoji') $('detailAppEmojiPreview').textContent = app.emoji || '✨';
+        if (prop === 'badge') $('detailAppEmojiPreview').textContent = app.badge || '✨';
         if (rerenderList) renderCatalogList();
         updateDirtyIndicator();
       });
     };
     bindAppField('editAppName', 'name', true);
-    bindAppField('editAppEmoji', 'emoji', true);
-    bindAppField('editAppCategory', 'category', true);
-    bindAppField('editAppStock', 'stock_status', true);
-    bindAppField('editAppBadge', 'badge', false);
-    bindAppField('editAppDesc', 'description', false);
+    bindAppField('editAppEmoji', 'badge', true);
+    bindAppField('editAppCategory', 'cat', true);
+    bindAppField('editAppStock', 'stockStatus', true);
+    bindAppField('editAppBadge', 'labelBadge', false);
+    bindAppField('editAppDesc', 'subtitle', false);
 
     $('cmsAddPlanBtn').addEventListener('click', () => {
       const app = draftConfig.catalog.find((a) => a.id === selectedAppId);
       if (!app) return;
       if (!Array.isArray(app.plans)) app.plans = [];
-      app.plans.push({ name: 'Paket Baru', note: '', durations: [{ label: '1 Bulan', price: 25000 }] });
+      app.plans.push({ label: 'Paket Baru • 1 Bulan', price: 25000, minAgreed: 20000, fhCost: 12000, tip: '' });
       renderPlansEditor(app);
       renderCatalogList();
       updateDirtyIndicator();
@@ -1485,7 +1683,7 @@
       updateDirtyIndicator();
     });
     $('cmsAddStoreTosBtn').addEventListener('click', () => {
-      draftConfig.storeTos.points.push('Poin aturan baru...');
+      draftConfig.storeTos.points.push({ icon: '🌸', title: 'Aturan Baru', desc: 'Tulis penjelasan aturan toko di sini...' });
       renderTosEditor();
       updateDirtyIndicator();
     });
@@ -1493,14 +1691,16 @@
     $('cmsAddAppTosBtn').addEventListener('click', () => {
       const app = draftConfig.catalog.find((a) => a.id === $('cmsTosAppSelector').value);
       if (!app) return;
-      if (!Array.isArray(app.tos)) app.tos = [];
-      app.tos.push('Aturan khusus aplikasi...');
+      if (!Array.isArray(app.tncPoints)) app.tncPoints = [];
+      app.tncPoints.push('Aturan khusus aplikasi...');
       renderPerAppTosList();
       updateDirtyIndicator();
     });
 
     $('editWaNumber').addEventListener('input', () => {
-      draftConfig.customerUi.waNumber = $('editWaNumber').value.replace(/[^0-9]/g, '');
+      const cleanWa = $('editWaNumber').value.replace(/[^0-9]/g, '');
+      draftConfig.customerUi.waAdminNumber = cleanWa;
+      draftConfig.customerUi.waNumber = cleanWa;
       updateDirtyIndicator();
     });
     $('editAdminDisplayName').addEventListener('input', () => {
@@ -1508,6 +1708,7 @@
       updateDirtyIndicator();
     });
     $('editWaTemplate').addEventListener('input', () => {
+      draftConfig.customerUi.waCheckoutTemplate = $('editWaTemplate').value;
       draftConfig.customerUi.checkoutWaTemplate = $('editWaTemplate').value;
       updateWaPreview();
       updateDirtyIndicator();
@@ -1522,6 +1723,7 @@
       updateDirtyIndicator();
     });
     $('editAdminHandoverTpl').addEventListener('input', () => {
+      draftConfig.adminUi.waHandoverTemplate = $('editAdminHandoverTpl').value;
       draftConfig.adminUi.handoverWaTemplate = $('editAdminHandoverTpl').value;
       updateDirtyIndicator();
     });
@@ -1588,14 +1790,14 @@
         const nowIso = new Date().toISOString();
         const { error } = await sb.from('store_cms_config').upsert({
           id: 'live',
-          config: draftConfig,
-          history: newHistory,
+          config_json: draftConfig,
+          version_history: newHistory,
           updated_at: nowIso
         });
         if (error) throw error;
 
         try {
-          localStorage.setItem('archie_live_cms_v1', JSON.stringify(draftConfig));
+          localStorage.setItem('archie_live_cms_config', JSON.stringify(draftConfig));
         } catch (_) {}
 
         liveConfig = deepClone(draftConfig);
@@ -1615,8 +1817,203 @@
     });
   }
 
+  function convertToArchieStyle(rawText, tone) {
+    const clean = String(rawText || '').trim();
+    if (!clean) return '';
+    const lines = clean.split(/\n+/).map((l) => l.trim()).filter(Boolean);
+    const body = lines.map((l) => l
+      .replace(/\bsaya\b/gi, 'mimin')
+      .replace(/\banda\b/gi, 'kakak')
+      .replace(/\bterima kasih\b/gi, 'makasih banyak ya kak')
+      .replace(/\bmaaf\b/gi, 'maaf banget ya kak')
+      .replace(/\bditunggu\b/gi, 'ditunggu sebentar ya kak')
+      .replace(/\bsudah dikirim\b/gi, 'udah mimin kirim ya kak')
+    ).join('\n');
+    if (tone === 'handover') return `Halo kak! 🌸 Pesanan dari Archie'pelago udah siap ya 🐰✨\n\n${body}\n\nKalau ada kendala login atau butuh bantuan, langsung kabarin mimin aja ya kak 🎀 Makasih udah jajan di Archie'pelago! 🌸`;
+    if (tone === 'claim') return `Halo kak, maaf banget atas kendalanya ya 🥺🌸\n\n${body}\n\nGaransi kakak tetap aman kok, mimin bantu proses sampai beres ya 🐰✨`;
+    if (tone === 'soft') return `Hai kak! 🌸✨\n\n${body}\n\nKabarin mimin lagi kalau ada yang mau ditanyain ya kak 🐰🎀`;
+    return `Halo kak! 🌸\n\n${body}\n\n— Mimin Archie'pelago 🐰✨`;
+  }
+
+  function wireExtraEditorTools() {
+    const toggleBtn = $('toggleEditorPwdBtn');
+    const pwdEl = $('editorLoginKey');
+    if (toggleBtn && pwdEl) {
+      toggleBtn.addEventListener('click', () => {
+        const isPwd = pwdEl.type === 'password';
+        pwdEl.type = isPwd ? 'text' : 'password';
+        toggleBtn.textContent = isPwd ? '🙈' : '👁️';
+      });
+    }
+    const runBtn = $('edConvRunBtn');
+    const clearBtn = $('edConvClearBtn');
+    const copyBtn = $('edConvCopyBtn');
+    if (runBtn) {
+      runBtn.addEventListener('click', () => {
+        const raw = ($('edConvRawInput') && $('edConvRawInput').value) || '';
+        const tone = ($('edConvToneSelect') && $('edConvToneSelect').value) || 'handover';
+        if (!raw.trim()) { showToast('Tulis atau tempel teks mentahnya dulu ya!', true); return; }
+        $('edConvOutput').value = convertToArchieStyle(raw, tone);
+        showToast('✨ Teks berhasil dikonversi ke gaya Archie!');
+      });
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if ($('edConvRawInput')) $('edConvRawInput').value = '';
+        if ($('edConvOutput')) $('edConvOutput').value = '';
+      });
+    }
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const out = ($('edConvOutput') && $('edConvOutput').value) || '';
+        if (!out.trim()) { showToast('Belum ada hasil untuk disalin.', true); return; }
+        navigator.clipboard.writeText(out).then(() => showToast('📋 Hasil converter disalin!'));
+      });
+    }
+
+    // TAB 6: KALKULATOR HARGA ANTI-SIRAM 2026
+    ['calcModalFh', 'calcFloor', 'calcTargetProfit', 'calcCustomPrice', 'calcGachaPct', 'calcQrisPct'].forEach((id) => {
+      const el = $(id);
+      if (el) el.addEventListener('input', recalcPricing);
+    });
+    const presetSel = $('calcAppPreset');
+    if (presetSel) {
+      presetSel.addEventListener('change', () => {
+        const val = presetSel.value;
+        if (!val || !draftConfig) { recalcPricing(); return; }
+        const parts = val.split('::');
+        const app = (draftConfig.catalog || []).find((a) => a.id === parts[0]);
+        const pIdx = Number(parts[1]);
+        if (app && app.plans && app.plans[pIdx]) {
+          const pl = app.plans[pIdx];
+          $('calcModalFh').value = Number(pl.fhCost || app.fhCost || 0);
+          $('calcFloor').value = Number(pl.minAgreed || app.minAgreed || getFloorForApp(app.name) || 0);
+          $('calcCustomPrice').value = Number(pl.price || 0);
+        }
+        recalcPricing();
+      });
+    }
+    const calcCopyBtn = $('calcCopyBtn');
+    if (calcCopyBtn) {
+      calcCopyBtn.addEventListener('click', () => {
+        const priceTxt = ($('calcRecPrice') && $('calcRecPrice').textContent) || '';
+        navigator.clipboard.writeText(priceTxt).then(() => showToast('📋 ' + priceTxt + ' berhasil disalin!'));
+      });
+    }
+    const calcApplyBtn = $('calcApplyToDraftBtn');
+    if (calcApplyBtn) {
+      calcApplyBtn.addEventListener('click', () => {
+        const val = ($('calcAppPreset') && $('calcAppPreset').value) || '';
+        if (!val || !draftConfig) {
+          showToast('Pilih aplikasi & plan di dropdown Auto-Fill dulu ya untuk menerapkan langsung ke draft!', true);
+          return;
+        }
+        const parts = val.split('::');
+        const app = (draftConfig.catalog || []).find((a) => a.id === parts[0]);
+        const pIdx = Number(parts[1]);
+        if (!app || !app.plans || !app.plans[pIdx]) return;
+        const customVal = Number(($('calcCustomPrice') && $('calcCustomPrice').value) || 0);
+        const appliedPrice = customVal > 0 ? customVal : Number(window.__lastCalcRecommended || 0);
+        const appliedModal = Number(($('calcModalFh') && $('calcModalFh').value) || 0);
+        if (appliedPrice <= 0) return;
+        app.plans[pIdx].price = appliedPrice;
+        app.plans[pIdx].fhCost = appliedModal;
+        selectedAppId = app.id;
+        renderAll();
+        updateDirtyIndicator();
+        showToast('🚀 Harga ' + app.name + ' (' + app.plans[pIdx].label + ') diupdate ke ' + formatRp(appliedPrice) + ' di draft!');
+      });
+    }
+    recalcPricing();
+  }
+
+  function populateCalcPresets() {
+    const sel = $('calcAppPreset');
+    if (!sel || !draftConfig) return;
+    const prev = sel.value;
+    let html = '<option value="">— Input Manual Bebas —</option>';
+    (draftConfig.catalog || []).forEach((app) => {
+      (app.plans || []).forEach((pl, idx) => {
+        const label = (app.badge || app.emoji || '✨') + ' ' + app.name + ' — ' + (pl.label || 'Paket') + ' (Jual ' + formatRp(pl.price) + ')';
+        html += '<option value="' + escapeHtml(app.id + '::' + idx) + '">' + escapeHtml(label) + '</option>';
+      });
+    });
+    sel.innerHTML = html;
+    if (prev) sel.value = prev;
+    recalcPricing();
+  }
+
+  function recalcPricing() {
+    const modalFh = Math.max(0, Number(($('calcModalFh') && $('calcModalFh').value) || 0));
+    const floor = Math.max(0, Number(($('calcFloor') && $('calcFloor').value) || 0));
+    const targetProfit = Math.max(0, Number(($('calcTargetProfit') && $('calcTargetProfit').value) || 0));
+    const gachaPct = Math.min(50, Math.max(0, Number(($('calcGachaPct') && $('calcGachaPct').value) || 0)));
+    const qrisPct = Math.min(10, Math.max(0, Number(($('calcQrisPct') && $('calcQrisPct').value) || 0)));
+    const customPrice = Math.max(0, Number(($('calcCustomPrice') && $('calcCustomPrice').value) || 0));
+
+    const gFactor = 1 - gachaPct / 100;
+    const qFactor = 1 - qrisPct / 100;
+    const roundUp500 = (n) => Math.ceil(n / 500) * 500;
+
+    const minAntiSiram = floor > 0 ? roundUp500(floor / gFactor) : 0;
+    const minForProfit = roundUp500((modalFh + targetProfit) / (gFactor * qFactor));
+    const recommended = Math.max(minAntiSiram, minForProfit);
+    window.__lastCalcRecommended = recommended;
+
+    const activePrice = customPrice > 0 ? customPrice : recommended;
+    const afterGacha = Math.round(activePrice * gFactor);
+    const netNormal = Math.round(activePrice * qFactor - modalFh);
+    const netWorst = Math.round(afterGacha * qFactor - modalFh);
+    const marginNormal = activePrice > 0 ? ((netNormal / activePrice) * 100).toFixed(1) : '0.0';
+    const marginWorst = afterGacha > 0 ? ((netWorst / afterGacha) * 100).toFixed(1) : '0.0';
+    const garansiReserve = Math.max(0, Math.round(netNormal * 0.15));
+
+    const isSafeFloor = floor <= 0 || afterGacha >= floor;
+    const isProfitable = netWorst > 0;
+
+    if ($('calcRecPrice')) $('calcRecPrice').textContent = formatRp(recommended);
+    if ($('calcRecNote')) {
+      $('calcRecNote').textContent = customPrice > 0
+        ? 'Sedang menguji harga custom ' + formatRp(customPrice) + ' (Rekomendasi ideal: ' + formatRp(recommended) + ').'
+        : 'Minimal Anti-Siram: ' + formatRp(minAntiSiram) + ' • Minimal Target Profit: ' + formatRp(minForProfit) + '.';
+    }
+    if ($('calcAfterGacha')) $('calcAfterGacha').textContent = formatRp(afterGacha);
+    if ($('calcFloorCheck')) {
+      if (floor <= 0) {
+        $('calcFloorCheck').textContent = 'ℹ️ Floor belum diisi (bebas)';
+        $('calcFloorCheck').className = 'text-[11px] font-bold text-[#6D3B53] mt-1';
+      } else if (isSafeFloor) {
+        $('calcFloorCheck').textContent = '✅ +' + formatRp(afterGacha - floor) + ' di atas Floor 2026';
+        $('calcFloorCheck').className = 'text-[11px] font-bold text-emerald-700 mt-1';
+      } else {
+        $('calcFloorCheck').textContent = '🚨 Kurang ' + formatRp(floor - afterGacha) + ' dari Floor 2026!';
+        $('calcFloorCheck').className = 'text-[11px] font-extrabold text-rose-600 mt-1';
+      }
+    }
+    if ($('calcGaransiReserve')) $('calcGaransiReserve').textContent = formatRp(garansiReserve);
+    if ($('calcProfitNormal')) $('calcProfitNormal').textContent = formatRp(netNormal);
+    if ($('calcMarginNormal')) $('calcMarginNormal').textContent = 'Margin ' + marginNormal + (qrisPct > 0 ? '% (QRIS ' + qrisPct + '%)' : '% (ShopeePay 0% MDR)');
+    if ($('calcProfitWorst')) $('calcProfitWorst').textContent = formatRp(netWorst);
+    if ($('calcMarginWorst')) $('calcMarginWorst').textContent = 'Margin ' + marginWorst + '% (Gacha ' + gachaPct + '%' + (qrisPct > 0 ? ' + QRIS)' : ', 0% MDR)');
+
+    const pill = $('calcStatusPill');
+    if (pill) {
+      if (!isSafeFloor) {
+        pill.textContent = '🚨 DI BAWAH FLOOR 2026!';
+        pill.className = 'px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-[11px] font-extrabold';
+      } else if (!isProfitable) {
+        pill.textContent = '⚠️ RUGI SAAT GACHA MAX!';
+        pill.className = 'px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-extrabold';
+      } else {
+        pill.textContent = '✅ AMAN ANTI-SIRAM & CUAN';
+        pill.className = 'px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold';
+      }
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     wireEvents();
+    wireExtraEditorTools();
     initAuth();
   });
 })();
