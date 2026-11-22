@@ -61,15 +61,15 @@
         </div>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <a href="/admin" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#4A2036] hover:bg-[#FFE0EC] transition">← Kembali ke Admin</a>
+        <a href="#" data-archie-nav="admin" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#4A2036] hover:bg-[#FFE0EC] transition">← Kembali ke Admin</a>
         <button id="openEditorCheatSheetBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-[#4A2036] text-[#FFE066] hover:bg-[#6A2C4D] transition cursor-pointer shadow-sm">📖 Apa Saja yang Bisa Diedit?</button>
-        <a href="/customer" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#6D3B53] hover:bg-[#FFE0EC] transition">Lihat Store ↗</a>
-        <a href="/garansi" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#6D3B53] hover:bg-[#FFE0EC] transition">Lihat Garansi ↗</a>
+        <a href="#" data-archie-nav="customer" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#6D3B53] hover:bg-[#FFE0EC] transition">Lihat Store ↗</a>
+        <a href="#" data-archie-nav="garansi" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFF5F8] border border-[#FCD2E3] text-[#6D3B53] hover:bg-[#FFE0EC] transition">Lihat Garansi ↗</a>
         <button id="editorLogoutBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#FFE0EC] text-[#D83162] hover:bg-[#FCD2E3] transition">Keluar</button>
       </div>
     </div>
 
-    <!-- 6 Main Tabs (Wrapped so ALL tabs including Kalkulator Harga are always visible!) -->
+    <!-- 7 Main Tabs (Wrapped so ALL tabs are always visible!) -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex flex-wrap gap-2">
       <button data-main-tab="customer" class="cms-main-tab active px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🛍️ 1. Web Customer</button>
       <button data-main-tab="garansi" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🎫 2. Web Garansi</button>
@@ -77,6 +77,7 @@
       <button data-main-tab="history" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🕰️ 4. Riwayat Versi & Rollback</button>
       <button data-main-tab="converter" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🪄 5. Converter Teks Archie</button>
       <button data-main-tab="calculator" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">🧮 6. Kalkulator Harga</button>
+      <button data-main-tab="pricing_instant" class="cms-main-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition">⚡ 7. Harga Instan &amp; Strategi</button>
     </div>
   </header>
 
@@ -101,6 +102,14 @@
           </div>
           <input id="cmsCatalogSearch" type="text" placeholder="Cari nama aplikasi atau kategori..." class="w-full px-3.5 py-2.5 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-medium text-[#4A2036] mb-3 focus:outline-none focus:border-[#D83162]" />
           <div id="cmsAppList" class="space-y-2 overflow-y-auto pr-1 flex-1"></div>
+          <!-- Riwayat Aplikasi Dihapus (Restore 1-Klik) -->
+          <div id="deletedAppsHistoryWrap" class="mt-3 pt-3 border-t-2 border-dashed border-[#FCD2E3] space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-extrabold text-[#9B2358]">♻️ Riwayat App Dihapus (<span id="deletedAppsCount">0</span>)</span>
+              <button id="toggleDeletedAppsBtn" type="button" class="text-[10px] font-extrabold text-[#D83162] hover:underline cursor-pointer">Tampilkan</button>
+            </div>
+            <div id="deletedAppsHistoryList" class="hidden space-y-1.5 max-h-[160px] overflow-y-auto pr-0.5"></div>
+          </div>
         </div>
 
         <!-- Right Detail Editor -->
@@ -244,6 +253,72 @@
           <p class="text-[11px] text-[#6D3B53]">Customer akan langsung diarahkan ke nomor WA di atas dengan pesan otomatis ini di akhir checkout.</p>
         </div>
       </div>
+
+      <!-- Mini WA Help Button Template (Tampil di Seluruh Halaman Web Customer) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-7 bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-4">
+          <div>
+            <h3 class="text-base font-extrabold text-[#4A2036]">🫧 Template Pesan Tombol Bantuan Mini WA (Seluruh Halaman)</h3>
+            <p class="text-xs text-[#6D3B53]">Atur pesan otomatis &amp; teks pop-up mini yang tampil di sudut bawah semua halaman Web Customer.</p>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1">Teks Pop-up Mini (muncul 2 detik, sembunyi 5 detik)</label>
+            <input id="editWaHelpBtnText" type="text" placeholder="Need help? (,; ⩌ ;,)" class="w-full px-3.5 py-2.5 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-sm font-bold text-[#4A2036]" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1.5">Opsional — Sisipkan Variabel Konteks (jika customer sudah isi):</label>
+            <div class="flex flex-wrap gap-1.5 mb-2" id="waHelpVarChips">
+              <button type="button" data-var="{customer_name}" class="wa-help-chip px-2.5 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-xs font-bold hover:bg-[#FCD2E3]">{customer_name}</button>
+              <button type="button" data-var="{product_name}" class="wa-help-chip px-2.5 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-xs font-bold hover:bg-[#FCD2E3]">{product_name}</button>
+              <button type="button" data-var="{order_code}" class="wa-help-chip px-2.5 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-xs font-bold hover:bg-[#FCD2E3]">{order_code}</button>
+            </div>
+            <textarea id="editWaHelpTemplate" rows="5" class="w-full px-4 py-3 rounded-2xl border border-[#FCD2E3] bg-[#FFF5F8] text-sm font-mono text-[#4A2036]"></textarea>
+          </div>
+        </div>
+        <div class="lg:col-span-5 bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-3">
+          <h4 class="text-sm font-extrabold text-[#4A2036]">📱 Pratinjau Pesan Bantuan WA</h4>
+          <div id="waHelpTemplatePreview" class="p-4 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] text-xs whitespace-pre-wrap leading-relaxed text-[#4A2036] min-h-[140px]"></div>
+          <p class="text-[11px] text-[#6D3B53]">Saat customer klik tombol bantuan mini di halaman mana pun, WA Admin akan terbuka dengan pesan ini.</p>
+        </div>
+      </div>
+
+      <!-- Pop-up Input Data Customer (Sebelum Pop-up Donasi) -->
+      <div class="bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-4">
+        <div>
+          <h3 class="text-base font-extrabold text-[#4A2036]">🔐 Teks Pop-up Input Data Customer (Sebelum Pop-up Donasi)</h3>
+          <p class="text-xs text-[#6D3B53]">Muncul otomatis di Web Customer jika paket yang dipilih membutuhkan Gmail, Gmail + Password, atau Nomor HP (atur tipe per paket di tab Katalog).</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1">Judul Pop-up Data Customer</label>
+            <input id="editCustDataTitle" type="text" class="w-full px-3.5 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1">Catatan Privasi / Keamanan</label>
+            <input id="editCustDataNote" type="text" class="w-full px-3.5 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-medium text-[#4A2036]" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1">Subjudul Pop-up Data Customer</label>
+            <input id="editCustDataSub" type="text" class="w-full px-3.5 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-medium text-[#4A2036]" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1">📧 Petunjuk Metode: Gmail Saja</label>
+            <textarea id="editCustDataGmailHint" rows="2" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs text-[#4A2036]"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1">🔐 Petunjuk Metode: Gmail + Password</label>
+            <textarea id="editCustDataGmailPassHint" rows="2" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs text-[#4A2036]"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1">📱 Petunjuk Metode: Nomor HP Saja</label>
+            <textarea id="editCustDataPhoneHint" rows="2" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs text-[#4A2036]"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#6D3B53] mb-1">💻 Petunjuk Metode: Device Customer</label>
+            <textarea id="editCustDataDeviceHint" rows="2" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs text-[#4A2036]"></textarea>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- TAB 2: WEB GARANSI -->
@@ -263,7 +338,7 @@
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-base font-extrabold text-[#4A2036]">🤝 Direktori First Hand (FH)</h3>
-              <p class="text-xs text-[#6D3B53]">Daftar supplier FH yang muncul di Command Center Admin.</p>
+              <p class="text-xs text-[#6D3B53]">Daftar supplier FH yang muncul di Command Center Admin &amp; Geseran 2 FH Converter.</p>
             </div>
             <button id="cmsAddFhBtn" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white text-xs font-extrabold">+ Tambah FH</button>
           </div>
@@ -284,6 +359,37 @@
             <button type="button" data-var="{exp_date}" class="ho-chip px-2.5 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-xs font-bold">{exp_date}</button>
           </div>
           <textarea id="editAdminHandoverTpl" rows="7" class="w-full px-4 py-3 rounded-2xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-mono text-[#4A2036]"></textarea>
+        </div>
+      </div>
+
+      <!-- FH Order Converter Template (Admin Geseran 2) & Multi-Occasion Copy-Writing (Admin Geseran 4) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-5 bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-3.5">
+          <div>
+            <h3 class="text-base font-extrabold text-[#4A2036]">🕒 Template Converter Order ke FH (Geseran 2)</h3>
+            <p class="text-xs text-[#6D3B53]">Otomatis mengikuti jam WIB realtime &amp; pesanan customer saat kamu pilih FH di Web Admin.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" data-var="{greeting_wib}" class="fho-chip px-2 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-[11px] font-bold">{greeting_wib}</button>
+            <button type="button" data-var="{time_wib}" class="fho-chip px-2 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-[11px] font-bold">{time_wib}</button>
+            <button type="button" data-var="{fh_name}" class="fho-chip px-2 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-[11px] font-bold">{fh_name}</button>
+            <button type="button" data-var="{product_name}" class="fho-chip px-2 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-[11px] font-bold">{product_name}</button>
+            <button type="button" data-var="{plan_label}" class="fho-chip px-2 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-[11px] font-bold">{plan_label}</button>
+            <button type="button" data-var="{customer_input}" class="fho-chip px-2 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-[11px] font-bold">{customer_input}</button>
+            <button type="button" data-var="{order_code}" class="fho-chip px-2 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-[11px] font-bold">{order_code}</button>
+          </div>
+          <textarea id="editAdminFhOrderTpl" rows="7" class="w-full px-3.5 py-3 rounded-2xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-mono text-[#4A2036]"></textarea>
+        </div>
+
+        <div class="lg:col-span-7 bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-3.5">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <h3 class="text-base font-extrabold text-[#4A2036]">✍️ Copy-Writing Multi-Occasion (Geseran 4 Admin)</h3>
+              <p class="text-xs text-[#6D3B53]">Setiap tombol occasion bisa langsung dipakai &amp; di-convert otomatis di Geseran 4 kartu ARC.</p>
+            </div>
+            <button id="cmsAddCopywritingBtn" type="button" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] text-white text-xs font-extrabold cursor-pointer">+ Tambah Occasion</button>
+          </div>
+          <div id="cmsCopywritingList" class="space-y-3 max-h-[380px] overflow-y-auto pr-1"></div>
         </div>
       </div>
 
@@ -499,6 +605,96 @@
         <div id="bulkFloorPreviewBox" class="hidden rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] p-3.5 space-y-2">
           <div id="bulkFloorPreviewSummary" class="text-xs font-extrabold text-[#4A2036]"></div>
           <div id="bulkFloorPreviewList" class="max-h-56 overflow-y-auto space-y-1.5 text-[11px]"></div>
+        </div>
+      </div>
+    </section>
+    <!-- TAB 7: HARGA INSTAN, FLASH SALE & STRATEGI HARGA -->
+    <section id="tabPanel_pricing_instant" class="cms-tab-panel hidden space-y-5">
+      <div class="bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base sm:text-lg font-black text-[#4A2036]">⚡ Preset Harga Instan (Semua Aplikasi &amp; Varian Sekaligus)</h2>
+            <p class="text-xs text-[#6D3B53]">Ubah seluruh harga katalog dalam 1 klik dengan jaminan 100% aman di atas Floor Kesepakatan 2026 meskipun customer dapat Max Gacha 5%.</p>
+          </div>
+          <button id="btnUndoInstantPrice" type="button" class="hidden px-3.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 border border-amber-300 text-amber-900 text-xs font-extrabold cursor-pointer">↩️ Kembalikan Harga Sebelumnya</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-[#FFF1F5] to-[#FFE0EC] border-2 border-[#F59EB9] space-y-2.5 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-black text-[#B82555] uppercase tracking-wider">🔥 Mode Paling Kompetitif</div>
+              <div class="text-base font-black text-[#4A2036] mt-0.5">Harga Mepet Floor (Aman 5%)</div>
+              <p class="text-[11px] font-semibold text-[#6D3B53] mt-1 leading-relaxed">Setel semua aplikasi ke harga <b>paling mepet</b> yang masih lolos Floor Kesepakatan walau customer kena diskon Max Gacha 5% (<code>ceil(Floor / 0.95)</code>).</p>
+            </div>
+            <button id="btnApplyPriceMepet" type="button" class="w-full py-2.5 rounded-xl bg-[#D83162] hover:bg-[#B82555] text-white text-xs font-black shadow-sm cursor-pointer">🔥 Terapkan Harga Mepet Semua App</button>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-[#ECFDF5] to-[#D1FAE5] border-2 border-[#6EE7B7] space-y-2.5 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-black text-emerald-800 uppercase tracking-wider">✨ Mode Harian Rekomendasi</div>
+              <div class="text-base font-black text-[#4A2036] mt-0.5">Harga Ideal (Profit Sehat)</div>
+              <p class="text-[11px] font-semibold text-emerald-900/80 mt-1 leading-relaxed">Setel semua aplikasi ke titik <b>ideal</b> (~14% di atas batas aman 5%, bulat ke Rp 500) agar margin bersih &amp; cadangan garansi 15% selalu tebal.</p>
+            </div>
+            <button id="btnApplyPriceIdeal" type="button" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-sm cursor-pointer">✨ Terapkan Harga Ideal Semua App</button>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-[#FFFBEB] to-[#FEF3C7] border-2 border-[#FCD34D] space-y-2.5 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-black text-amber-800 uppercase tracking-wider">👑 Mode High-Demand / Peak</div>
+              <div class="text-base font-black text-[#4A2036] mt-0.5">Harga Margin Maksimal</div>
+              <p class="text-[11px] font-semibold text-amber-900/80 mt-1 leading-relaxed">Naikkan semua harga ke tier <b>margin maksimal</b> (~24% di atas batas aman 5%) saat permintaan tinggi atau stok langka.</p>
+            </div>
+            <button id="btnApplyPriceMax" type="button" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-black shadow-sm cursor-pointer">👑 Terapkan Margin Maksimal</button>
+          </div>
+        </div>
+        <div id="instantPricingSummaryBanner" class="p-3 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] text-xs font-bold text-[#4A2036]"></div>
+      </div>
+
+      <!-- REKOMENDASI FLASH SALE & GEBRAKAN HARGA -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-7 bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-3.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-base font-extrabold text-[#4A2036]">⚡ Rekomendasi Aplikasi untuk Flash Sale</h3>
+              <p class="text-xs text-[#6D3B53]">App dengan ruang diskon terbesar di atas batas aman Floor 5% sehingga promo terlihat menggiurkan tanpa bocor.</p>
+            </div>
+            <button id="btnRefreshFlashSaleRecs" type="button" class="px-3 py-1.5 rounded-xl bg-[#FFE0EC] hover:bg-[#FCD2E3] text-[#D83162] text-xs font-extrabold cursor-pointer">🔄 Analisis Ulang</button>
+          </div>
+          <div id="flashSaleRecList" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1"></div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-3.5">
+          <div>
+            <h3 class="text-base font-extrabold text-[#4A2036]">🚀 Gebrakan Harga &amp; Audit Katalog</h3>
+            <p class="text-xs text-[#6D3B53]">Rekomendasi otomatis: fix harga bocor, app hero penarik trafik, dan kandidat bundle.</p>
+          </div>
+          <div id="pricingStrategyCards" class="space-y-2.5"></div>
+        </div>
+      </div>
+
+      <!-- PENGATURAN LINK LINTAS-WEB (REUSE TAB EXISTING) -->
+      <div class="bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-3.5">
+        <div>
+          <h3 class="text-base font-extrabold text-[#4A2036]">🔗 Pengaturan URL Lintas-Web (Buka Tab yang Sudah Ada)</h3>
+          <p class="text-xs text-[#6D3B53]">Atur alamat masing-masing web (Vercel / domain custom). Tombol lintas-web di semua halaman otomatis berpindah ke tab yang sudah terbuka tanpa membuka tab duplikat.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-[#6D3B53] mb-1">🛍️ URL Web Customer</label>
+            <input id="editWebUrlCustomer" type="text" placeholder="Customer.html atau https://..." class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-[#6D3B53] mb-1">🎫 URL Web Garansi</label>
+            <input id="editWebUrlGaransi" type="text" placeholder="index.html atau https://..." class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-[#6D3B53] mb-1">⚙️ URL Web Admin</label>
+            <input id="editWebUrlAdmin" type="text" placeholder="Admin.html atau https://..." class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-[#6D3B53] mb-1">✏️ URL Web Editor</label>
+            <input id="editWebUrlEditor" type="text" placeholder="Editor.html atau https://..." class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-bold text-[#4A2036]" />
+          </div>
         </div>
       </div>
     </section>
@@ -797,7 +993,16 @@
       feedbackSubmitLabel: "Kirim",
       waAdminNumber: "",
       waCheckoutBtnLabel: "📲 Konfirmasi Pembayaran ke WA Mimin Archie",
-      waCheckoutTemplate: "Halo Mimin Archie! 🌸\nAku sudah checkout pesanan di Archie'pelago:\n• Kode Pesanan: {order_code}\n• Inisial: {customer_name}\n• Layanan: {product_name} ({plan_label})\n• Total Bayar: {total_price}\nIni bukti pembayaran / QRIS-nya yaa Mimin! 🐰✨"
+      waCheckoutTemplate: "Halo Mimin Archie! 🌸\nAku sudah checkout pesanan di Archie'pelago:\n• Kode Pesanan: {order_code}\n• Inisial: {customer_name}\n• Layanan: {product_name} ({plan_label})\n• Total Bayar: {total_price}\nIni bukti pembayaran / QRIS-nya yaa Mimin! 🐰✨",
+      waHelpBtnText: "Need help? (,; ⩌ ;,)",
+      waHelpTemplate: "Halo Mimin Archie! 🌸\nAku lagi butuh bantuan saat pesan di Web Archie'pelago nih, boleh tanya sebentar yaa? 🐰✨",
+      custDataModalTitle: "Lengkapi Data Akun Kamu Dulu Yaa~ 🌸",
+      custDataModalSub: "Paket yang kamu pilih butuh data berikut biar Mimin Archie bisa langsung proses pesananmu:",
+      custDataModalNote: "🔒 Data kamu 100% aman & hanya dipakai Mimin Archie untuk proses aktivasi pesanan ini.",
+      custDataGmailHint: "Masukkan alamat Gmail aktif yang ingin di-invite / didaftarkan (tanpa password).",
+      custDataGmailPassHint: "Masukkan Gmail & Password akun yang ingin diproses (disarankan pakai password sementara).",
+      custDataPhoneHint: "Masukkan Nomor HP / WhatsApp aktif yang akan didaftarkan untuk layanan ini.",
+      custDataDeviceHint: "Pilih atau tulis jenis perangkat yang akan dipakai (Android / iOS / Laptop / Smart TV)."
     },
     garansiUi: {
       portalTitle: "WELCOME TO ARCHIE'PELAGO",
@@ -815,6 +1020,58 @@
     },
     adminUi: {
       fhDirectory: [],
+      fhOrderTemplate:
+        "Selamat {greeting_wib}, Kakk {fh_name}\n" +
+        "Aku ada pesanan sebagai berikutt:\n" +
+        "> ```Produk/Aplikasi``` : *{product_name}*\n" +
+        "> ```Durasi Langganan``` : *{plan_label}*\n" +
+        "{customer_input}\n" +
+        "```Kode Tracking``` : *{order_code}*\n\n\n" +
+        "Terima kasih sebelumnyaa Kak {fh_name}! ( ˶˘ ³˘)♡",
+      copywritingTemplates: [
+        {
+          id: "cw_welcome",
+          icon: "🌸",
+          label: "Order Masuk",
+          template: "Halo {greeting_wib} Kak {customer_name}! 🌸 Pesanan {order_code} ({product_name} — {plan_label}) sudah masuk antrean Mimin Archie yaa. Mohon ditunggu sebentar, lagi Mimin proses dulu! 🐰✨"
+        },
+        {
+          id: "cw_handover",
+          icon: "📦",
+          label: "Kirim Akun",
+          template: "Halo {greeting_wib} Kak {customer_name}! 🌸 Akun {product_name} ({plan_label}) untuk pesanan {order_code} sudah siap dipakai yaa!\n• Portal Garansi: {warranty_url}\n• Kata Sandi Tiket: {pin}\n• Berlaku s/d: {exp_date}\nJangan lupa kirim SS bukti login awal maksimal 1x12 jam biar garansinya aktif yaa! 🐰💗"
+        },
+        {
+          id: "cw_ss_login",
+          icon: "📸",
+          label: "Ingetin SS Awal",
+          template: "Halo {greeting_wib} Kak {customer_name} 🌸 Mimin izin ingetin sebentar yaa buat kirim screenshot bukti login awal {product_name} ({order_code}) biar stempel garansi Kakak langsung aktif di Portal Garansi! 🐰✨"
+        },
+        {
+          id: "cw_h1",
+          icon: "⏳",
+          label: "Reminder H-1",
+          template: "Halo {greeting_wib} Kak {customer_name}! 🌸 Masa aktif {product_name} ({order_code}) sebentar lagi berakhir pada {exp_date}. Kalau mau perpanjang biar nggak kepotong, langsung kabari Mimin Archie yaa~ 🐰💗"
+        },
+        {
+          id: "cw_testi",
+          icon: "💌",
+          label: "Follow-up Testi",
+          template: "Halo {greeting_wib} Kak {customer_name}! 🐰💗 Gimana pemakaian {product_name} ({order_code}) sejauh ini, aman & lancar kan? Kalau berkenan, boleh bantu kasih testimoni manis di Portal Garansi ({warranty_url}) yaa Kak, makasih banyak! 🌸✨"
+        },
+        {
+          id: "cw_claim",
+          icon: "🛡️",
+          label: "Proses Garansi",
+          template: "Halo {greeting_wib} Kak {customer_name}, laporan kendala {product_name} ({order_code}) sudah Mimin terima yaa 🙏 Lagi Mimin cek & proses klaim garansinya sesuai SLA 1x24 jam. Mohon ditunggu update dari Mimin Archie! 🐰💗"
+        },
+        {
+          id: "cw_delay",
+          icon: "🙏",
+          label: "Maaf Delay",
+          template: "Halo {greeting_wib} Kak {customer_name} 🙏 Mohon maaf banget yaa pesanan {order_code} ({product_name}) agak sedikit menunggu karena antrean lagi ramai. Mimin lagi kebut prosesnya, begitu beres langsung Mimin kirim ke Kakak! 🐰🌸"
+        }
+      ],
       waHandoverTemplate:
         "Halo Kak *{customer_name}*! Pesanan Kakak sudah 100% beres diproses yaa~ Ი𐑼🌸\n\n" +
         "> 📦 *Nomor Pesanan:* `{order_code}` _(Simpan kode ini baik-baik ya Kak!)_\n" +
@@ -839,7 +1096,7 @@
     Object.keys(over).forEach(function(k) {
       if (over[k] !== undefined && over[k] !== null) {
         if (Array.isArray(over[k])) {
-          if (over[k].length > 0 || k === 'fhDirectory') out[k] = JSON.parse(JSON.stringify(over[k]));
+          if (over[k].length > 0 || k === 'fhDirectory' || k === 'copywritingTemplates') out[k] = JSON.parse(JSON.stringify(over[k]));
         } else if (typeof over[k] === 'object' && typeof out[k] === 'object' && !Array.isArray(out[k])) {
           out[k] = deepMerge(out[k], over[k]);
         } else {
@@ -1263,7 +1520,20 @@
             </div>
             <button type="button" data-del-plan="${pIdx}" class="px-2.5 py-2 rounded-xl bg-[#FFE0EC] text-[#D83162] text-xs font-extrabold cursor-pointer">✕</button>
           </div>
-          <input data-plan-tip="${pIdx}" type="text" value="${escapeHtml(pl.tip || pl.note || '')}" placeholder="Keterangan singkat paket (muncul di Web Customer)" class="w-full px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-[11px] text-[#6D3B53]" />
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+            <input data-plan-tip="${pIdx}" type="text" value="${escapeHtml(pl.tip || pl.note || '')}" placeholder="Keterangan singkat paket (muncul di Web Customer)" class="sm:col-span-7 w-full px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-[11px] text-[#6D3B53]" />
+            <select data-plan-input="${pIdx}" title="Kolom data yang wajib diisi customer sebelum donasi" class="sm:col-span-5 w-full px-2.5 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-[11px] font-bold text-[#4A2036]">
+              <option value="auto" ${(!pl.customerInputType || pl.customerInputType === 'auto') ? 'selected' : ''}>✨ Auto-Detect Input Cust</option>
+              <option value="none" ${pl.customerInputType === 'none' ? 'selected' : ''}>🚫 Tanpa Input Customer</option>
+              <option value="device" ${pl.customerInputType === 'device' ? 'selected' : ''}>💻 Wajib Isi: Device Saja</option>
+              <option value="gmail" ${pl.customerInputType === 'gmail' ? 'selected' : ''}>📧 Wajib Isi: Gmail Saja</option>
+              <option value="gmail_device" ${pl.customerInputType === 'gmail_device' ? 'selected' : ''}>📧💻 Wajib Isi: Gmail + Device</option>
+              <option value="gmail_pass" ${pl.customerInputType === 'gmail_pass' ? 'selected' : ''}>🔐 Wajib Isi: Gmail + Password</option>
+              <option value="gmail_pass_device" ${pl.customerInputType === 'gmail_pass_device' ? 'selected' : ''}>🔐💻 Wajib Isi: Gmail + Pass + Device</option>
+              <option value="phone" ${pl.customerInputType === 'phone' ? 'selected' : ''}>📱 Wajib Isi: Nomor HP Saja</option>
+              <option value="phone_device" ${pl.customerInputType === 'phone_device' ? 'selected' : ''}>📱💻 Wajib Isi: Nomor HP + Device</option>
+            </select>
+          </div>
           ${belowFloor ? `<div class="text-[11px] font-bold text-amber-700">⚠️ Harga jual di bawah floor kesepakatan (${formatRp(minNum || floor)}). Pastikan memang disengaja.</div>` : ''}
         </div>
       `;
@@ -1290,6 +1560,12 @@
     cont.querySelectorAll('[data-plan-tip]').forEach((el) => {
       el.addEventListener('input', () => {
         app.plans[Number(el.getAttribute('data-plan-tip'))].tip = el.value;
+        updateDirtyIndicator();
+      });
+    });
+    cont.querySelectorAll('[data-plan-input]').forEach((el) => {
+      el.addEventListener('change', () => {
+        app.plans[Number(el.getAttribute('data-plan-input'))].customerInputType = el.value;
         updateDirtyIndicator();
       });
     });
@@ -1445,7 +1721,18 @@
     $('editWaNumber').value = draftConfig.customerUi.waAdminNumber || draftConfig.customerUi.waNumber || '';
     $('editAdminDisplayName').value = draftConfig.customerUi.adminDisplayName || 'Mimin Archie';
     $('editWaTemplate').value = draftConfig.customerUi.waCheckoutTemplate || draftConfig.customerUi.checkoutWaTemplate || '';
+    if ($('editWaHelpBtnText')) $('editWaHelpBtnText').value = draftConfig.customerUi.waHelpBtnText || 'Need help? (,; ⩌ ;,)';
+    if ($('editWaHelpTemplate')) $('editWaHelpTemplate').value = draftConfig.customerUi.waHelpTemplate || "Halo Mimin Archie! 🌸\nAku lagi butuh bantuan saat pesan di Web Archie'pelago nih, boleh tanya sebentar yaa? 🐰✨";
+    const defCust = window.ARCHIE_DEFAULT_CMS.customerUi || {};
+    if ($('editCustDataTitle')) $('editCustDataTitle').value = draftConfig.customerUi.custDataModalTitle || defCust.custDataModalTitle || '';
+    if ($('editCustDataSub')) $('editCustDataSub').value = draftConfig.customerUi.custDataModalSub || defCust.custDataModalSub || '';
+    if ($('editCustDataNote')) $('editCustDataNote').value = draftConfig.customerUi.custDataModalNote || defCust.custDataModalNote || '';
+    if ($('editCustDataGmailHint')) $('editCustDataGmailHint').value = draftConfig.customerUi.custDataGmailHint || defCust.custDataGmailHint || '';
+    if ($('editCustDataGmailPassHint')) $('editCustDataGmailPassHint').value = draftConfig.customerUi.custDataGmailPassHint || defCust.custDataGmailPassHint || '';
+    if ($('editCustDataPhoneHint')) $('editCustDataPhoneHint').value = draftConfig.customerUi.custDataPhoneHint || defCust.custDataPhoneHint || '';
+    if ($('editCustDataDeviceHint')) $('editCustDataDeviceHint').value = draftConfig.customerUi.custDataDeviceHint || defCust.custDataDeviceHint || '';
     updateWaPreview();
+    updateWaHelpPreview();
   }
 
   function updateWaPreview() {
@@ -1459,6 +1746,16 @@
       .replace(/\{total_price\}/g, 'Rp 28.000')
       .replace(/\{discount_info\}/g, 'Diskon Gacha 3% (-Rp 840)');
     $('waTemplatePreview').textContent = sample || '(Template masih kosong)';
+  }
+
+  function updateWaHelpPreview() {
+    if (!$('editWaHelpTemplate') || !$('waHelpTemplatePreview')) return;
+    const tpl = $('editWaHelpTemplate').value || '';
+    const sample = tpl
+      .replace(/\{order_code\}/g, 'ARC-0001')
+      .replace(/\{customer_name\}/g, 'Alya')
+      .replace(/\{product_name\}/g, 'NETFLIX PREMIUM UHD 4K');
+    $('waHelpTemplatePreview').textContent = sample || '(Template bantuan masih kosong)';
   }
 
   const GARANSI_UI_META = [
@@ -1570,6 +1867,40 @@
     }
 
     $('editAdminHandoverTpl').value = draftConfig.adminUi.waHandoverTemplate || draftConfig.adminUi.handoverWaTemplate || '';
+    if ($('editAdminFhOrderTpl')) {
+      $('editAdminFhOrderTpl').value = draftConfig.adminUi.fhOrderTemplate || window.ARCHIE_DEFAULT_CMS.adminUi.fhOrderTemplate || '';
+    }
+    const cwCont = $('cmsCopywritingList');
+    if (cwCont) {
+      if (!Array.isArray(draftConfig.adminUi.copywritingTemplates) || draftConfig.adminUi.copywritingTemplates.length === 0) {
+        draftConfig.adminUi.copywritingTemplates = deepClone(window.ARCHIE_DEFAULT_CMS.adminUi.copywritingTemplates || []);
+      }
+      const cws = draftConfig.adminUi.copywritingTemplates;
+      cwCont.innerHTML = cws.map((cw, idx) => `
+        <div class="p-3.5 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] space-y-2">
+          <div class="flex items-center gap-2">
+            <input data-cw-field="${idx}:icon" type="text" value="${escapeHtml(cw.icon || '✨')}" class="w-11 px-2 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-center text-xs" />
+            <input data-cw-field="${idx}:label" type="text" value="${escapeHtml(cw.label || '')}" placeholder="Nama Tombol Occasion (misal: Sambutan / Reminder H-1)" class="flex-1 px-3 py-1.5 rounded-xl border border-[#FCD2E3] bg-white text-xs font-extrabold text-[#4A2036]" />
+            <button type="button" data-del-cw="${idx}" class="px-2.5 py-1.5 rounded-xl bg-[#FFE0EC] text-[#D83162] text-xs font-bold cursor-pointer">✕</button>
+          </div>
+          <textarea data-cw-field="${idx}:template" rows="3" placeholder="Tulis template copy-writing di sini... Variabel: {greeting_wib}, {time_wib}, {customer_name}, {order_code}, {product_name}, {plan_label}, {total_price}, {customer_input}, {warranty_url}, {pin}, {exp_date}" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs font-mono text-[#4A2036]">${escapeHtml(cw.template || '')}</textarea>
+        </div>
+      `).join('');
+      cwCont.querySelectorAll('[data-cw-field]').forEach((el) => {
+        el.addEventListener('input', () => {
+          const parts = el.getAttribute('data-cw-field').split(':');
+          draftConfig.adminUi.copywritingTemplates[Number(parts[0])][parts[1]] = el.value;
+          updateDirtyIndicator();
+        });
+      });
+      cwCont.querySelectorAll('[data-del-cw]').forEach((el) => {
+        el.addEventListener('click', () => {
+          draftConfig.adminUi.copywritingTemplates.splice(Number(el.getAttribute('data-del-cw')), 1);
+          renderAdminEditor();
+          updateDirtyIndicator();
+        });
+      });
+    }
     renderCostGrid();
   }
 
@@ -1699,11 +2030,21 @@
     $('cmsDeleteAppBtn').addEventListener('click', () => {
       const idx = draftConfig.catalog.findIndex((a) => a.id === selectedAppId);
       if (idx === -1) return;
-      if (!confirm('Hapus aplikasi "' + draftConfig.catalog[idx].name + '" dari draft?')) return;
+      const targetApp = draftConfig.catalog[idx];
+      if (!confirm('Hapus aplikasi "' + targetApp.name + '" dari katalog? (Tenang, bisa dibalikin lewat Riwayat App Dihapus)')) return;
+      if (!Array.isArray(draftConfig.deletedAppsHistory)) draftConfig.deletedAppsHistory = [];
+      draftConfig.deletedAppsHistory.unshift({
+        deletedAt: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
+        app: deepClone(targetApp)
+      });
+      if (draftConfig.deletedAppsHistory.length > 50) draftConfig.deletedAppsHistory = draftConfig.deletedAppsHistory.slice(0, 50);
       draftConfig.catalog.splice(idx, 1);
       selectedAppId = draftConfig.catalog[0] ? draftConfig.catalog[0].id : null;
       renderAll();
+      if (typeof renderDeletedAppsHistory === 'function') renderDeletedAppsHistory();
+      if (typeof renderInstantPricingTab === 'function') renderInstantPricingTab();
       updateDirtyIndicator();
+      showToast('🗑️ "' + targetApp.name + '" dipindah ke Riwayat App Dihapus (bisa dibalikin kapan saja).');
     });
 
     const bindAppField = (elId, prop, rerenderList) => {
@@ -1772,6 +2113,22 @@
     document.querySelectorAll('.wa-chip').forEach((chip) => {
       chip.addEventListener('click', () => insertAtCursor($('editWaTemplate'), chip.getAttribute('data-var')));
     });
+    if ($('editWaHelpBtnText')) {
+      $('editWaHelpBtnText').addEventListener('input', () => {
+        draftConfig.customerUi.waHelpBtnText = $('editWaHelpBtnText').value;
+        updateDirtyIndicator();
+      });
+    }
+    if ($('editWaHelpTemplate')) {
+      $('editWaHelpTemplate').addEventListener('input', () => {
+        draftConfig.customerUi.waHelpTemplate = $('editWaHelpTemplate').value;
+        updateWaHelpPreview();
+        updateDirtyIndicator();
+      });
+    }
+    document.querySelectorAll('.wa-help-chip').forEach((chip) => {
+      chip.addEventListener('click', () => insertAtCursor($('editWaHelpTemplate'), chip.getAttribute('data-var')));
+    });
 
     $('cmsAddFhBtn').addEventListener('click', () => {
       draftConfig.adminUi.fhDirectory.push({ name: '', contact: '', specialty: '', note: '' });
@@ -1786,6 +2143,50 @@
     document.querySelectorAll('.ho-chip').forEach((chip) => {
       chip.addEventListener('click', () => insertAtCursor($('editAdminHandoverTpl'), chip.getAttribute('data-var')));
     });
+
+    // Customer Data Input Pop-up Text Editors
+    [
+      ['editCustDataTitle', 'custDataModalTitle'],
+      ['editCustDataSub', 'custDataModalSub'],
+      ['editCustDataNote', 'custDataModalNote'],
+      ['editCustDataGmailHint', 'custDataGmailHint'],
+      ['editCustDataGmailPassHint', 'custDataGmailPassHint'],
+      ['editCustDataPhoneHint', 'custDataPhoneHint'],
+      ['editCustDataDeviceHint', 'custDataDeviceHint']
+    ].forEach(([elId, key]) => {
+      if ($(elId)) {
+        $(elId).addEventListener('input', () => {
+          draftConfig.customerUi[key] = $(elId).value;
+          updateDirtyIndicator();
+        });
+      }
+    });
+
+    // FH Order Converter Template (Admin Slide 2)
+    if ($('editAdminFhOrderTpl')) {
+      $('editAdminFhOrderTpl').addEventListener('input', () => {
+        draftConfig.adminUi.fhOrderTemplate = $('editAdminFhOrderTpl').value;
+        updateDirtyIndicator();
+      });
+    }
+    document.querySelectorAll('.fho-chip').forEach((chip) => {
+      chip.addEventListener('click', () => insertAtCursor($('editAdminFhOrderTpl'), chip.getAttribute('data-var')));
+    });
+
+    // Multi-Occasion Copy-Writing CRUD (Admin Slide 4)
+    if ($('cmsAddCopywritingBtn')) {
+      $('cmsAddCopywritingBtn').addEventListener('click', () => {
+        if (!Array.isArray(draftConfig.adminUi.copywritingTemplates)) draftConfig.adminUi.copywritingTemplates = [];
+        draftConfig.adminUi.copywritingTemplates.push({
+          id: 'occ_' + Date.now(),
+          icon: '✨',
+          label: 'Occasion Baru',
+          template: 'Halo {greeting_wib} Kak {customer_name}! 🌸 '
+        });
+        renderAdminEditor();
+        updateDirtyIndicator();
+      });
+    }
 
     $('cmsDiscardBtn').addEventListener('click', () => {
       if (!confirm('Batalkan semua perubahan yang belum diterbitkan?')) return;
@@ -2429,6 +2830,324 @@
           }
         }
       });
+    })();
+  </script>
+
+  <script>
+    // =========================================================================
+    // TAB 7: HARGA INSTAN, FLASH SALE & GEBRAKAN + RIWAYAT APP DIHAPUS + CROSS-WEB NAV
+    // =========================================================================
+    (function initInstantPricingDeletedHistoryAndNav() {
+      if (window.__ARCHIE_INSTANT_PRICING_INIT__) return;
+      window.__ARCHIE_INSTANT_PRICING_INIT__ = true;
+      window.name = 'archie_web_editor';
+
+      var previousCatalogSnapshot = null;
+
+      function getWebUrl(webKey) {
+        var urls = (draftConfig && draftConfig.webUrls) ? draftConfig.webUrls : ((liveConfig && liveConfig.webUrls) || {});
+        if (urls && urls[webKey] && String(urls[webKey]).trim()) return String(urls[webKey]).trim();
+        var isFile = location.protocol === 'file:';
+        var mapFile = { customer: 'Customer.html', garansi: 'index.html', admin: 'Admin.html', editor: 'Editor.html' };
+        var mapRoute = { customer: '/customer', garansi: '/garansi', admin: '/admin', editor: '/editor' };
+        return isFile ? (mapFile[webKey] || 'index.html') : (mapRoute[webKey] || '/');
+      }
+
+      window.openArchieWeb = function(webKey) {
+        var targetName = 'archie_web_' + webKey;
+        var url = getWebUrl(webKey);
+        var w = window.open(url, targetName);
+        if (w) { try { w.focus(); } catch (_) {} }
+      };
+
+      document.addEventListener('click', function(e) {
+        var navEl = e.target && e.target.closest ? e.target.closest('[data-archie-nav]') : null;
+        if (!navEl) return;
+        e.preventDefault();
+        window.openArchieWeb(navEl.getAttribute('data-archie-nav'));
+      });
+
+      function safeFloor5(floorNum, fhCostNum) {
+        var baseFloor = Number(floorNum || 0);
+        var fh = Number(fhCostNum || 0);
+        if (baseFloor > 0) {
+          var rawMin = Math.ceil((baseFloor / 0.95) / 100) * 100;
+          if (Math.round(rawMin * 0.95) < baseFloor) rawMin += 100;
+          return Math.max(rawMin, fh > 0 ? Math.ceil((fh + 1500) / 100) * 100 : rawMin);
+        }
+        if (fh > 0) return Math.ceil(((fh * 1.25) / 0.95) / 100) * 100;
+        return 0;
+      }
+
+      function computePresetPrice(pl, app, mode) {
+        var floor = Number(pl.minAgreed || (String(pl.label || '').toLowerCase().includes('1 bulan') ? app.minAgreed : 0) || 0);
+        var fh = Number(pl.fhCost || app.fhCost || 0);
+        var cur = Number(pl.price || 0);
+        var minSafe = safeFloor5(floor, fh);
+        if (minSafe <= 0) minSafe = cur > 0 ? Math.ceil((cur * 0.95) / 100) * 100 : 10000;
+
+        if (mode === 'mepet') return minSafe;
+        if (mode === 'ideal') {
+          var idealRaw = Math.round((minSafe * 1.14) / 500) * 500;
+          return Math.max(minSafe + 500, idealRaw);
+        }
+        if (mode === 'max') {
+          var maxRaw = Math.round((minSafe * 1.24) / 500) * 500;
+          return Math.max(minSafe + 1000, maxRaw);
+        }
+        return cur;
+      }
+
+      function applyBulkPreset(mode) {
+        if (!draftConfig || !Array.isArray(draftConfig.catalog)) return;
+        previousCatalogSnapshot = JSON.parse(JSON.stringify(draftConfig.catalog));
+        var changedCount = 0;
+        draftConfig.catalog.forEach(function(app) {
+          (app.plans || []).forEach(function(pl) {
+            var nextP = computePresetPrice(pl, app, mode);
+            if (nextP > 0 && nextP !== Number(pl.price || 0)) {
+              pl.price = nextP;
+              changedCount++;
+            }
+          });
+        });
+        var undoBtn = document.getElementById('btnUndoInstantPrice');
+        if (undoBtn) undoBtn.classList.remove('hidden');
+        if (typeof renderAll === 'function') renderAll();
+        renderInstantPricingTab();
+        if (typeof updateDirtyIndicator === 'function') updateDirtyIndicator();
+        var modeName = mode === 'mepet' ? 'Harga Mepet Floor (Aman 5%)' : (mode === 'ideal' ? 'Harga Ideal (Profit Sehat)' : 'Harga Margin Maksimal');
+        if (typeof showToast === 'function') showToast('⚡ ' + modeName + ' diterapkan ke ' + changedCount + ' varian paket! Klik Publish untuk live.');
+      }
+
+      window.renderDeletedAppsHistory = function() {
+        var listEl = document.getElementById('deletedAppsHistoryList');
+        var cntEl = document.getElementById('deletedAppsCount');
+        if (!listEl || !cntEl) return;
+        var hist = (draftConfig && Array.isArray(draftConfig.deletedAppsHistory)) ? draftConfig.deletedAppsHistory : [];
+        cntEl.textContent = String(hist.length);
+        if (hist.length === 0) {
+          listEl.innerHTML = '<div class="text-[10.5px] text-[#8E536D] italic text-center py-2">Belum ada aplikasi yang dihapus.</div>';
+          return;
+        }
+        listEl.innerHTML = hist.map(function(item, idx) {
+          var a = item.app || {};
+          return '<div class="p-2 rounded-xl bg-[#FFF5F8] border border-[#FCD2E3] flex items-center justify-between gap-2">' +
+            '<div class="min-w-0">' +
+              '<div class="text-[11px] font-extrabold text-[#4A2036] truncate">' + (a.badge || '✨') + ' ' + (a.name || 'App') + '</div>' +
+              '<div class="text-[9.5px] text-[#8E536D]">Dihapus: ' + (item.deletedAt || '-') + ' • ' + ((a.plans || []).length) + ' paket</div>' +
+            '</div>' +
+            '<div class="flex items-center gap-1 shrink-0">' +
+              '<button type="button" data-restore-app-idx="' + idx + '" class="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black cursor-pointer">♻️ Balikin</button>' +
+              '<button type="button" data-purge-app-idx="' + idx + '" title="Hapus permanen" class="px-1.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 text-[10px] font-black cursor-pointer">✕</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      };
+
+      window.renderInstantPricingTab = function() {
+        if (!draftConfig || !Array.isArray(draftConfig.catalog)) return;
+        var summaryEl = document.getElementById('instantPricingSummaryBanner');
+        var fsListEl = document.getElementById('flashSaleRecList');
+        var stratEl = document.getElementById('pricingStrategyCards');
+
+        var totalPlans = 0, belowFloorPlans = [], flashCandidates = [], heroApps = [], bundleApps = [];
+        draftConfig.catalog.forEach(function(app) {
+          (app.plans || []).forEach(function(pl, pIdx) {
+            totalPlans++;
+            var cur = Number(pl.price || 0);
+            var floor = Number(pl.minAgreed || (String(pl.label || '').toLowerCase().includes('1 bulan') ? app.minAgreed : 0) || 0);
+            var fh = Number(pl.fhCost || app.fhCost || 0);
+            var minSafe = safeFloor5(floor, fh);
+            var netAt5 = Math.round(cur * 0.95);
+            if (floor > 0 && netAt5 < floor) {
+              belowFloorPlans.push({ app: app, pl: pl, pIdx: pIdx, cur: cur, floor: floor, minSafe: minSafe });
+            }
+            if (cur > minSafe && minSafe > 0) {
+              var room = cur - minSafe;
+              var roomPct = Math.round((room / cur) * 100);
+              if (room >= 1500 && roomPct >= 8) {
+                flashCandidates.push({ app: app, pl: pl, pIdx: pIdx, cur: cur, flashPrice: minSafe, room: room, roomPct: roomPct, floor: floor });
+              }
+            }
+            if (cur > 0 && cur <= 16000 && (cur - fh) >= 3500) {
+              heroApps.push({ app: app, pl: pl, cur: cur, profit: cur - fh });
+            }
+            if (fh > 0 && (cur - fh) >= 10000) {
+              bundleApps.push({ app: app, pl: pl, cur: cur, profit: cur - fh });
+            }
+          });
+        });
+
+        if (summaryEl) {
+          summaryEl.innerHTML = '📊 Status Katalog Aktif: <b>' + draftConfig.catalog.length + ' aplikasi</b> (' + totalPlans + ' varian paket) • ' +
+            (belowFloorPlans.length > 0
+              ? ('<span class="text-rose-700">⚠️ ' + belowFloorPlans.length + ' paket berisiko di bawah Floor jika kena Gacha 5%</span>')
+              : '<span class="text-emerald-700">✅ 100% varian aman di atas Floor Kesepakatan walau kena Gacha 5%!</span>');
+        }
+
+        flashCandidates.sort(function(a, b) { return b.roomPct - a.roomPct || b.room - a.room; });
+        if (fsListEl) {
+          if (flashCandidates.length === 0) {
+            fsListEl.innerHTML = '<div class="p-4 rounded-2xl bg-[#FFF5F8] border border-dashed border-[#FCD2E3] text-xs text-[#6D3B53] text-center">Semua harga sudah sangat mepet dengan Floor 5%. Naikkan dulu ke "Harga Ideal" jika ingin menjalankan promo Flash Sale yang menarik.</div>';
+          } else {
+            fsListEl.innerHTML = flashCandidates.slice(0, 12).map(function(c, i) {
+              return '<div class="p-3 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] flex flex-wrap items-center justify-between gap-2">' +
+                '<div class="min-w-0 flex-1">' +
+                  '<div class="text-xs font-black text-[#4A2036] truncate">#' + (i + 1) + ' ' + (c.app.badge || '✨') + ' ' + c.app.name + ' <span class="text-[#8E536D] font-bold">(' + (c.pl.label || '') + ')</span></div>' +
+                  '<div class="text-[11px] font-bold text-[#6D3B53] mt-0.5">Sekarang: <b>Rp ' + c.cur.toLocaleString('id-ID') + '</b> → Rekomendasi Flash Sale: <b class="text-[#D83162]">Rp ' + c.flashPrice.toLocaleString('id-ID') + '</b> <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-black">Hemat ' + c.roomPct + '% (Aman Floor!)</span></div>' +
+                '</div>' +
+                '<button type="button" data-apply-flash-app="' + c.app.id + '" data-apply-flash-pidx="' + c.pIdx + '" data-apply-flash-price="' + c.flashPrice + '" class="px-3 py-1.5 rounded-xl bg-[#D83162] hover:bg-[#B82555] text-white text-[10.5px] font-black cursor-pointer shrink-0">⚡ Pasang Flash Sale</button>' +
+              '</div>';
+            }).join('');
+          }
+        }
+
+        if (stratEl) {
+          var cards = [];
+          if (belowFloorPlans.length > 0) {
+            cards.push(
+              '<div class="p-3.5 rounded-2xl bg-rose-50 border-2 border-rose-200 space-y-2">' +
+                '<div class="text-xs font-black text-rose-800">⚠️ Audit Floor: ' + belowFloorPlans.length + ' Paket Berisiko Bocor di 5%</div>' +
+                '<p class="text-[11px] text-rose-900/80">Jika customer dapat Gacha 5%, harga paket ini jatuh di bawah Floor Kesepakatan 2026.</p>' +
+                '<button id="btnAutoFixBelowFloor" type="button" class="w-full py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black cursor-pointer">🔧 Auto-Fix ' + belowFloorPlans.length + ' Paket ke Aman 5%</button>' +
+              '</div>'
+            );
+          }
+          heroApps.sort(function(a, b) { return a.cur - b.cur; });
+          cards.push(
+            '<div class="p-3.5 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] space-y-1.5">' +
+              '<div class="text-xs font-black text-amber-900">🎯 Gebrakan Trafik (Hero Murah &lt; Rp 16rb)</div>' +
+              '<p class="text-[11px] text-amber-900/80">Cocok dijadikan pancingan di pinned tweet/story biar customer baru mau coba checkout pertama:</p>' +
+              '<div class="text-[11px] font-bold text-[#4A2036]">' + (heroApps.slice(0, 4).map(function(h) { return '• ' + h.app.name + ' (' + h.pl.label + ') — Rp ' + h.cur.toLocaleString('id-ID'); }).join('<br>') || 'Belum ada kandidat di bawah Rp 16.000') + '</div>' +
+            '</div>'
+          );
+          bundleApps.sort(function(a, b) { return b.profit - a.profit; });
+          cards.push(
+            '<div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-1.5">' +
+              '<div class="text-xs font-black text-emerald-900">💎 Gebrakan Bundle / Profit Booster</div>' +
+              '<p class="text-[11px] text-emerald-900/80">Margin tebal (profit &ge; Rp 10rb/order), aman dikasih bonus bundling 2 aplikasi atau gratis perpanjangan hari:</p>' +
+              '<div class="text-[11px] font-bold text-[#4A2036]">' + (bundleApps.slice(0, 4).map(function(b) { return '• ' + b.app.name + ' (' + b.pl.label + ') — Margin ~Rp ' + b.profit.toLocaleString('id-ID'); }).join('<br>') || 'Sesuaikan modal FH di tab Katalog untuk melihat rekomendasi bundle.') + '</div>' +
+            '</div>'
+          );
+          stratEl.innerHTML = cards.join('');
+        }
+
+        var urls = (draftConfig && draftConfig.webUrls) ? draftConfig.webUrls : {};
+        if (document.getElementById('editWebUrlCustomer')) document.getElementById('editWebUrlCustomer').value = urls.customer || '';
+        if (document.getElementById('editWebUrlGaransi')) document.getElementById('editWebUrlGaransi').value = urls.garansi || '';
+        if (document.getElementById('editWebUrlAdmin')) document.getElementById('editWebUrlAdmin').value = urls.admin || '';
+        if (document.getElementById('editWebUrlEditor')) document.getElementById('editWebUrlEditor').value = urls.editor || '';
+      };
+
+      document.addEventListener('click', function(e) {
+        if (!e.target || !e.target.closest) return;
+        if (e.target.closest('#btnApplyPriceMepet')) {
+          if (confirm('Ubah SEMUA harga di katalog ke Harga Mepet Floor (tetap aman di atas kesepakatan walau Gacha 5%)?')) applyBulkPreset('mepet');
+        } else if (e.target.closest('#btnApplyPriceIdeal')) {
+          if (confirm('Ubah SEMUA harga di katalog ke Harga Ideal (margin sehat & kompetitif)?')) applyBulkPreset('ideal');
+        } else if (e.target.closest('#btnApplyPriceMax')) {
+          if (confirm('Ubah SEMUA harga di katalog ke Harga Margin Maksimal (peak season)?')) applyBulkPreset('max');
+        } else if (e.target.closest('#btnUndoInstantPrice')) {
+          if (!previousCatalogSnapshot) return;
+          draftConfig.catalog = JSON.parse(JSON.stringify(previousCatalogSnapshot));
+          previousCatalogSnapshot = null;
+          document.getElementById('btnUndoInstantPrice').classList.add('hidden');
+          if (typeof renderAll === 'function') renderAll();
+          renderInstantPricingTab();
+          if (typeof updateDirtyIndicator === 'function') updateDirtyIndicator();
+          if (typeof showToast === 'function') showToast('↩️ Harga katalog berhasil dikembalikan ke posisi sebelumnya.');
+        } else if (e.target.closest('#btnRefreshFlashSaleRecs')) {
+          renderInstantPricingTab();
+          if (typeof showToast === 'function') showToast('🔄 Analisis Flash Sale & Gebrakan diperbarui!');
+        } else if (e.target.closest('#btnAutoFixBelowFloor')) {
+          previousCatalogSnapshot = JSON.parse(JSON.stringify(draftConfig.catalog));
+          var fixed = 0;
+          draftConfig.catalog.forEach(function(app) {
+            (app.plans || []).forEach(function(pl) {
+              var floor = Number(pl.minAgreed || (String(pl.label || '').toLowerCase().includes('1 bulan') ? app.minAgreed : 0) || 0);
+              var fh = Number(pl.fhCost || app.fhCost || 0);
+              if (floor > 0 && Math.round(Number(pl.price || 0) * 0.95) < floor) {
+                pl.price = safeFloor5(floor, fh);
+                fixed++;
+              }
+            });
+          });
+          var undoBtn = document.getElementById('btnUndoInstantPrice');
+          if (undoBtn) undoBtn.classList.remove('hidden');
+          if (typeof renderAll === 'function') renderAll();
+          renderInstantPricingTab();
+          if (typeof updateDirtyIndicator === 'function') updateDirtyIndicator();
+          if (typeof showToast === 'function') showToast('🔧 ' + fixed + ' paket berhasil diamankan ke atas Floor 5%!');
+        } else if (e.target.closest('[data-apply-flash-app]')) {
+          var b = e.target.closest('[data-apply-flash-app]');
+          var appId = b.getAttribute('data-apply-flash-app');
+          var pIdx = Number(b.getAttribute('data-apply-flash-pidx'));
+          var fPrice = Number(b.getAttribute('data-apply-flash-price'));
+          var appObj = draftConfig.catalog.find(function(a) { return a.id === appId; });
+          if (appObj && appObj.plans && appObj.plans[pIdx]) {
+            previousCatalogSnapshot = JSON.parse(JSON.stringify(draftConfig.catalog));
+            appObj.plans[pIdx].price = fPrice;
+            var undoBtn2 = document.getElementById('btnUndoInstantPrice');
+            if (undoBtn2) undoBtn2.classList.remove('hidden');
+            if (typeof renderAll === 'function') renderAll();
+            renderInstantPricingTab();
+            if (typeof updateDirtyIndicator === 'function') updateDirtyIndicator();
+            if (typeof showToast === 'function') showToast('⚡ Flash Sale dipasang untuk ' + appObj.name + ' → Rp ' + fPrice.toLocaleString('id-ID') + '!');
+          }
+        } else if (e.target.closest('#toggleDeletedAppsBtn')) {
+          var list = document.getElementById('deletedAppsHistoryList');
+          var btn = document.getElementById('toggleDeletedAppsBtn');
+          if (list && btn) {
+            var willShow = list.classList.contains('hidden');
+            list.classList.toggle('hidden');
+            btn.textContent = willShow ? 'Sembunyikan' : 'Tampilkan';
+          }
+        } else if (e.target.closest('[data-restore-app-idx]')) {
+          var rIdx = Number(e.target.closest('[data-restore-app-idx]').getAttribute('data-restore-app-idx'));
+          var hist = draftConfig.deletedAppsHistory || [];
+          if (hist[rIdx] && hist[rIdx].app) {
+            var restored = deepClone(hist[rIdx].app);
+            draftConfig.catalog.unshift(restored);
+            hist.splice(rIdx, 1);
+            selectedAppId = restored.id;
+            if (typeof renderAll === 'function') renderAll();
+            renderDeletedAppsHistory();
+            renderInstantPricingTab();
+            if (typeof updateDirtyIndicator === 'function') updateDirtyIndicator();
+            if (typeof showToast === 'function') showToast('♻️ "' + restored.name + '" berhasil dikembalikan ke katalog!');
+          }
+        } else if (e.target.closest('[data-purge-app-idx]')) {
+          var dIdx = Number(e.target.closest('[data-purge-app-idx]').getAttribute('data-purge-app-idx'));
+          if (confirm('Hapus permanen dari riwayat?')) {
+            draftConfig.deletedAppsHistory.splice(dIdx, 1);
+            renderDeletedAppsHistory();
+            if (typeof updateDirtyIndicator === 'function') updateDirtyIndicator();
+          }
+        } else if (e.target.closest('[data-main-tab="pricing_instant"]')) {
+          setTimeout(renderInstantPricingTab, 40);
+        }
+      });
+
+      [
+        ['editWebUrlCustomer', 'customer'],
+        ['editWebUrlGaransi', 'garansi'],
+        ['editWebUrlAdmin', 'admin'],
+        ['editWebUrlEditor', 'editor']
+      ].forEach(function(pair) {
+        var el = document.getElementById(pair[0]);
+        if (!el) return;
+        el.addEventListener('input', function() {
+          if (!draftConfig.webUrls) draftConfig.webUrls = {};
+          draftConfig.webUrls[pair[1]] = el.value.trim();
+          if (typeof updateDirtyIndicator === 'function') updateDirtyIndicator();
+        });
+      });
+
+      setTimeout(function() {
+        renderDeletedAppsHistory();
+        renderInstantPricingTab();
+      }, 650);
     })();
   </script>
 
