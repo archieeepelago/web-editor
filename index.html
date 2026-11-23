@@ -21,24 +21,24 @@
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     button, a, input, select, textarea { touch-action: manipulation; }
     body { padding-bottom: max(88px, env(safe-area-inset-bottom, 0px)); }
-    /* Multi-column 2-3 grid vibe di HP (dan otomatis full Mac UI saat Request Desktop Website di Safari!) */
+    /* Placement HP yang lega, rapi, & mudah dibaca (Request Desktop Website tetap full Mac UI!) */
     @media (max-width: 767px) {
-      header > div:first-child { padding: 8px 10px !important; gap: 6px !important; }
+      header > div:first-child { padding: 8px 12px !important; gap: 6px !important; }
+      #cmsLastUpdatedLabel { display: none !important; }
       header > div:first-child > div:last-child { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; width: 100%; padding-bottom: 2px; scrollbar-width: none; }
       header > div:first-child > div:last-child::-webkit-scrollbar { display: none; }
       header > div:first-child > div:last-child > * { flex-shrink: 0 !important; white-space: nowrap !important; padding: 6px 10px !important; font-size: 11px !important; }
-      header > div:last-child { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; padding: 0 10px 8px !important; scrollbar-width: none; }
+      header > div:last-child { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; padding: 0 12px 8px !important; scrollbar-width: none; }
       header > div:last-child::-webkit-scrollbar { display: none; }
       header > div:last-child > button { flex-shrink: 0 !important; padding: 7px 11px !important; font-size: 11px !important; }
-      main { padding: 10px !important; }
-      main .grid.grid-cols-1.md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; }
-      main .grid.grid-cols-1.sm\:grid-cols-2, main .grid.grid-cols-1.md\:grid-cols-2, main .grid.grid-cols-1.lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
-      #cmsAppList { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
+      main { padding: 12px !important; }
+      #cmsAppList { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
       #cmsAppList > * { margin-top: 0 !important; }
-      #flashSaleRecList { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
-      #flashSaleRecList > * { margin-top: 0 !important; }
-      #visionaryStrategiesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
-      #customMassImpactCards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
+      #visionaryStrategiesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+      #customMassImpactCards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+      #customMassTierCards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+      #flashSaleRecList { display: flex !important; flex-direction: column !important; gap: 8px !important; }
+      div.fixed.bottom-4 { padding: 8px 12px !important; border-radius: 16px !important; bottom: 8px !important; }
     }
   </style>
 </head>
