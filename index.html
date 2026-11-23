@@ -1230,6 +1230,7 @@
       saveBtnText: "📸 Simpan Gambar Struk (Ke Galeri HP)"
     },
     adminUi: {
+      templateSchemaVersion: 2,
       fhDirectory: [],
       fhOrderTemplate:
         "Selamatt {greeting_wib}, Kakk {fh_name}\n" +
@@ -1336,6 +1337,14 @@
         }
       }
     });
+    if (out && out.adminUi && base && base.adminUi && Number((over && over.adminUi && over.adminUi.templateSchemaVersion) || 0) < 2) {
+      out.adminUi.templateSchemaVersion = 2;
+      out.adminUi.fhOrderTemplate = base.adminUi.fhOrderTemplate;
+      out.adminUi.copywritingTemplates = JSON.parse(JSON.stringify(base.adminUi.copywritingTemplates || []));
+      out.adminUi.waHandoverTemplate = base.adminUi.waHandoverTemplate;
+      out.adminUi.quickChatPendingTpl = base.adminUi.quickChatPendingTpl;
+      out.adminUi.quickChatPaidTpl = base.adminUi.quickChatPaidTpl;
+    }
     return out;
   }
 
@@ -2518,6 +2527,7 @@
         ].concat(historySnapshots).slice(0, 15);
 
         const nowIso = new Date().toISOString();
+        if (draftConfig && draftConfig.adminUi) draftConfig.adminUi.templateSchemaVersion = 2;
         const { error } = await sb.from('store_cms_config').upsert({
           id: 'live',
           config_json: draftConfig,
