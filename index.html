@@ -19,16 +19,24 @@
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     button, a, input, select, textarea { touch-action: manipulation; }
     body { padding-bottom: max(88px, env(safe-area-inset-bottom, 0px)); }
-    /* Jalan tengah Mac-like compact UI di HP (dan otomatis full Mac UI saat Request Desktop Website di Safari!) */
+    /* Multi-column 2-3 grid vibe di HP (dan otomatis full Mac UI saat Request Desktop Website di Safari!) */
     @media (max-width: 767px) {
-      header > div:first-child { padding: 8px 12px !important; gap: 6px !important; }
+      header > div:first-child { padding: 8px 10px !important; gap: 6px !important; }
       header > div:first-child > div:last-child { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; width: 100%; padding-bottom: 2px; scrollbar-width: none; }
       header > div:first-child > div:last-child::-webkit-scrollbar { display: none; }
       header > div:first-child > div:last-child > * { flex-shrink: 0 !important; white-space: nowrap !important; padding: 6px 10px !important; font-size: 11px !important; }
-      header > div:last-child { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; padding: 0 12px 8px !important; scrollbar-width: none; }
+      header > div:last-child { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; padding: 0 10px 8px !important; scrollbar-width: none; }
       header > div:last-child::-webkit-scrollbar { display: none; }
-      header > div:last-child > button { flex-shrink: 0 !important; padding: 7px 12px !important; font-size: 11.5px !important; }
-      main { padding: 12px !important; }
+      header > div:last-child > button { flex-shrink: 0 !important; padding: 7px 11px !important; font-size: 11px !important; }
+      main { padding: 10px !important; }
+      main .grid.grid-cols-1.md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; }
+      main .grid.grid-cols-1.sm\:grid-cols-2, main .grid.grid-cols-1.md\:grid-cols-2, main .grid.grid-cols-1.lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+      #cmsAppList { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
+      #cmsAppList > * { margin-top: 0 !important; }
+      #flashSaleRecList { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+      #flashSaleRecList > * { margin-top: 0 !important; }
+      #visionaryStrategiesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
+      #customMassImpactCards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
     }
   </style>
 </head>
@@ -663,6 +671,159 @@
           </div>
         </div>
         <div id="instantPricingSummaryBanner" class="p-3 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] text-xs font-bold text-[#4A2036]"></div>
+      </div>
+
+      <!-- CUSTOM MASS PRICING STUDIO + 7 STRATEGI VISIONER + SIMULASI IMPACT (ALA TAB 6) -->
+      <div class="bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 sm:p-6 shadow-sm space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-[#4A2036]">🎛️ Custom Mass Pricing Studio &amp; 7 Strategi Visioner</h3>
+            <p class="text-xs text-[#6D3B53]">Atur persentase per durasi (undersell pendek → upsell panjang), pembulatan psikologis, atau klik 1 dari 7 strategi visioner — lihat ilustrasi impact profit &amp; keamanan Floor secara live sebelum diterapkan!</p>
+          </div>
+          <span id="customMassActiveStratBadge" class="px-3 py-1 rounded-full bg-[#FFE0EC] text-[#D83162] text-[11px] font-black">Mode: Custom Manual</span>
+        </div>
+
+        <!-- 7 STRATEGI VISIONER 1-KLIK -->
+        <div class="space-y-2">
+          <div class="text-[11px] font-black uppercase tracking-wider text-[#9B2358]">💡 7 Ide Strategi Mass Pricing Visioner (Klik untuk Muat &amp; Simulasikan Impact)</div>
+          <div id="visionaryStrategiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            <button type="button" data-vis-strat="decoy_upsell" class="text-left p-3 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4EE] border-2 border-[#FCD2E3] transition cursor-pointer space-y-1">
+              <div class="text-xs font-black text-[#D83162]">🪝 1. Decoy Bait &amp; Upsell</div>
+              <div class="text-[10.5px] font-semibold text-[#6D3B53] leading-snug">Harian/Mingguan mepet (0%–4%) buat tarik trafik, Bulanan +10%, Panjang +18%–22% buat panen cuan.</div>
+            </button>
+            <button type="button" data-vis-strat="charm_900" class="text-left p-3 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4EE] border-2 border-[#FCD2E3] transition cursor-pointer space-y-1">
+              <div class="text-xs font-black text-[#D83162]">🎯 2. Charm Pricing .900</div>
+              <div class="text-[10.5px] font-semibold text-[#6D3B53] leading-snug">Semua harga dibulatkan cantik ke akhiran <b>.900</b> (mis. 14.900, 26.900) biar terasa lebih murah tapi tetap aman Floor 5%.</div>
+            </button>
+            <button type="button" data-vis-strat="lockin_long" class="text-left p-3 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4EE] border-2 border-[#FCD2E3] transition cursor-pointer space-y-1">
+              <div class="text-xs font-black text-[#D83162]">💎 3. Lock-In Durasi Panjang</div>
+              <div class="text-[10.5px] font-semibold text-[#6D3B53] leading-snug">Bulanan dibuat +16%, 2–12 Bulan cuma +6%–9% supaya customer tergoda bayar paket panjang (cashflow gede di awal!).</div>
+            </button>
+            <button type="button" data-vis-strat="popular_war" class="text-left p-3 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4EE] border-2 border-[#FCD2E3] transition cursor-pointer space-y-1">
+              <div class="text-xs font-black text-[#D83162]">⚡ 4. Perang Harga Populer</div>
+              <div class="text-[10.5px] font-semibold text-[#6D3B53] leading-snug">Khusus kategori Populer/Streaming/AI diset super kompetitif (+2%), kategori lain tetap tebal (+15%).</div>
+            </button>
+            <button type="button" data-vis-strat="gacha_shield" class="text-left p-3 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4EE] border-2 border-[#FCD2E3] transition cursor-pointer space-y-1">
+              <div class="text-xs font-black text-[#D83162]">🛡️ 5. Tameng Gacha 5% Rata</div>
+              <div class="text-[10.5px] font-semibold text-[#6D3B53] leading-snug">Semua tier seragam +12% di atas Floor 5% (bulat Rp 500) — stabil harian, zero bocor, profit konsisten.</div>
+            </button>
+            <button type="button" data-vis-strat="payday_surge" class="text-left p-3 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4EE] border-2 border-[#FCD2E3] transition cursor-pointer space-y-1">
+              <div class="text-xs font-black text-[#D83162]">🎉 6. Payday / Weekend Surge</div>
+              <div class="text-[10.5px] font-semibold text-[#6D3B53] leading-snug">Naikkan +15% s/d +22% di seluruh tier saat tanggal gajian &amp; akhir pekan buat maksimalin margin.</div>
+            </button>
+            <button type="button" data-vis-strat="micro_viral" class="text-left p-3 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4EE] border-2 border-[#FCD2E3] transition cursor-pointer space-y-1">
+              <div class="text-xs font-black text-[#D83162]">🌱 7. Micro-Entry Viral</div>
+              <div class="text-[10.5px] font-semibold text-[#6D3B53] leading-snug">Harian &amp; 7 Hari 0% (super mepet +50/100) buat pancing first-time buyer Twitter/X, 1 Bulan+ tetap +14%.</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- KONTROL CUSTOM PARAMETER HARGA -->
+        <div class="p-4 rounded-2xl bg-[#FFF8FB] border border-[#FCD2E3] space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div>
+              <label class="block text-[10.5px] font-black text-[#6D3B53] mb-1">Basis Perhitungan</label>
+              <select id="cmBaseMode" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs font-bold text-[#4A2036]">
+                <option value="mepet">🔥 Harga Mepet Floor (+50/100)</option>
+                <option value="current">📦 Harga Katalog Sekarang</option>
+                <option value="ideal">✨ Harga Ideal (+14%)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10.5px] font-black text-[#6D3B53] mb-1">Filter Kategori Target</label>
+              <select id="cmCatFilter" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs font-bold text-[#4A2036]">
+                <option value="all">🌈 Semua Aplikasi</option>
+                <option value="populer">🔥 Populer / Streaming / AI</option>
+                <option value="niche">🎨 Editing / Musik / Lainnya</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10.5px] font-black text-[#6D3B53] mb-1">Pembulatan Harga</label>
+              <select id="cmRoundMode" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-white text-xs font-bold text-[#4A2036]">
+                <option value="50">Kelipatan Rp 50 (Super Mepet)</option>
+                <option value="100">Kelipatan Rp 100</option>
+                <option value="500" selected>Kelipatan Rp 500 (Rapi)</option>
+                <option value="900">Psikologis .900 (mis. 14.900)</option>
+                <option value="1000">Kelipatan Rp 1.000</option>
+              </select>
+            </div>
+            <div class="flex items-end">
+              <label class="w-full flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-[#FCD2E3] cursor-pointer select-none">
+                <input id="cmFloorGuard" type="checkbox" checked class="w-4 h-4 accent-[#D83162]" />
+                <span class="text-[11px] font-extrabold text-[#4A2036]">🔒 Kunci Aman Floor 5%</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- SLIDER / INPUT % PER TIER DURASI -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+            <div class="p-2.5 rounded-xl bg-white border border-[#FCD2E3] space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10.5px] font-black text-[#4A2036]">⏱️ Harian</span>
+                <span class="text-[9px] font-bold text-emerald-700">Rek: 0%</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input id="cmPctDaily" type="number" value="0" step="1" min="-20" max="100" class="w-full px-2 py-1 rounded-lg border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-black text-[#D83162] text-center" />
+                <span class="text-xs font-black text-[#6D3B53]">%</span>
+              </div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-[#FCD2E3] space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10.5px] font-black text-[#4A2036]">📅 Mingguan</span>
+                <span class="text-[9px] font-bold text-emerald-700">Rek: +4%</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input id="cmPctWeekly" type="number" value="4" step="1" min="-20" max="100" class="w-full px-2 py-1 rounded-lg border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-black text-[#D83162] text-center" />
+                <span class="text-xs font-black text-[#6D3B53]">%</span>
+              </div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-[#FCD2E3] space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10.5px] font-black text-[#4A2036]">🗓️ 1 Bulan</span>
+                <span class="text-[9px] font-bold text-emerald-700">Rek: +10%</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input id="cmPctMonthly" type="number" value="10" step="1" min="-20" max="100" class="w-full px-2 py-1 rounded-lg border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-black text-[#D83162] text-center" />
+                <span class="text-xs font-black text-[#6D3B53]">%</span>
+              </div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-[#FCD2E3] space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10.5px] font-black text-[#4A2036]">📆 2–6 Bulan</span>
+                <span class="text-[9px] font-bold text-emerald-700">Rek: +16%</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input id="cmPctMulti" type="number" value="16" step="1" min="-20" max="100" class="w-full px-2 py-1 rounded-lg border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-black text-[#D83162] text-center" />
+                <span class="text-xs font-black text-[#6D3B53]">%</span>
+              </div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-[#FCD2E3] space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10.5px] font-black text-[#4A2036]">👑 1 Tahun</span>
+                <span class="text-[9px] font-bold text-emerald-700">Rek: +22%</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input id="cmPctYearly" type="number" value="22" step="1" min="-20" max="100" class="w-full px-2 py-1 rounded-lg border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-black text-[#D83162] text-center" />
+                <span class="text-xs font-black text-[#6D3B53]">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ILUSTRASI IMPACT LIVE (ALA TAB 6) -->
+        <div class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="text-xs font-black text-[#4A2036]">📊 Ilustrasi Impact Live (Simulasi Sebelum Diterapkan)</div>
+            <button id="btnApplyCustomMassPricing" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D83162] to-[#FF5C8A] hover:opacity-95 text-white text-xs font-black shadow-md cursor-pointer">
+              🚀 Terapkan Custom Mass Pricing ke Katalog
+            </button>
+          </div>
+          <div id="customMassImpactCards" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+            <div id="customMassTierBars" class="lg:col-span-5 p-3.5 rounded-2xl bg-[#FFF8FB] border border-[#FCD2E3] space-y-2"></div>
+            <div id="customMassSampleTable" class="lg:col-span-7 p-3.5 rounded-2xl bg-[#FFF8FB] border border-[#FCD2E3] overflow-x-auto"></div>
+          </div>
+        </div>
       </div>
 
       <!-- REKOMENDASI FLASH SALE & GEBRAKAN HARGA -->
@@ -3345,6 +3506,247 @@
         img.onerror = function() { tryNextIcon(i + 1); };
         img.src = iconCandidates[i];
       })(0);
+
+      // =========================================================================
+      // CUSTOM MASS PRICING STUDIO + 7 STRATEGI VISIONER + SIMULASI IMPACT LIVE
+      // =========================================================================
+      function detectDurationTier(label) {
+        var s = String(label || '').toLowerCase();
+        if (/(1\s*tahun|12\s*bulan|365\s*hari|tahunan)/.test(s)) return 'yearly';
+        if (/(2\s*bulan|3\s*bulan|4\s*bulan|6\s*bulan|90\s*hari|180\s*hari)/.test(s)) return 'multi';
+        if (/(1\s*bulan|30\s*hari|28\s*hari|bulanan)/.test(s)) return 'monthly';
+        if (/(7\s*hari|14\s*hari|1\s*minggu|2\s*minggu|mingguan)/.test(s)) return 'weekly';
+        if (/(1\s*hari|2\s*hari|3\s*hari|24\s*jam|harian)/.test(s)) return 'daily';
+        return 'monthly';
+      }
+      function applyRoundingMode(val, roundMode) {
+        var v = Math.max(500, Math.round(Number(val || 0)));
+        if (roundMode === '900') {
+          var baseK = Math.floor(v / 1000) * 1000;
+          var cand = baseK + 900;
+          if (cand < v) cand += 1000;
+          return cand;
+        }
+        var step = Number(roundMode || 500) || 500;
+        return Math.ceil(v / step) * step;
+      }
+      function getCustomMassParams() {
+        var g = function(id, def) { var el = document.getElementById(id); return el ? el.value : def; };
+        var fg = document.getElementById('cmFloorGuard');
+        return {
+          baseMode: g('cmBaseMode', 'mepet'),
+          catFilter: g('cmCatFilter', 'all'),
+          roundMode: g('cmRoundMode', '500'),
+          floorGuard: fg ? !!fg.checked : true,
+          pct: {
+            daily: Number(g('cmPctDaily', 0) || 0),
+            weekly: Number(g('cmPctWeekly', 4) || 0),
+            monthly: Number(g('cmPctMonthly', 10) || 0),
+            multi: Number(g('cmPctMulti', 16) || 0),
+            yearly: Number(g('cmPctYearly', 22) || 0)
+          }
+        };
+      }
+      function appMatchesCatFilter(app, catFilter) {
+        if (catFilter === 'all') return true;
+        var c = String((app.cat || '') + ' ' + (app.subCat || '')).toLowerCase();
+        var isPop = /(populer|streaming|ai)/.test(c);
+        return catFilter === 'populer' ? isPop : !isPop;
+      }
+      function computeCustomPlanPrice(pl, app, params) {
+        var cur = Number(pl.price || 0);
+        if (cur <= 0) return cur;
+        if (!appMatchesCatFilter(app, params.catFilter)) return cur;
+        var floor = Number(pl.minAgreed || (String(pl.label || '').toLowerCase().indexOf('1 bulan') >= 0 ? app.minAgreed : 0) || 0);
+        var fh = Number(pl.fhCost || app.fhCost || 0);
+        var minSafe = safeFloor5(floor, fh);
+        var baseP = cur;
+        if (params.baseMode === 'mepet') baseP = minSafe > 0 ? minSafe : Math.max(2000, Math.ceil((cur * 0.90) / 50) * 50);
+        else if (params.baseMode === 'ideal') baseP = computePresetPrice(pl, app, 'ideal');
+        var tier = detectDurationTier(pl.label || pl.name || '');
+        var pct = Number((params.pct && params.pct[tier]) || 0);
+        var rawNext = baseP * (1 + pct / 100);
+        var nextP = applyRoundingMode(rawNext, params.roundMode);
+        if (params.floorGuard && minSafe > 0 && nextP < minSafe) {
+          nextP = applyRoundingMode(minSafe, params.roundMode);
+          if (Math.round(nextP * 0.95) < floor) nextP = minSafe;
+        }
+        return nextP;
+      }
+
+      window.renderCustomMassSimulation = function() {
+        var dc = getDraft();
+        var lc = getLive();
+        var catList = (dc && Array.isArray(dc.catalog)) ? dc.catalog : ((lc && Array.isArray(lc.catalog)) ? lc.catalog : []);
+        var cardsEl = document.getElementById('customMassImpactCards');
+        var barsEl = document.getElementById('customMassTierBars');
+        var tblEl = document.getElementById('customMassSampleTable');
+        if (!cardsEl || !barsEl || !tblEl || !catList.length) return;
+
+        var params = getCustomMassParams();
+        var totalPlans = 0, changedPlans = 0, safeCount = 0;
+        var sumOldP = 0, sumNewP = 0, sumOldProf = 0, sumNewProf = 0, sumNewProf5 = 0;
+        var tiers = {
+          daily: { lbl: '⏱️ Harian', cnt: 0, oldSum: 0, newSum: 0 },
+          weekly: { lbl: '📅 Mingguan', cnt: 0, oldSum: 0, newSum: 0 },
+          monthly: { lbl: '🗓️ 1 Bulan', cnt: 0, oldSum: 0, newSum: 0 },
+          multi: { lbl: '📆 2–6 Bulan', cnt: 0, oldSum: 0, newSum: 0 },
+          yearly: { lbl: '👑 1 Tahun', cnt: 0, oldSum: 0, newSum: 0 }
+        };
+        var samples = [];
+
+        catList.forEach(function(app) {
+          (app.plans || []).forEach(function(pl) {
+            var oldP = Number(pl.price || 0);
+            if (oldP <= 0) return;
+            totalPlans++;
+            var newP = computeCustomPlanPrice(pl, app, params);
+            if (newP !== oldP) changedPlans++;
+            var fh = Number(pl.fhCost || app.fhCost || Math.round(oldP * 0.62));
+            var floor = Number(pl.minAgreed || (String(pl.label || '').toLowerCase().indexOf('1 bulan') >= 0 ? app.minAgreed : 0) || 0);
+            var net5 = Math.round(newP * 0.95);
+            var isSafe = (floor <= 0) || (net5 >= floor);
+            if (isSafe) safeCount++;
+            sumOldP += oldP; sumNewP += newP;
+            sumOldProf += (oldP - fh); sumNewProf += (newP - fh); sumNewProf5 += (net5 - fh);
+            var tKey = detectDurationTier(pl.label || pl.name || '');
+            tiers[tKey].cnt++; tiers[tKey].oldSum += oldP; tiers[tKey].newSum += newP;
+            if (samples.length < 7 && (newP !== oldP || samples.length < 4)) {
+              samples.push({ app: app.name, badge: app.badge || '✨', label: pl.label || '', oldP: oldP, newP: newP, net5: net5, floor: floor, isSafe: isSafe });
+            }
+          });
+        });
+
+        var avgOldP = totalPlans ? Math.round(sumOldP / totalPlans) : 0;
+        var avgNewP = totalPlans ? Math.round(sumNewP / totalPlans) : 0;
+        var avgOldProf = totalPlans ? Math.round(sumOldProf / totalPlans) : 0;
+        var avgNewProf = totalPlans ? Math.round(sumNewProf / totalPlans) : 0;
+        var avgNewProf5 = totalPlans ? Math.round(sumNewProf5 / totalPlans) : 0;
+        var profDiff = avgNewProf - avgOldProf;
+        var safePct = totalPlans ? Math.round((safeCount / totalPlans) * 100) : 100;
+        var daily30Prof = avgNewProf * 30;
+        var monthly30Prof = daily30Prof * 30;
+
+        cardsEl.innerHTML =
+          '<div class="p-3 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3]">' +
+            '<div class="text-[10px] font-black uppercase text-[#9B2358]">Rata-Rata Harga</div>' +
+            '<div class="text-sm font-black text-[#4A2036] mt-0.5">Rp ' + avgNewP.toLocaleString('id-ID') + '</div>' +
+            '<div class="text-[10px] font-bold text-[#6D3B53]">Lama: Rp ' + avgOldP.toLocaleString('id-ID') + ' (' + changedPlans + ' berubah)</div>' +
+          '</div>' +
+          '<div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200">' +
+            '<div class="text-[10px] font-black uppercase text-emerald-800">Est. Profit / Order</div>' +
+            '<div class="text-sm font-black text-emerald-700 mt-0.5">Rp ' + avgNewProf.toLocaleString('id-ID') + '</div>' +
+            '<div class="text-[10px] font-bold text-emerald-800">' + (profDiff >= 0 ? '+' : '') + 'Rp ' + profDiff.toLocaleString('id-ID') + ' • Kena 5%: Rp ' + avgNewProf5.toLocaleString('id-ID') + '</div>' +
+          '</div>' +
+          '<div class="p-3 rounded-2xl bg-amber-50 border border-amber-200">' +
+            '<div class="text-[10px] font-black uppercase text-amber-800">Simulasi 30 Order/Hari</div>' +
+            '<div class="text-sm font-black text-amber-900 mt-0.5">Rp ' + daily30Prof.toLocaleString('id-ID') + '/hr</div>' +
+            '<div class="text-[10px] font-bold text-amber-800">≈ Rp ' + monthly30Prof.toLocaleString('id-ID') + '/bln</div>' +
+          '</div>' +
+          '<div class="p-3 rounded-2xl bg-white border border-[#FCD2E3]">' +
+            '<div class="flex items-center justify-between text-[10px] font-black text-[#4A2036]"><span>🛡️ Aman Floor 5%</span><span class="' + (safePct === 100 ? 'text-emerald-600' : 'text-rose-600') + '">' + safePct + '%</span></div>' +
+            '<div class="w-full h-2.5 rounded-full bg-rose-100 overflow-hidden mt-2"><div class="h-full ' + (safePct === 100 ? 'bg-emerald-500' : 'bg-amber-500') + '" style="width:' + safePct + '%"></div></div>' +
+            '<div class="text-[10px] font-bold text-[#6D3B53] mt-1">' + safeCount + '/' + totalPlans + ' paket lolos Floor</div>' +
+          '</div>';
+
+        var tierHtml = '<div class="text-[11px] font-black text-[#4A2036] mb-1.5">📈 Impact Harga Rata-Rata per Tier Durasi</div>';
+        ['daily', 'weekly', 'monthly', 'multi', 'yearly'].forEach(function(k) {
+          var t = tiers[k];
+          if (!t.cnt) return;
+          var oAvg = Math.round(t.oldSum / t.cnt);
+          var nAvg = Math.round(t.newSum / t.cnt);
+          var diffPct = oAvg > 0 ? Math.round(((nAvg - oAvg) / oAvg) * 100) : 0;
+          var maxBar = Math.max(oAvg, nAvg, 1);
+          var wOld = Math.max(12, Math.round((oAvg / maxBar) * 100));
+          var wNew = Math.max(12, Math.round((nAvg / maxBar) * 100));
+          tierHtml += '<div class="space-y-0.5">' +
+            '<div class="flex items-center justify-between text-[10px] font-bold text-[#4A2036]"><span>' + t.lbl + ' (' + t.cnt + ')</span><span class="' + (diffPct >= 0 ? 'text-emerald-700' : 'text-[#D83162]') + '">' + (diffPct >= 0 ? '+' : '') + diffPct + '% (Rp ' + nAvg.toLocaleString('id-ID') + ')</span></div>' +
+            '<div class="flex items-center gap-1"><div class="h-1.5 rounded-full bg-[#F3C6D8]" style="width:' + wOld + '%"></div></div>' +
+            '<div class="flex items-center gap-1"><div class="h-2 rounded-full bg-gradient-to-r from-[#D83162] to-[#FF5C8A]" style="width:' + wNew + '%"></div></div>' +
+          '</div>';
+        });
+        barsEl.innerHTML = tierHtml;
+
+        tblEl.innerHTML =
+          '<div class="text-[11px] font-black text-[#4A2036] mb-1.5">🔍 Preview Contoh Produk Nyata (Sebelum → Sesudah)</div>' +
+          '<table class="w-full text-left text-[10.5px]">' +
+            '<thead><tr class="border-b border-[#FCD2E3] text-[#8E536D]"><th class="py-1 pr-2">Produk</th><th class="py-1 pr-2">Lama</th><th class="py-1 pr-2">Baru</th><th class="py-1">Kena 5%</th></tr></thead>' +
+            '<tbody>' + samples.map(function(s) {
+              return '<tr class="border-b border-[#FFF0F6]">' +
+                '<td class="py-1 pr-2 font-extrabold text-[#4A2036] truncate max-w-[140px]">' + s.badge + ' ' + s.app + ' <span class="font-normal text-[#8E536D]">(' + s.label + ')</span></td>' +
+                '<td class="py-1 pr-2 text-[#8E536D] line-through">Rp ' + s.oldP.toLocaleString('id-ID') + '</td>' +
+                '<td class="py-1 pr-2 font-black text-[#D83162]">Rp ' + s.newP.toLocaleString('id-ID') + '</td>' +
+                '<td class="py-1 font-bold ' + (s.isSafe ? 'text-emerald-700' : 'text-rose-600') + '">Rp ' + s.net5.toLocaleString('id-ID') + (s.isSafe ? ' ✅' : ' ⚠️') + '</td>' +
+              '</tr>';
+            }).join('') + '</tbody></table>';
+      };
+
+      var VISIONARY_STRATS = {
+        decoy_upsell: { name: '🪝 1. Decoy Bait & Upsell', baseMode: 'mepet', catFilter: 'all', roundMode: '500', floorGuard: true, pct: [0, 4, 10, 16, 22] },
+        charm_900:    { name: '🎯 2. Charm Pricing .900', baseMode: 'mepet', catFilter: 'all', roundMode: '900', floorGuard: true, pct: [0, 5, 8, 12, 16] },
+        lockin_long:  { name: '💎 3. Lock-In Durasi Panjang', baseMode: 'mepet', catFilter: 'all', roundMode: '500', floorGuard: true, pct: [4, 10, 16, 9, 6] },
+        popular_war:  { name: '⚡ 4. Perang Harga Populer', baseMode: 'mepet', catFilter: 'populer', roundMode: '100', floorGuard: true, pct: [0, 2, 2, 5, 8] },
+        gacha_shield: { name: '🛡️ 5. Tameng Gacha 5% Rata', baseMode: 'mepet', catFilter: 'all', roundMode: '500', floorGuard: true, pct: [12, 12, 12, 12, 12] },
+        payday_surge: { name: '🎉 6. Payday / Weekend Surge', baseMode: 'mepet', catFilter: 'all', roundMode: '500', floorGuard: true, pct: [14, 16, 18, 20, 22] },
+        micro_viral:  { name: '🌱 7. Micro-Entry Viral', baseMode: 'mepet', catFilter: 'all', roundMode: '50', floorGuard: true, pct: [0, 0, 14, 16, 18] }
+      };
+
+      ['cmBaseMode', 'cmCatFilter', 'cmRoundMode', 'cmFloorGuard', 'cmPctDaily', 'cmPctWeekly', 'cmPctMonthly', 'cmPctMulti', 'cmPctYearly'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', function() { window.renderCustomMassSimulation(); });
+        el.addEventListener('change', function() { window.renderCustomMassSimulation(); });
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!e.target || !e.target.closest) return;
+        var sBtn = e.target.closest('[data-vis-strat]');
+        if (sBtn) {
+          var key = sBtn.getAttribute('data-vis-strat');
+          var st = VISIONARY_STRATS[key];
+          if (st) {
+            var setV = function(id, v) { var el = document.getElementById(id); if (el) el.value = v; };
+            setV('cmBaseMode', st.baseMode); setV('cmCatFilter', st.catFilter); setV('cmRoundMode', st.roundMode);
+            var fg = document.getElementById('cmFloorGuard'); if (fg) fg.checked = st.floorGuard;
+            setV('cmPctDaily', st.pct[0]); setV('cmPctWeekly', st.pct[1]); setV('cmPctMonthly', st.pct[2]); setV('cmPctMulti', st.pct[3]); setV('cmPctYearly', st.pct[4]);
+            var bdg = document.getElementById('customMassActiveStratBadge');
+            if (bdg) bdg.textContent = 'Strategi: ' + st.name;
+            window.renderCustomMassSimulation();
+            callToast('💡 Simulasi ' + st.name + ' dimuat! Cek ilustrasi impact lalu klik Terapkan.');
+          }
+          return;
+        }
+        if (e.target.closest('#btnApplyCustomMassPricing')) {
+          var dc = getDraft();
+          if (!dc || !Array.isArray(dc.catalog)) { callToast('⏳ Tunggu data katalog selesai dimuat dulu ya!', true); return; }
+          var params = getCustomMassParams();
+          previousCatalogSnapshot = cloneObj(dc.catalog);
+          var changed = 0, total = 0;
+          dc.catalog.forEach(function(app) {
+            (app.plans || []).forEach(function(pl) {
+              total++;
+              var oldP = Number(pl.price || 0);
+              var nextP = computeCustomPlanPrice(pl, app, params);
+              if (nextP > 0 && nextP !== oldP) { pl.price = nextP; changed++; }
+            });
+          });
+          var undoBtn = document.getElementById('btnUndoInstantPrice');
+          if (undoBtn) undoBtn.classList.remove('hidden');
+          var bdgTxt = (document.getElementById('customMassActiveStratBadge') || {}).textContent || 'Custom Mass Pricing';
+          lastPresetFeedbackHtml = '<div class="mt-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-[11px]">🚀 <b>' + bdgTxt + '</b> diterapkan ke <b>' + changed + '/' + total + '</b> varian paket! Klik <b>Terbitkan Live</b> di bar bawah untuk simpan ke Store (atau klik <b>↩️ Undo</b> untuk batal).</div>';
+          callRenderAll();
+          window.renderInstantPricingTab();
+          window.renderCustomMassSimulation();
+          callUpdateDirty();
+          callToast('🚀 Custom Mass Pricing diterapkan ke ' + changed + ' paket! Klik Terbitkan Live.');
+        }
+      });
+
+      var origRenderTab7 = window.renderInstantPricingTab;
+      window.renderInstantPricingTab = function() {
+        if (typeof origRenderTab7 === 'function') origRenderTab7();
+        window.renderCustomMassSimulation();
+      };
 
       setTimeout(function() {
         window.renderDeletedAppsHistory();
