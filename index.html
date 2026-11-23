@@ -304,6 +304,10 @@
           <h4 class="text-sm font-extrabold text-[#4A2036]">📱 Pratinjau Pesan Bantuan WA</h4>
           <div id="waHelpTemplatePreview" class="p-4 rounded-2xl bg-[#FFF5F8] border border-[#FCD2E3] text-xs whitespace-pre-wrap leading-relaxed text-[#4A2036] min-h-[140px]"></div>
           <p class="text-[11px] text-[#6D3B53]">Saat customer klik tombol bantuan mini di halaman mana pun, WA Admin akan terbuka dengan pesan ini.</p>
+          <div class="pt-2 border-t border-dashed border-[#FCD2E3] space-y-1.5">
+            <label class="block text-xs font-extrabold text-[#4A2036]">🧾 Format Tombol Salin Struk Singkat (Web Customer)</label>
+            <textarea id="editCustOrderSummaryTpl" rows="2" placeholder="Struk Archie'pelago ({order_code}): {customer_name} | {product_name} ({plan_label}) | Diskon {discount_pct} | Total: {total_price}" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-[11px] font-mono text-[#4A2036]"></textarea>
+          </div>
         </div>
       </div>
 
@@ -384,6 +388,20 @@
             <button type="button" data-var="{exp_date}" class="ho-chip px-2.5 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-xs font-bold">{exp_date}</button>
           </div>
           <textarea id="editAdminHandoverTpl" rows="7" class="w-full px-4 py-3 rounded-2xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-mono text-[#4A2036]"></textarea>
+          <div class="rounded-2xl bg-[#FFF9FB] border border-[#FCD2E3] p-3 space-y-1.5">
+            <div class="text-[10.5px] font-extrabold text-[#D83162]">👁️ Live Preview dengan Contoh Data Asli:</div>
+            <div id="adminHandoverLivePreview" class="text-[11px] whitespace-pre-wrap leading-relaxed text-[#4A2036] max-h-[180px] overflow-y-auto"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-dashed border-[#FCD2E3]">
+            <div class="space-y-1">
+              <label class="block text-[11px] font-extrabold text-[#4A2036]">💬 Tombol Chat Cepat Admin (Menunggu Bayar)</label>
+              <textarea id="editAdminQuickChatPending" rows="3" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-[11px] font-mono text-[#4A2036]"></textarea>
+            </div>
+            <div class="space-y-1">
+              <label class="block text-[11px] font-extrabold text-[#4A2036]">✅ Tombol Chat Cepat Admin (Sudah Lunas / PAID)</label>
+              <textarea id="editAdminQuickChatPaid" rows="3" class="w-full px-3 py-2 rounded-xl border border-[#FCD2E3] bg-[#FFF5F8] text-[11px] font-mono text-[#4A2036]"></textarea>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -404,6 +422,10 @@
             <button type="button" data-var="{order_code}" class="fho-chip px-2 py-1 rounded-lg bg-[#FFE0EC] text-[#D83162] text-[11px] font-bold">{order_code}</button>
           </div>
           <textarea id="editAdminFhOrderTpl" rows="7" class="w-full px-3.5 py-3 rounded-2xl border border-[#FCD2E3] bg-[#FFF5F8] text-xs font-mono text-[#4A2036]"></textarea>
+          <div class="rounded-2xl bg-[#FFF9FB] border border-[#FCD2E3] p-3 space-y-1.5">
+            <div class="text-[10.5px] font-extrabold text-[#D83162]">👁️ Live Preview Converter FH (Data Contoh):</div>
+            <div id="adminFhOrderLivePreview" class="text-[11px] whitespace-pre-wrap font-mono leading-relaxed text-[#4A2036] max-h-[160px] overflow-y-auto"></div>
+          </div>
         </div>
 
         <div class="lg:col-span-7 bg-white border-2 border-[#FCD2E3] rounded-3xl p-5 shadow-sm space-y-3.5">
@@ -1210,73 +1232,93 @@
     adminUi: {
       fhDirectory: [],
       fhOrderTemplate:
-        "Selamat {greeting_wib}, Kakk {fh_name}\n" +
+        "Selamatt {greeting_wib}, Kakk {fh_name}\n" +
         "Aku ada pesanan sebagai berikutt:\n\n" +
         "```Produk/Aplikasi``` : *{product_name}*\n" +
         "```Tipe Langganan``` : *{subscription_type}*\n" +
         "```Durasi Langganan``` : *{duration_label}*\n" +
         "{customer_input}\n" +
-        "> ```Kode Tracking``` : *{order_code}*\n\n\n" +
+        "> ```Kode Tracking``` : *{order_code}*\n\n" +
         "Terima kasih sebelumnyaa Kak {fh_name}! ( ˶˘ ³˘)♡",
+      quickChatPendingTpl:
+        "Halo kak {customer_name}! Rincian pesanan {order_code} — {product_name} ({plan_label}) setelah diskon spin {discount_pct} jadi total {total_price} yaa~ Kode QRIS dinamisnya sudah Mimin kirim di web, silakan di-scan sebelum 5 menit habis!",
+      quickChatPaidTpl:
+        "Halo kak {customer_name}! Pembayaran {total_price} untuk {product_name} ({plan_label}) dengan No. Pesanan {order_code} sudah LUNAS yaa~ Tiket Garansi & pengingat durasi real-time kakak bisa dicek kapan saja pakai kode {order_code}! ♡",
       copywritingTemplates: [
         {
           id: "cw_welcome",
           icon: "🌸",
           label: "Order Masuk",
-          template: "Halo {greeting_wib} Kak {customer_name}! 🌸 Pesanan {order_code} ({product_name} — {plan_label}) sudah masuk antrean Mimin Archie yaa. Mohon ditunggu sebentar, lagi Mimin proses dulu! 🐰✨"
+          template: "Halo selamatt {greeting_wib} Kak {customer_name}! Pesanan {order_code} ({product_name} — {plan_label}) sudah masuk antrean Mimin Archie yaa. Mohon ditunggu sebentar, lagi Mimin proses dulu! (•̀ᴗ•́)و"
         },
         {
           id: "cw_handover",
           icon: "📦",
           label: "Kirim Akun",
-          template: "Halo {greeting_wib} Kak {customer_name}! 🌸 Akun {product_name} ({plan_label}) untuk pesanan {order_code} sudah siap dipakai yaa!\n• Portal Garansi: {warranty_url}\n• Kata Sandi Tiket: {pin}\n• Berlaku s/d: {exp_date}\nJangan lupa kirim SS bukti login awal maksimal 1x12 jam biar garansinya aktif yaa! 🐰💗"
+          template: "Halo selamatt {greeting_wib} Kak {customer_name}! Akun {product_name} ({plan_label}) untuk pesanan {order_code} sudah siap dipakai yaa!\n> Gmail: `{email}`\n> Password: `{password}`\n{extra_account_info}Jangan lupa kirim SS bukti login awal maksimal 1x12 jam biar garansinya aktif yaa! ♡"
         },
         {
           id: "cw_ss_login",
           icon: "📸",
           label: "Ingetin SS Awal",
-          template: "Halo {greeting_wib} Kak {customer_name} 🌸 Mimin izin ingetin sebentar yaa buat kirim screenshot bukti login awal {product_name} ({order_code}) biar stempel garansi Kakak langsung aktif di Portal Garansi! 🐰✨"
+          template: "Halo selamatt {greeting_wib} Kak {customer_name}, Mimin izin ingetin sebentar yaa buat kirim screenshot bukti login awal {product_name} ({order_code}) biar stempel garansi Kakak langsung aktif di Portal Garansi! ( ˙꒳​˙ )"
         },
         {
           id: "cw_h1",
           icon: "⏳",
           label: "Reminder H-1",
-          template: "Halo {greeting_wib} Kak {customer_name}! 🌸 Masa aktif {product_name} ({order_code}) sebentar lagi berakhir pada {exp_date}. Kalau mau perpanjang biar nggak kepotong, langsung kabari Mimin Archie yaa~ 🐰💗"
+          template: "Halo selamatt {greeting_wib} Kak {customer_name}! Bagaimana kabarnyaa? Semoga sehat dan sukses yaaa 💛 Aku izin ngingetin nihh, masa aktif {product_name} ({order_code}) sebentar lagi berakhir pada {exp_date}. Kalau mau perpanjang biar nggak kepotong, langsung kabari Mimin Archie yaa ☆ ～('▽^人)"
         },
         {
-          id: "cw_testi",
-          icon: "💌",
-          label: "Follow-up Testi",
-          template: "Halo {greeting_wib} Kak {customer_name}! 🐰💗 Gimana pemakaian {product_name} ({order_code}) sejauh ini, aman & lancar kan? Kalau berkenan, boleh bantu kasih testimoni manis di Portal Garansi ({warranty_url}) yaa Kak, makasih banyak! 🌸✨"
+          id: "cw_renew",
+          icon: "🔄",
+          label: "Convert Renewal Account",
+          template: "Halo selamatt {greeting_wib} Kak {customer_name}! Gimanaa pemakaian {product_name} selama inii? Jangan lupa hari ini jadwal renewal yaa Kakk~ Berikut aku berikan informasi terkait login kembalinya:\n> Gmail: `{email}`\n> Password: `{password}`\n{extra_account_info}Selamat menikmati kembali langganannya yaaw Kakk! Bilamana ada kendala, langsung chat aku ajaa ~(˘▽˘~)"
         },
         {
           id: "cw_claim",
           icon: "🛡️",
           label: "Proses Garansi",
-          template: "Halo {greeting_wib} Kak {customer_name}, laporan kendala {product_name} ({order_code}) sudah Mimin terima yaa 🙏 Lagi Mimin cek & proses klaim garansinya sesuai SLA 1x24 jam. Mohon ditunggu update dari Mimin Archie! 🐰💗"
+          template: "Halo {greeting_wib} Kak {customer_name}, laporan kendala {product_name} ({order_code}) sudah Mimin terima yaa. Lagi Mimin cek & proses klaim garansinya sesuai SLA 1x24 jam. Mohon ditunggu update dari Mimin Archie! ♡( ◡‿◡ )"
         },
         {
           id: "cw_delay",
           icon: "🙏",
           label: "Maaf Delay",
-          template: "Halo {greeting_wib} Kak {customer_name} 🙏 Mohon maaf banget yaa pesanan {order_code} ({product_name}) agak sedikit menunggu karena antrean lagi ramai. Mimin lagi kebut prosesnya, begitu beres langsung Mimin kirim ke Kakak! 🐰🌸"
+          template: "Halo {greeting_wib} Kak {customer_name}, mohon maaf banget yaa pesanan {order_code} ({product_name}) agak sedikit menunggu karena antrean lagi ramai. Mimin lagi kebut prosesnya, begitu beres langsung Mimin kirim ke Kakak! ✨"
         }
       ],
       waHandoverTemplate:
-        "Halo Kak *{customer_name}*! Pesanan Kakak sudah 100% beres diproses yaa~ Ი𐑼🌸\n\n" +
-        "> 📦 *Nomor Pesanan:* `{order_code}` _(Simpan kode ini baik-baik ya Kak!)_\n" +
-        "> 🔑 *Kata Sandi Tiket (4–5 Huruf):* `{access_pin}`\n" +
-        "> 🛠️ *Layanan:* *{product_name}* ({plan_label})\n" +
-        "> 💰 *Total Lunas:* `{total_price}`\n" +
+        "Halo Kak *{customer_name}*! Pesanan Kakak sudah 95% beres diproses yaa~ Ი𐑼\n\n" +
+        "Pertama-tama, Mimin Archie mau ngucapin *terima kasih yang sebesar-besarnya* karena Kakak udah memercayakan Archie untuk melayani kebutuhan Kakak! Bagi mimin, kepuasan dan ketenangan pikiran Kakak setelah beli itu nomor satu! Makanya, mimin buatkan panduan lengkap ini khusus buat Kakak. ⸜(｡˃ ᵕ ˂ )⸝♡\n\n" +
+        "📋 *RINGKASAN DATA TRANSAKSI KAKAK:*\n" +
+        "> 📦 *Nomor Pesanan:* `{order_code}`\n" +
+        "> 🎟️ *Password Pesanan:* `{pin}`\n" +
+        "> _(Simpan ini baik-baik ya Kak!)_\n" +
+        "> 🛠️ *Produk/Layanan:* *{product_name} ({plan_label})*\n" +
+        "> 💳 *Total Pembayaran:* *{total_price}*\n" +
         "> 🐰 *Kasir Penanggung Jawab:* _Mimin Archie_\n\n" +
-        "📌 *PANDUAN AKTIVASI GARANSI (WAJIB 3 LANGKAH):*\n" +
-        "*Langkah 1 — Wajib Kirim Screenshot (Batas 1x12 Jam)* 📸\n" +
-        "Begitu berhasil masuk, langsung kirim screenshot full layar ke Mimin yaa.\n" +
-        "*Langkah 2 — Buka & Simpan Tiket Struk Resmi* 🎟️\n" +
-        "Link tiket: {warranty_url} (Kode: `{order_code}` • PIN: `{access_pin}`).\n" +
-        "*Langkah 3 — Patuhi TnC Khusus {product_name}* 🛡️\n" +
-        "_{app_tnc}_\n\n" +
-        "Selamat menikmati layanannya yaa Kak! ⸜(。˃ ᴗ ˂ )⸝♡"
+        "                    ─── ⋆⋅𖤓⋅⋆ ───\n\n" +
+        "*BAGAIMANA CARA KERJA GARANSI & PANTAU DURASI?* ❓\n" +
+        "Supaya Kak *{customer_name}* tenang dan gak bingung kalau nanti butuh bantuan, begini alur perlindungannya ya Kak:\n\n" +
+        "*Langkah 1: Wajib Kirim Screenshot Sekarang* 📸\n" +
+        "Setelah membaca pesan ini, mohon langsung *screenshot penuh bukti sudah login/sudah berhasil* dan kirimkan ke mimin ya Kak. Ini adalah syarat wajib agar garansi Kakak berstatus *AKTIF*.\n\n" +
+        "*Langkah 2: Buka Web Khusus yang Sudah Mimin Siapkan* 💻\n" +
+        "Nanti Kakak akan menemukan halaman input, mohon masukkan nomor pesanan `{order_code}` dan password pesanan `{pin}` milik Kakak ya!\n" +
+        "Melalui web khusus customer tersebut, semuanya serba otomatis:\n" +
+        "• ⏳ *Layar Hitung Mundur:* Kakak bisa lihat sisa durasi masa aktif secara _live_ kapan pun Kakak mau.\n" +
+        "• 🔴 *Notifikasi Habis Otomatis:* Kalau masa berlangganan telah selesai, tampilan durasi di web akan otomatis berubah menjadi _\"Durasi sudah habis;(\"_.\n" +
+        "• 🏷️ *Stempel Status Garansi:* Kakak bisa lihat status klaim garansi Kakak langsung dari halaman web yang sama.\n" +
+        "• 📤 *Kolom Testimoni:* Bilamana Kakak mempunyai keluhan, saran, maupun ingin sekadar menyampaikan pengalaman pribadi Kakak mengenai layanan Archie, boleh banget tulis di situu (˶˃ ᵕ ˂˶)\n\n" +
+        "Berikut Mimin berikan link untuk website khusus Kakak, langsung dipencet saja yaa~\n" +
+        "> {warranty_url}\n\n" +
+        "*Langkah 3: Panduan Klaim jika Terjadi Kendala* ⚠️\n" +
+        "Bilamana sewaktu-waktu Kakak mengalami kendala pada akun/layanannya, mohon untuk *langsung mengambil screenshot kendala tersebut secara menyeluruh beserta jam/waktu terjadinya*, lalu kirimkan ke chat mimin ya Kak. Ini penting banget biar mimin bisa langsung cek log sistem dan bantu beresin secepat mungkin! 🕒⚡\n\n" +
+        "*Pengingat Ulang* ‼️\n" +
+        "Mimin mohon untuk setiap informasi yang mimin kirimkan dibaca dengan seksama yaa~ Apabila ada keluhan atau keinginan kakak yang sudah di luar kemampuan/keharusan mimin, sayangnya mimin tidak dapat membantu.. Dan mimin memohon untuk bersabar ya.. karena ada beberapa momen dimana mimin tidak bisa langsung muncul untuk membantu Kakak. _Estimasi maksimal adalah 1 jam di waktu kerja untuk mimin membalas pesan Kakak._ Apabila mimin belum membalas, Kakak dipersilahkan untuk misscall mimin dalam *batasan yang wajar* yaa~ Mimin akan selalu bertanggung jawab akan hal-hal yang *di bawah kewajiban mimin!*\n" +
+        "(=^ ^=)\n\n" +
+        "Kalau ada satu hal aja yang kurang jelas, jangan sungkan buat tanya mimin ya Kak! Mimin bakal dengan senang hati bantu jelasin. Terima kasih banyak sekali lagi, sehat dan sukses selalu buat Kak *{customer_name}*!\n" +
+        "ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧ 🌸✨"
     }
   };
 
@@ -1313,7 +1355,8 @@
       var localCfg = this.getCached();
       if (!sbUrl || !sbAnonKey) return localCfg;
       try {
-        var resp = await fetch(sbUrl + '/rest/v1/store_cms_config?id=eq.live&select=config_json,version,updated_at', {
+        var resp = await fetch(sbUrl + '/rest/v1/store_cms_config?id=eq.live&select=config_json,updated_at', {
+          cache: 'no-store',
           headers: {
             'apikey': sbAnonKey,
             'Authorization': 'Bearer ' + sbAnonKey
@@ -2062,6 +2105,18 @@
     if ($('editAdminFhOrderTpl')) {
       $('editAdminFhOrderTpl').value = draftConfig.adminUi.fhOrderTemplate || window.ARCHIE_DEFAULT_CMS.adminUi.fhOrderTemplate || '';
     }
+    if ($('editAdminQuickChatPending')) {
+      $('editAdminQuickChatPending').value = draftConfig.adminUi.quickChatPendingTpl || window.ARCHIE_DEFAULT_CMS.adminUi.quickChatPendingTpl || '';
+    }
+    if ($('editAdminQuickChatPaid')) {
+      $('editAdminQuickChatPaid').value = draftConfig.adminUi.quickChatPaidTpl || window.ARCHIE_DEFAULT_CMS.adminUi.quickChatPaidTpl || '';
+    }
+    if ($('editCustOrderSummaryTpl')) {
+      $('editCustOrderSummaryTpl').value = (draftConfig.customerUi && draftConfig.customerUi.orderSummaryTemplate) || "Struk Archie'pelago ({order_code}): {customer_name} | {product_name} ({plan_label}) | Diskon {discount_pct} | Total: {total_price}";
+    }
+    if (typeof window.__renderEditorTemplateLivePreviews === 'function') {
+      window.__renderEditorTemplateLivePreviews();
+    }
     const cwCont = $('cmsCopywritingList');
     if (cwCont) {
       if (!Array.isArray(draftConfig.adminUi.copywritingTemplates) || draftConfig.adminUi.copywritingTemplates.length === 0) {
@@ -2219,11 +2274,19 @@
       showToast('Aplikasi baru ditambahkan ke draft.');
     });
 
-    $('cmsDeleteAppBtn').addEventListener('click', () => {
+    $('cmsDeleteAppBtn').addEventListener('click', async () => {
       const idx = draftConfig.catalog.findIndex((a) => a.id === selectedAppId);
       if (idx === -1) return;
       const targetApp = draftConfig.catalog[idx];
-      if (!confirm('Hapus aplikasi "' + targetApp.name + '" dari katalog? (Tenang, bisa dibalikin lewat Riwayat App Dihapus)')) return;
+      if (typeof window.archieDoubleConfirm === 'function') {
+        const okDel = await window.archieDoubleConfirm({
+          title: 'Hapus Aplikasi dari Katalog?',
+          detail: 'Aplikasi: ' + targetApp.name + '\nAplikasi akan dipindah ke Riwayat App Dihapus (masih bisa dibalikin nanti).',
+          confirmText: 'Ya, Hapus Aplikasi',
+          tone: 'rose'
+        });
+        if (!okDel) return;
+      }
       if (!Array.isArray(draftConfig.deletedAppsHistory)) draftConfig.deletedAppsHistory = [];
       draftConfig.deletedAppsHistory.unshift({
         deletedAt: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
@@ -2380,8 +2443,16 @@
       });
     }
 
-    $('cmsDiscardBtn').addEventListener('click', () => {
-      if (!confirm('Batalkan semua perubahan yang belum diterbitkan?')) return;
+    $('cmsDiscardBtn').addEventListener('click', async () => {
+      if (typeof window.archieDoubleConfirm === 'function') {
+        const okDisc = await window.archieDoubleConfirm({
+          title: 'Buang Semua Perubahan Draft?',
+          detail: 'Seluruh editan harga, teks, dan katalog yang belum di-publish akan dikembalikan ke versi Live saat ini.',
+          confirmText: 'Ya, Buang Semua Perubahan',
+          tone: 'rose'
+        });
+        if (!okDisc) return;
+      }
       draftConfig = deepClone(liveConfig);
       renderAll();
       updateDirtyIndicator();
@@ -2422,6 +2493,16 @@
     cb.addEventListener('change', () => { pubBtn.disabled = !cb.checked; });
 
     pubBtn.addEventListener('click', async () => {
+      const diffsPreview = computeDiffs();
+      if (typeof window.archieDoubleConfirm === 'function') {
+        const okPub = await window.archieDoubleConfirm({
+          title: 'Terbitkan Perubahan ke LIVE?',
+          detail: 'Jumlah perubahan: ' + diffsPreview.length + ' item.\nSemua perubahan harga, katalog, dan template akan langsung aktif di Web Customer, Web Admin, dan Web Garansi.',
+          confirmText: 'Terbitkan ke LIVE Sekarang',
+          tone: 'emerald'
+        });
+        if (!okPub) return;
+      }
       pubBtn.disabled = true;
       pubBtn.textContent = 'Menerbitkan ke Live...';
       try {
@@ -2551,7 +2632,7 @@
     }
     const calcApplyBtn = $('calcApplyToDraftBtn');
     if (calcApplyBtn) {
-      calcApplyBtn.addEventListener('click', () => {
+      calcApplyBtn.addEventListener('click', async () => {
         const val = ($('calcAppPreset') && $('calcAppPreset').value) || '';
         if (!val || !draftConfig) {
           showToast('Pilih aplikasi & plan di dropdown Auto-Fill dulu ya untuk menerapkan langsung ke draft!', true);
@@ -2565,6 +2646,15 @@
         const appliedPrice = customVal > 0 ? customVal : Number(window.__lastCalcRecommended || 0);
         const appliedModal = Number(($('calcModalFh') && $('calcModalFh').value) || 0);
         if (appliedPrice <= 0) return;
+        if (typeof window.archieDoubleConfirm === 'function') {
+          const okCalc = await window.archieDoubleConfirm({
+            title: 'Terapkan Harga Baru ke Draft?',
+            detail: 'Aplikasi: ' + app.name + ' (' + app.plans[pIdx].label + ')\nHarga Lama: ' + formatRp(app.plans[pIdx].price || 0) + ' → Harga Baru: ' + formatRp(appliedPrice) + '\nModal FH: ' + formatRp(appliedModal),
+            confirmText: 'Terapkan Harga Baru',
+            tone: 'berry'
+          });
+          if (!okCalc) return;
+        }
         app.plans[pIdx].price = appliedPrice;
         app.plans[pIdx].fhCost = appliedModal;
         selectedAppId = app.id;
@@ -3122,9 +3212,19 @@
         return cur;
       }
 
-      function applyBulkPreset(mode) {
+      async function applyBulkPreset(mode) {
         var dc = getDraft();
         if (!dc || !Array.isArray(dc.catalog)) { callToast('⏳ Tunggu data katalog selesai dimuat dulu ya!', true); return; }
+        var modeLabelPre = mode === 'mepet' ? 'Harga Mepet Floor (Aman 5%)' : (mode === 'ideal' ? 'Harga Ideal (Profit Sehat)' : 'Harga Margin Maksimal');
+        if (typeof window.archieDoubleConfirm === 'function') {
+          var okBulk = await window.archieDoubleConfirm({
+            title: 'Ubah Massal Harga Seluruh Katalog?',
+            detail: 'Mode Preset: ' + modeLabelPre + '\nHarga seluruh paket di katalog draft akan otomatis dihitung ulang.',
+            confirmText: 'Terapkan Preset Massal',
+            tone: 'amber'
+          });
+          if (!okBulk) return;
+        }
         previousCatalogSnapshot = cloneObj(dc.catalog);
         var changedCount = 0;
         var totalCount = 0;
@@ -3844,6 +3944,106 @@
       }, 650);
     })();
   </script>
+
+
+<script>
+// ============================================================================
+// ARCHIE'PELAGO — UNIVERSAL 2-STEP DOUBLE CONFIRMATION MODAL (ANTI SALAH PENCET)
+// ============================================================================
+(function() {
+  if (window.archieDoubleConfirm) return;
+  window.archieDoubleConfirm = function(opts) {
+    return new Promise(function(resolve) {
+      var cfg = opts || {};
+      var title = String(cfg.title || 'Konfirmasi Aksi Penting');
+      var detail = String(cfg.detail || 'Pastikan data sudah benar sebelum melanjutkan.');
+      var confirmText = String(cfg.confirmText || 'Ya, Jalankan Sekarang');
+      var tone = cfg.tone || 'berry';
+
+      var existing = document.getElementById('archieDoubleConfirmBackdrop');
+      if (existing) existing.remove();
+
+      var toneBtn = tone === 'emerald'
+        ? 'background:#059669;color:#fff;'
+        : (tone === 'rose'
+          ? 'background:#E11D48;color:#fff;'
+          : (tone === 'amber'
+            ? 'background:#D97706;color:#fff;'
+            : 'background:#D83162;color:#fff;'));
+
+      var backdrop = document.createElement('div');
+      backdrop.id = 'archieDoubleConfirmBackdrop';
+      backdrop.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(42,14,29,0.62);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;';
+
+      var card = document.createElement('div');
+      card.style.cssText = 'width:100%;max-width:420px;background:#FFFBFD;border:2px solid #F5B8CE;border-radius:24px;padding:20px;box-shadow:0 24px 60px rgba(74,32,54,0.35);font-family:"Plus Jakarta Sans",system-ui,sans-serif;color:#4A2036;';
+
+      var step = 1;
+
+      function escHtml(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br/>');
+      }
+
+      function closeWith(val) {
+        document.removeEventListener('keydown', onKey);
+        if (backdrop.parentNode) backdrop.parentNode.removeChild(backdrop);
+        resolve(Boolean(val));
+      }
+
+      function onKey(e) {
+        if (e.key === 'Escape') closeWith(false);
+      }
+      document.addEventListener('keydown', onKey);
+
+      function renderStep() {
+        var badgeBg = step === 1 ? '#FFE5EE' : '#FEF3C7';
+        var badgeCol = step === 1 ? '#D83162' : '#B45309';
+        var badgeTxt = step === 1 ? '🛡️ DOUBLE CONFIRM • TAHAP 1 / 2' : '⚠️ KONFIRMASI TERAKHIR • TAHAP 2 / 2';
+        var warnBox = step === 2
+          ? '<div style="margin-top:10px;padding:10px 12px;border-radius:14px;background:#FFF7ED;border:1.5px solid #FDBA74;color:#9A3412;font-size:11.5px;font-weight:800;line-height:1.45;">⚠️ Cek sekali lagi! Klik tombol di bawah untuk benar-benar mengeksekusi perubahan ini.</div>'
+          : '';
+        var okLabel = step === 1 ? 'Lanjut Konfirmasi (1/2) →' : ('✅ ' + confirmText);
+
+        card.innerHTML =
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">' +
+            '<span style="display:inline-block;padding:4px 10px;border-radius:999px;background:' + badgeBg + ';color:' + badgeCol + ';font-size:10px;font-weight:900;letter-spacing:0.04em;">' + badgeTxt + '</span>' +
+            '<button type="button" data-dc-cancel="1" style="background:transparent;border:none;font-size:16px;font-weight:900;color:#9A637B;cursor:pointer;padding:2px 6px;">✕</button>' +
+          '</div>' +
+          '<div style="font-size:16px;font-weight:900;color:#4A2036;line-height:1.3;">' + escHtml(title) + '</div>' +
+          '<div style="margin-top:8px;padding:11px 13px;border-radius:16px;background:#FFF4F8;border:1px solid #F7C6D9;font-size:12px;font-weight:700;color:#6D3B53;line-height:1.55;">' + escHtml(detail) + '</div>' +
+          warnBox +
+          '<div style="display:flex;gap:8px;margin-top:16px;">' +
+            '<button type="button" data-dc-cancel="1" style="flex:1;padding:10px 12px;border-radius:14px;background:#FFF0F6;border:1.5px solid #F5B8CE;color:#7A4961;font-size:12px;font-weight:800;cursor:pointer;">Batal</button>' +
+            '<button type="button" data-dc-ok="1" style="flex:1.4;padding:10px 12px;border-radius:14px;border:none;' + (step === 1 ? 'background:#4A2036;color:#fff;' : toneBtn) + 'font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 6px 16px rgba(74,32,54,0.2);">' + escHtml(okLabel) + '</button>' +
+          '</div>';
+
+        card.querySelectorAll('[data-dc-cancel]').forEach(function(b) {
+          b.addEventListener('click', function() { closeWith(false); });
+        });
+        var okBtn = card.querySelector('[data-dc-ok]');
+        if (okBtn) {
+          okBtn.addEventListener('click', function() {
+            if (step === 1) {
+              step = 2;
+              renderStep();
+            } else {
+              closeWith(true);
+            }
+          });
+        }
+      }
+
+      backdrop.addEventListener('click', function(e) {
+        if (e.target === backdrop) closeWith(false);
+      });
+
+      backdrop.appendChild(card);
+      document.body.appendChild(backdrop);
+      renderStep();
+    });
+  };
+})();
+</script>
 
 </body>
 </html>
